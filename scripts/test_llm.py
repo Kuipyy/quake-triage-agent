@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 provider = os.getenv("LLM_PROVIDER", "gemini")
-model = os.getenv("LLM_MODEL", "gemini-2.0-flash")
+model = os.getenv("LLM_MODEL", "gemini-2.5-flash")
 
 if provider == "gemini":
     from google import genai
