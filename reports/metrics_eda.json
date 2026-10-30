@@ -16,5 +16,11 @@
     "mean_damaged_ratio": 0.028252050280570984,
     "median_damaged_ratio": 0.02032470703125,
     "pct_with_any_damage": 1.0
+  },
+  "provenance": {
+    "created_utc": "2026-10-30T23:47:41+00:00",
+    "git_sha": "9bcf25a",
+    "git_dirty": true,
+    "seed": null
   }
 }

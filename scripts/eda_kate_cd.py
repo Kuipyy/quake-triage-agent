@@ -1,6 +1,5 @@
 """EDA for KATE-CD: class balance, coordinate check, sample grid figure."""
 import io
-import json
 from pathlib import Path
 
 import matplotlib
@@ -10,6 +9,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from PIL import Image
+
+from quaketriage.provenance import write_json
 
 DATA_DIR = Path("data/raw/kate_cd")
 REPORTS_DIR = Path("reports/figures")
@@ -94,10 +95,8 @@ def main():
         print(f"  {split_name}: mean damaged px = {arr.mean():.3f}, "
               f"samples with any damage = {(arr > 0).mean()*100:.1f}%")
 
-    # Save metrics
-    metrics_path = Path("reports/metrics_eda.json")
-    with open(metrics_path, "w") as f:
-        json.dump(metrics, f, indent=2)
+    # Save metrics with provenance
+    metrics_path = write_json("reports/metrics_eda.json", metrics)
     print(f"\nMetrics saved → {metrics_path}")
 
     # Sample grid figure (4 triplets from train: pre / post / mask)
