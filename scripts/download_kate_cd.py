@@ -1,6 +1,7 @@
 """Download KATE-CD dataset from HuggingFace Hub to data/raw/kate_cd/."""
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 from huggingface_hub import snapshot_download
 

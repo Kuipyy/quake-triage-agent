@@ -1,6 +1,7 @@
 """Geo helpers — all spatial work uses a single CRS (configs/default.yaml → geo.crs)."""
-import yaml
 from pathlib import Path
+
+import yaml
 
 _CONFIG_PATH = Path(__file__).parents[3] / "configs" / "default.yaml"
 

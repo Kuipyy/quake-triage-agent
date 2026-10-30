@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,7 +15,11 @@ DATA_DIR = Path("data/raw/kate_cd")
 REPORTS_DIR = Path("reports/figures")
 REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
-SPLITS = {"train": "data/train-*.parquet", "validation": "data/validation-*.parquet", "test": "data/test-*.parquet"}
+SPLITS = {
+    "train": "data/train-*.parquet",
+    "validation": "data/validation-*.parquet",
+    "test": "data/test-*.parquet",
+}
 
 def load_split(glob_pattern: str) -> pd.DataFrame:
     files = sorted(DATA_DIR.glob(glob_pattern))
@@ -121,9 +126,11 @@ def main():
         pre  = decode_image(train_df.iloc[idx][pre_col])
         post = decode_image(train_df.iloc[idx][post_col])
         mask = decode_mask(train_df.iloc[idx][mask_col_name])
-        axes[row, 0].imshow(pre);  axes[row, 0].axis("off")
-        axes[row, 1].imshow(post); axes[row, 1].axis("off")
-        axes[row, 2].imshow(mask, cmap="Reds"); axes[row, 2].axis("off")
+        axes[row, 0].imshow(pre)
+        axes[row, 1].imshow(post)
+        axes[row, 2].imshow(mask, cmap="Reds")
+        for col in range(3):
+            axes[row, col].axis("off")
 
     plt.tight_layout()
     fig_path = REPORTS_DIR / "kate_cd_samples.png"

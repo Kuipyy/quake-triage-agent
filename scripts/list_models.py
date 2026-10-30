@@ -1,5 +1,6 @@
 """List available Gemini models."""
 import os
+
 from dotenv import load_dotenv
 from google import genai
 

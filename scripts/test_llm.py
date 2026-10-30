@@ -1,5 +1,6 @@
 """Quick smoke test: single Gemini (or Groq) API call."""
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
