@@ -28,7 +28,6 @@ dependencies = [
     # Agent
     "langgraph>=0.0.38",
     "langchain-core>=0.1.33",
-    "google-generativeai>=0.5.2",
     "groq>=0.5.0",
     # UI
     "gradio>=4.21.0",
@@ -38,6 +37,7 @@ dependencies = [
     "pydantic-settings>=2.2.1",
     "pyyaml>=6.0.1",
     "python-dotenv>=1.0.1",
+    "google-genai>=2.34.0",
 ]
 
 [project.optional-dependencies]

@@ -175,13 +175,13 @@ quake-triage-agent/
 Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazsa PROGRESS.md'ye nedeni yazılır ve "çıkarılacaklar" listesine bakılır.
 
 ### Hafta 0 — Kurulum (ilk oturum, ~1–2 saat)
-- [ ] Git bağlantısı: `gh auth status` kontrolü → `git init -b main` → `git remote add origin https://github.com/<kullanıcı>/quake-triage-agent.git` → ilk commit → `git push -u origin main`. Bundan sonra **her tamamlanan madde ayrı bir commit olarak push edilir** (CLAUDE.md'deki kural).
-- [ ] `uv` kurulumu, `pyproject.toml`, temel bağımlılıklar
-- [ ] Repo iskeleti (bölüm 6), `.gitignore` (data/, models/, .env, outputs/, *.tif, *.pt)
-- [ ] `.env.example`: `GEMINI_API_KEY`, `GROQ_API_KEY`, `LLM_PROVIDER`, `LLM_MODEL`, `HF_TOKEN`, `KAGGLE_USERNAME`, `KAGGLE_KEY`
-- [ ] the project owner `.env` dosyasını kendisi doldurur. Anahtarlar sohbete yazılmaz.
-- [ ] Smoke test: `uv run pytest -q` geçer, PyTorch MPS/CPU kontrolü yapılır, Gemini'ye tek bir test çağrısı gider
-- **DoD:** Repo GitHub'da, testler yeşil, LLM çağrısı çalışıyor.
+- [x] Git bağlantısı: `gh auth status` kontrolü → `git init -b main` → `git remote add origin https://github.com/<kullanıcı>/quake-triage-agent.git` → ilk commit → `git push -u origin main`. Bundan sonra **her tamamlanan madde ayrı bir commit olarak push edilir** (CLAUDE.md'deki kural).
+- [x] `uv` kurulumu, `pyproject.toml`, temel bağımlılıklar
+- [x] Repo iskeleti (bölüm 6), `.gitignore` (data/, models/, .env, outputs/, *.tif, *.pt)
+- [x] `.env.example`: `GEMINI_API_KEY`, `GROQ_API_KEY`, `LLM_PROVIDER`, `LLM_MODEL`, `HF_TOKEN`, `KAGGLE_USERNAME`, `KAGGLE_KEY`
+- [x] the project owner `.env` dosyasını kendisi doldurur. Anahtarlar sohbete yazılmaz.
+- [x] Smoke test: `uv run pytest -q` geçer, PyTorch MPS/CPU kontrolü yapılır, Gemini'ye tek bir test çağrısı gider
+- **DoD:** Repo GitHub'da, testler yeşil, LLM çağrısı çalışıyor. ✓
 
 ### Hafta 1 (2–8 Kasım) — Veri ve keşif
 - [ ] KATE-CD → `data/raw/kate_cd/`. EDA: sınıf dengesi (hasarlı piksel oranı), örnek ızgara figürü → `reports/figures/`
