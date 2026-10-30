@@ -7,7 +7,7 @@ One section per project week until the first tagged release.
 
 ### Week 1 — Data and exploration (in progress)
 - KATE-CD download script and EDA (class balance, sample grid, coordinate check).
-- Documentation scaffolding: data card, model card, glossary, interview prep, docs map.
+- Documentation scaffolding: data card, model card, glossary, docs map.
 - Tooling: CI workflow, pre-commit config (ruff, gitleaks), Makefile, config loader, provenance helper,
   results-table generator.
 

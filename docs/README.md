@@ -8,7 +8,6 @@
 | [`data_card.md`](data_card.md) | EN | Every dataset: source, license, size, known issues |
 | [`model_card.md`](model_card.md) | EN | Model details, intended use, evaluation, limitations |
 | [`glossary.md`](glossary.md) | TR/EN | Terms used in the project, short explanations |
-| [`interview.md`](interview.md) | TR | Likely interview questions with short answers |
 | [`notes/week-XX.md`](notes) | TR | One page per finished week: what, why, how to explain it |
 | [`review/`](review) | TR | Project reviews and proposals that are not yet decisions |
 
