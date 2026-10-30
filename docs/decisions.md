@@ -1,10 +1,13 @@
 # Architecture & Data Decisions
 
-| Date | Decision | Reason |
-|------|----------|--------|
-| 2026-10-31 | Use UTM zone 37N (EPSG:32637) as the single CRS | Kahramanmaraş demo area falls in this zone; metric units simplify buffer/distance calculations |
-| 2026-10-31 | KATE-CD has NO geographic metadata | Columns are only pre_image / post_image / label — no lat/lon/city. Model trained on KATE-CD; georeferenced inference done on Vantor demo area only. |
-| 2026-10-31 | KATE-CD is heavily imbalanced (~3.7% damaged pixels) | Use Dice + Focal loss; tune threshold on validation F1, not accuracy. |
-| 2026-10-31 | Demo area: Antakya — fallback plan activated | Vantor catalog has only 1 overlapping pre/post tile pair (Kilis area), but Kilis has 1 HOTOSM destroyed building vs Antakya's 732. No matching Vantor post-earthquake tile exists for Antakya. Decision: use Antakya with HOTOSM destroyed buildings as simulated detector output for the planning demo. Model performance reported on KATE-CD only. README will note this clearly. |
-| 2026-10-31 | LLM provider configured via .env (LLM_PROVIDER / LLM_MODEL) | Avoids hardcoding; allows switching Gemini ↔ Groq without code changes |
-| 2026-10-31 | KATE-CD for model training, Vantor GeoTIFF for georeferenced demo area | KATE-CD likely lacks coordinates; Vantor Open Data provides CC BY-NC 4.0 imagery with spatial reference |
+| Date | Decision | Reason | Alternatives considered |
+|------|----------|--------|------------------------|
+| 2026-10-30 | Use `google-genai` SDK instead of `google-generativeai` | The older `google-generativeai` package is deprecated and no longer receives updates; `google-genai` is the official replacement | Keep `google-generativeai` until it breaks; switch to LangChain's Gemini integration |
+| 2026-10-30 | Default LLM: `gemini-2.5-flash` | Free tier, available via Google AI Studio (no billing required); listed as supporting `generateContent` on the account used | `gemini-2.5-pro` (slower, higher quota cost); Groq (fast but smaller model selection); OpenAI (paid) |
+| 2026-10-30 | Commits go directly to `main` (no feature branches) | Solo project; branch overhead adds friction without benefit. Every merged checklist item = one commit | Feature branches per week; a single development branch |
+| 2026-10-31 | Use UTM zone 37N (EPSG:32637) as the single CRS | Kahramanmaraş / Antakya demo area falls in this zone; metric units simplify buffer/distance calculations | WGS84 (EPSG:4326) throughout — rejected because degree-based buffers are not metric; local TM zone 37 is equivalent |
+| 2026-10-31 | LLM provider configured via `.env` (`LLM_PROVIDER` / `LLM_MODEL`) | Avoids hardcoding; allows switching Gemini ↔ Groq without code changes | Hard-coded model name; a separate YAML config key |
+| 2026-10-31 | KATE-CD for model training, Vantor GeoTIFF for georeferenced demo area | KATE-CD confirmed to lack coordinates; Vantor Open Data provides CC BY-NC 4.0 imagery with spatial reference | Use only KATE-CD (no georeferenced demo); use xBD (large, ~30 GB, stretch goal) |
+| 2026-10-31 | KATE-CD has NO geographic metadata | Columns are only `pre_image` / `post_image` / `label` — no lat/lon/city. Model trained on KATE-CD; georeferenced inference done on Vantor demo area only | N/A (observation, not a design choice) |
+| 2026-10-31 | KATE-CD is heavily imbalanced (~3.7% damaged pixels) | Use Dice + Focal loss; tune threshold on validation F1, not accuracy | Weighted BCE only; oversample damaged patches |
+| 2026-10-31 | Demo area: Antakya — fallback plan activated | Vantor catalog has only 1 overlapping pre/post tile pair (Kilis area), but Kilis has 1 HOTOSM destroyed building vs Antakya's 732. No matching Vantor post-earthquake tile exists for Antakya. HOTOSM destroyed buildings used as simulated detector output for the planning demo. Model performance reported on KATE-CD only. README notes this clearly. | Use Kilis tiles (real imagery but almost no validation data); use xBD for a different region |

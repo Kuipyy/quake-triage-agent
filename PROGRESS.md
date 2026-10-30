@@ -22,6 +22,7 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 - `scripts/check_data.py` yeşil (10/10 dosya OK).
 - Kararlar `docs/decisions.md`'ye yazıldı.
 - Sıradaki: Hafta 2 — baseline U-Net (early-fusion, 6 kanal).
+- **Not (B11):** `kaggle/kernel-metadata.json` henüz olmayan `train.ipynb`'yi gösteriyor. Hafta 2'de Kaggle notebook oluşturulunca birlikte düzeltilecek.
 
 ### 2026-10-30 — Hafta 0 tamamlandı
 - Konu seçildi: deprem sonrası hasar tespiti ve ekip önceliklendirme ajanı (QuakeTriage).
