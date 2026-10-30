@@ -198,21 +198,24 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [ ] Kayıp: Dice + Focal. Eşik doğrulama setinde F1'e göre seçilir.
 - [ ] Eğitim: önce Mac MPS'te. Epoch başına 3 dakikadan uzun sürerse Kaggle GPU'ya geçilir (`kaggle/` + `kaggle kernels push`).
 - [ ] Değerlendirme: hasar sınıfı için IoU, F1, precision, recall → `reports/metrics_baseline.json`, tahmin örnekleri figürü
+- [ ] **Ek değerlendirme (hasarsız pencereler):** Demo bölgesinde HOTOSM etiketlenmeyen alanları "hasarsız" varsayarak sliding window uygula; yanlış pozitif oranını ayrıca raporla. *Eğitim veri setini değiştirme, yalnızca bu ek metriği ekle.*
 - **DoD:** Test metrikleri JSON'da, figür hazır, checkpoint `models/` altında.
 
-### Hafta 3 (16–22 Kasım) — Siamese model, belirsizlik, guard
+### Hafta 3 (16–22 Kasım) — Siamese model, belirsizlik, guard, RAG ön işlemesi
 - [ ] **Siamese U-Net:** paylaşılan encoder, her ölçekte |f_öncesi − f_sonrası| farkı decoder'a verilir. Baseline ile karşılaştırma tablosu.
-- [ ] **MC Dropout** (T=10): ortalama olasılık + std haritası. Kalibrasyon: ECE ve güvenilirlik diyagramı.
+- [ ] **Belirsizlik:** SMP decoder'ına dropout katmanı ekle. MC Dropout (T=10) ve TTA (flip/rot90 kombinasyonları) yöntemlerini ECE ve güvenilirlik diyagramıyla karşılaştır; kazanan yöntem `docs/decisions.md`'ye yazılır.
 - [ ] **Görüntü kalitesi guard'ı** (`quality.py`): boş/siyah alan oranı, aşırı parlak/bulutlu piksel oranı, değişmemesi beklenen alanlarda SSIM ile hizalama skoru. Birim testleri yazılır.
 - [ ] `scripts/infer_area.py`: demo bölgesinde kayan pencere (sliding window) ile çıkarım → hasar olasılığı ve belirsizlik GeoTIFF'leri
-- **DoD:** Karşılaştırma tablosu, demo bölgesi rasterları, guard testleri yeşil.
+- [ ] **RAG ön işlemesi — başlangıç:** INSARAG Vol II/III için metin katmanlı PDF alternatif ara (insarag.org güncel sürüm veya HTML). Bulunamazsa `pytesseract` + İngilizce dil paketi ile OCR uygula. TAMP için `pypdf` doğrudan yeterli (metin katmanı doğrulandı). Ham metin ve metadata (belge, bölüm, sayfa) `data/interim/rag_text/` altına kaydedilir.
+- **DoD:** Karşılaştırma tablosu, demo bölgesi rasterları, guard testleri yeşil, ham RAG metni hazır.
 
-### Hafta 4 (23–29 Kasım) — Bina bazında skor ve nüfus
+### Hafta 4 (23–29 Kasım) — Bina bazında skor, nüfus, RAG chunk/embed
 - [ ] Bina sınırları içinde zonal istatistik: `damage_prob` (ortalama), `uncertainty` (ortalama std), `damaged` (eşik)
 - [ ] HOTOSM yıkılmış etiketleriyle bina bazında precision/recall/F1. Bu, gerçek koşullara yakın test sonucudur.
 - [ ] Nüfus tahmini: WorldPop hücre nüfusu, binalara taban alanı × kat sayısı oranında dağıtılır. Gece katsayısı eklenir (deprem 04:17'de oldu, konutlar dolu).
 - [ ] Doğrulama kuyruğu kuralı: belirsizlik > τ veya guard uyarısı olan bina "saha doğrulaması gerekli" olarak işaretlenir.
-- **DoD:** `data/processed/buildings.geojson` (tüm alanlarla), `reports/metrics_building.json`, harita önizleme HTML'i.
+- [ ] **RAG chunk + embed:** Hafta 3'te hazırlanan ham metni bölüm bazında parçala (chunk). Metadata: belge, bölüm, sayfa. Çok dilli embedding (`paraphrase-multilingual-MiniLM-L12-v2`), numpy kosinüs benzerliği ile arama. Retrieval doğruluğu küçük altın setinde (10 soru-cevap) ölçülür.
+- **DoD:** `data/processed/buildings.gpkg` (tüm alanlarla; GeoJSON yalnızca `reports/` altında harita çıktısı için WGS84'e çevrilerek üretilir), `reports/metrics_building.json`, harita önizleme HTML'i, RAG retrieval testi yeşil.
 
 ### Hafta 5 (30 Kasım – 6 Aralık) — Önceliklendirme ve rota
 - [ ] **TOPSIS** kriterleri: hasar olasılığı (fayda), tahmini kişi (fayda), kat sayısı (fayda), depoya mesafe (maliyet). Ağırlıklar `configs/default.yaml`'dan gelir. AHP ikili karşılaştırma ile ağırlık üretme opsiyonu eklenir.
@@ -221,8 +224,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [ ] Karşılaştırma için basit kurallar: "en yakına git" (greedy) ve rastgele. Metrik: T saatte ulaşılan tahmini kişi sayısı ve toplanan öncelik.
 - **DoD:** Plan JSON'ı + rota haritası, kıyaslama tablosu `reports/metrics_planning.json`, testler yeşil.
 
-### Hafta 6 (7–13 Aralık) — RAG ve ajan
-- [ ] PDF'ler başlık ve bölüm bazında parçalanır (chunk). Metadata: belge, bölüm, sayfa. Çok dilli embedding, numpy kosinüs ile arama.
+### Hafta 6 (7–13 Aralık) — Ajan
 - [ ] `llm.py`: Gemini/Groq adaptörü, yeniden deneme (retry), basit önbellek
 - [ ] `tools.py`: 9 araç (mimari bölümündeki liste), her biri saf Python fonksiyonu ve pydantic şeması ile
 - [ ] `graph.py`: LangGraph StateGraph. Durum: bölge, sonuçlar, kısıtlar, araç izi.
@@ -255,7 +257,8 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 
 | Seviye | Metrikler | Veri |
 |---|---|---|
-| Piksel | IoU, F1, precision, recall (hasar sınıfı); ECE | KATE-CD test |
+| Piksel | IoU, F1, precision, recall (hasar sınıfı); ECE; belirsizlik yöntemi karşılaştırması (MC Dropout vs TTA) | KATE-CD test |
+| Piksel (hasarsız) | Yanlış pozitif oranı (demo bölgesi, etiketlenmemiş alanlar) | Demo bölgesi sliding window |
 | Bina | Precision, recall, F1 | Demo bölgesi + HOTOSM yıkılmış etiketleri |
 | Planlama | T saatte ulaşılan tahmini kişi, toplanan öncelik, çözüm süresi | Greedy ve rastgeleye karşı |
 | Ajan | Görev başarısı, araç doğruluğu, atıf geçerliliği, gecikme, LLM çağrı sayısı | 30–40 senaryo |
