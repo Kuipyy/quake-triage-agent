@@ -17,9 +17,50 @@ Given pre/post-earthquake satellite imagery, QuakeTriage:
 5. Grounds decisions in AFAD TAMP and INSARAG guidelines via RAG
 6. Presents results through an interactive Gradio interface
 
+## Architecture
+
+```mermaid
+flowchart TD
+    U["User question (TR/EN)"] --> A["LangGraph agent"]
+    A --> Q["check_image_quality"]
+    Q -- "poor quality" --> V["field-verification queue"]
+    Q --> D["detect_damage (probability + uncertainty)"]
+    D --> S["score_buildings"]
+    S --> O["estimate_occupancy"]
+    O --> P["prioritize_sites (TOPSIS)"]
+    P --> R["plan_routes (OR-Tools)"]
+    R --> L["lookup_protocol (RAG, cited)"]
+    L --> W["write_sitrep"]
+    A -. "what-if" .-> C["update_constraints"]
+    C -. "re-run changed steps" .-> R
+```
+
+Planned design; components are added week by week (see `PLAN.md`).
+
 ## Status
 
 Work in progress — 8-week development plan (Nov–Dec 2026).
+
+## Results
+
+Generated from `reports/*.json` by `make report`; do not edit by hand.
+
+<!-- results:begin -->
+| Report | Metric | Value |
+|---|---|---|
+| `metrics_eda` | `train.n_samples` | 404 |
+| `metrics_eda` | `train.mean_damaged_ratio` | 0.03669 |
+| `metrics_eda` | `train.median_damaged_ratio` | 0.02069 |
+| `metrics_eda` | `train.pct_with_any_damage` | 1 |
+| `metrics_eda` | `validation.n_samples` | 44 |
+| `metrics_eda` | `validation.mean_damaged_ratio` | 0.03204 |
+| `metrics_eda` | `validation.median_damaged_ratio` | 0.01701 |
+| `metrics_eda` | `validation.pct_with_any_damage` | 1 |
+| `metrics_eda` | `test.n_samples` | 38 |
+| `metrics_eda` | `test.mean_damaged_ratio` | 0.02825 |
+| `metrics_eda` | `test.median_damaged_ratio` | 0.02032 |
+| `metrics_eda` | `test.pct_with_any_damage` | 1 |
+<!-- results:end -->
 
 ## Data Sources & Licenses
 
@@ -32,6 +73,20 @@ Work in progress — 8-week development plan (Nov–Dec 2026).
 | WorldPop Turkey 100m | Population estimation | CC BY 4.0 |
 | AFAD TAMP | RAG (TR) | Public document |
 | INSARAG Guidelines 2020 | RAG (EN) | Public document |
+
+## Attribution
+
+- **Imagery:** satellite imagery © Vantor (formerly Maxar), released under
+  [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) through the Maxar Open Data Program.
+  Non-commercial use only.
+- **Map data:** © OpenStreetMap contributors and Humanitarian OpenStreetMap Team (HOTOSM), ODbL.
+- **Population:** WorldPop, CC BY 4.0.
+- **Training data:** KATE-CD; please cite *Earthquake Damage Assessment with SAMCD* (see `cscrs/kate-cd`).
+
+## Documentation
+
+See [`docs/README.md`](docs/README.md) for the documentation map: decisions, data card, model card, glossary.
+Cite this repository via [`CITATION.cff`](CITATION.cff).
 
 ## Setup
 
