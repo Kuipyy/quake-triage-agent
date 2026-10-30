@@ -1,0 +1,57 @@
+# QuakeTriage — default configuration
+# Override values via .env or environment variables
+
+paths:
+  data_raw: data/raw
+  data_interim: data/interim
+  data_processed: data/processed
+  models: models
+  outputs: outputs
+  reports: reports
+
+model:
+  encoder: resnet34
+  encoder_weights: imagenet
+  in_channels: 6  # pre + post concatenated
+  num_classes: 1
+  mc_dropout_samples: 10
+
+training:
+  batch_size: 8
+  max_epochs: 50
+  early_stopping_patience: 10
+  learning_rate: 1.0e-4
+  image_size: 512
+
+thresholds:
+  damage_prob: 0.5       # tuned on validation set
+  uncertainty_high: 0.2  # buildings above this go to verification queue
+  guard_blank_ratio: 0.3
+  guard_bright_ratio: 0.2
+  guard_ssim_min: 0.4
+
+topsis:
+  weights:
+    damage_prob: 0.35
+    estimated_persons: 0.35
+    floor_count: 0.15
+    distance_to_depot: 0.15
+  criteria_types:
+    damage_prob: benefit
+    estimated_persons: benefit
+    floor_count: benefit
+    distance_to_depot: cost
+
+routing:
+  mission_duration_hours: 6
+  intervention_time_minutes: 30  # per building
+  debris_risk_buffer_meters: 50
+
+llm:
+  provider: "${LLM_PROVIDER}"
+  model: "${LLM_MODEL}"
+  max_retries: 3
+  retry_base_delay: 2.0
+
+geo:
+  crs: "EPSG:32637"  # UTM zone 37N — Kahramanmaraş area
