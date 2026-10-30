@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "QuakeTriage: agentic post-earthquake building damage assessment and rescue prioritization"
+type: software
+authors:
+  # TODO(the project owner): add family-names (and ORCID if you have one).
+  - given-names: "the project owner"
+    alias: "Kuipyy"
+repository-code: "https://github.com/Kuipyy/quake-triage-agent"
+abstract: >-
+  Research prototype that detects building damage from pre/post-earthquake satellite imagery,
+  quantifies uncertainty, prioritizes sites with TOPSIS, plans team routes with OR-Tools and grounds
+  protocol advice in AFAD TAMP and INSARAG guidelines. Not validated for operational use.
+keywords:
+  - earthquake
+  - damage assessment
+  - change detection
+  - search and rescue
+  - decision support
+  - LLM agent
+# license: MIT   # enable once LICENSE is added (planned for Week 8)
