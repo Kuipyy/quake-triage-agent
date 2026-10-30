@@ -1,7 +1,7 @@
 """Smoke tests — run with: uv run pytest -q"""
 import importlib
 
-import torch
+import pytest
 
 
 def test_quaketriage_importable():
@@ -9,8 +9,10 @@ def test_quaketriage_importable():
     assert mod is not None
 
 
+@pytest.mark.gpu
 def test_torch_device_available():
     """MPS (Apple Silicon) or CPU must be available."""
+    torch = pytest.importorskip("torch", reason="torch not installed (install quaketriage[train])")
     device = "mps" if torch.backends.mps.is_available() else "cpu"
     t = torch.tensor([1.0]).to(device)
     assert t.device.type in ("mps", "cpu")
@@ -18,5 +20,6 @@ def test_torch_device_available():
 
 def test_project_crs():
     from quaketriage.data.geo import get_project_crs
+
     crs = get_project_crs()
     assert crs.startswith("EPSG:")

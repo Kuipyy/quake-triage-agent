@@ -3520,25 +3520,16 @@ name = "quaketriage"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "albumentations" },
-    { name = "folium" },
     { name = "geopandas" },
-    { name = "google-genai" },
-    { name = "gradio" },
-    { name = "groq" },
-    { name = "langchain-core" },
-    { name = "langgraph" },
     { name = "matplotlib" },
     { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "numpy", version = "2.5.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-    { name = "ortools" },
     { name = "osmnx" },
     { name = "pandas" },
     { name = "pillow" },
     { name = "pyarrow" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
-    { name = "pypdf" },
     { name = "pyproj", version = "3.7.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "pyproj", version = "3.8.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "pystac-client" },
@@ -3546,17 +3537,43 @@ dependencies = [
     { name = "pyyaml" },
     { name = "rasterio", version = "1.4.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "rasterio", version = "1.5.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-    { name = "segmentation-models-pytorch" },
-    { name = "sentence-transformers" },
     { name = "shapely" },
-    { name = "torch" },
-    { name = "torchvision" },
 ]
 
 [package.optional-dependencies]
-dev = [
-    { name = "pytest" },
-    { name = "ruff" },
+agent = [
+    { name = "google-genai" },
+    { name = "groq" },
+    { name = "langchain-core" },
+    { name = "langgraph" },
+    { name = "ortools" },
+    { name = "pypdf" },
+    { name = "sentence-transformers" },
+]
+all = [
+    { name = "albumentations" },
+    { name = "folium" },
+    { name = "google-genai" },
+    { name = "gradio" },
+    { name = "groq" },
+    { name = "langchain-core" },
+    { name = "langgraph" },
+    { name = "ortools" },
+    { name = "pypdf" },
+    { name = "segmentation-models-pytorch" },
+    { name = "sentence-transformers" },
+    { name = "torch" },
+    { name = "torchvision" },
+]
+train = [
+    { name = "albumentations" },
+    { name = "segmentation-models-pytorch" },
+    { name = "torch" },
+    { name = "torchvision" },
+]
+ui = [
+    { name = "folium" },
+    { name = "gradio" },
 ]
 
 [package.dev-dependencies]
@@ -3567,38 +3584,37 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "albumentations", specifier = ">=1.3.1" },
-    { name = "folium", specifier = ">=0.16.0" },
+    { name = "albumentations", marker = "extra == 'train'", specifier = ">=1.3.1" },
+    { name = "folium", marker = "extra == 'ui'", specifier = ">=0.16.0" },
     { name = "geopandas", specifier = ">=0.14.3" },
-    { name = "google-genai", specifier = ">=2.34.0" },
-    { name = "gradio", specifier = ">=4.21.0" },
-    { name = "groq", specifier = ">=0.5.0" },
-    { name = "langchain-core", specifier = ">=0.1.33" },
-    { name = "langgraph", specifier = ">=0.0.38" },
+    { name = "google-genai", marker = "extra == 'agent'", specifier = ">=2.34.0" },
+    { name = "gradio", marker = "extra == 'ui'", specifier = ">=4.21.0" },
+    { name = "groq", marker = "extra == 'agent'", specifier = ">=0.5.0" },
+    { name = "langchain-core", marker = "extra == 'agent'", specifier = ">=0.1.33" },
+    { name = "langgraph", marker = "extra == 'agent'", specifier = ">=1.2.19" },
     { name = "matplotlib", specifier = ">=3.11.2" },
     { name = "numpy", specifier = ">=1.26.4" },
-    { name = "ortools", specifier = ">=9.9.3963" },
+    { name = "ortools", marker = "extra == 'agent'", specifier = ">=9.9.3963" },
     { name = "osmnx", specifier = ">=1.9.1" },
     { name = "pandas", specifier = ">=2.2.1" },
     { name = "pillow", specifier = ">=12.3.0" },
     { name = "pyarrow", specifier = ">=15.0.0" },
     { name = "pydantic", specifier = ">=2.6.3" },
     { name = "pydantic-settings", specifier = ">=2.2.1" },
-    { name = "pypdf", specifier = ">=4.1.0" },
+    { name = "pypdf", marker = "extra == 'agent'", specifier = ">=4.1.0" },
     { name = "pyproj", specifier = ">=3.6.1" },
     { name = "pystac-client", specifier = ">=0.7.5" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.1.0" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "pyyaml", specifier = ">=6.0.1" },
+    { name = "quaketriage", extras = ["train", "agent", "ui"], marker = "extra == 'all'" },
     { name = "rasterio", specifier = ">=1.3.9" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.3.3" },
-    { name = "segmentation-models-pytorch", specifier = ">=0.3.3" },
-    { name = "sentence-transformers", specifier = ">=2.6.1" },
+    { name = "segmentation-models-pytorch", marker = "extra == 'train'", specifier = ">=0.3.3" },
+    { name = "sentence-transformers", marker = "extra == 'agent'", specifier = ">=2.6.1" },
     { name = "shapely", specifier = ">=2.0.3" },
-    { name = "torch", specifier = ">=2.2.0" },
-    { name = "torchvision", specifier = ">=0.17.0" },
+    { name = "torch", marker = "extra == 'train'", specifier = ">=2.2.0" },
+    { name = "torchvision", marker = "extra == 'train'", specifier = ">=0.17.0" },
 ]
-provides-extras = ["dev"]
+provides-extras = ["train", "agent", "ui", "all"]
 
 [package.metadata.requires-dev]
 dev = [
