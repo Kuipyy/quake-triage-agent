@@ -3,8 +3,8 @@
 > Her oturum sonunda Claude günceller. En yeni kayıt en üstte.
 
 ## Durum özeti
-- **Aktif hafta:** Hafta 1 — Veri ve keşif (2–8 Kasım)
-- **Sıradaki adım:** KATE-CD veri setini indir, EDA yap
+- **Aktif hafta:** Hafta 2 — Baseline model (9–15 Kasım)
+- **Sıradaki adım:** Dataset sınıfı (Parquet → tensör), early-fusion U-Net baseline
 - **Bekleyen manuel işler (the project owner):** —
 
 ## Önemli metrikler
@@ -13,6 +13,15 @@
 | — | — | — |
 
 ## Oturum kayıtları
+
+### 2026-10-31 — Hafta 1 tamamlandı
+- KATE-CD indirildi (446 MB, 404+44+38 örnek). EDA: yalnızca pre_image/post_image/label sütunları, koordinat yok. Ortalama hasarlı piksel oranı %3.7 (train) — ciddi sınıf dengesizliği.
+- Demo bölgesi kararı: **Antakya, yedek plan**. Vantor STAC'ta 76 koleksiyon tarandı; tek örtüşen pre/post çifti Kilis bölgesinde ama orada yalnızca 1 HOTOSM yıkılmış bina var. Antakya'da 732 yıkılmış bina → HOTOSM etiketleri simüle edilmiş dedektör çıktısı olarak kullanılacak.
+- Antakya demo verisi indirildi: 1876 OSM binası, 717 yol kenarı, WorldPop 100m (20 MB).
+- AFAD TAMP (3 MB), INSARAG Vol II Man B (2.8 MB), INSARAG Vol III (1.1 MB) indirildi.
+- `scripts/check_data.py` yeşil (10/10 dosya OK).
+- Kararlar `docs/decisions.md`'ye yazıldı.
+- Sıradaki: Hafta 2 — baseline U-Net (early-fusion, 6 kanal).
 
 ### 2026-10-31 — Hafta 0 tamamlandı
 - Konu seçildi: deprem sonrası hasar tespiti ve ekip önceliklendirme ajanı (QuakeTriage).

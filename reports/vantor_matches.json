@@ -1,0 +1,583 @@
+{
+  "all_in_study_area": [
+    {
+      "id": "10300100D6789800",
+      "datetime": "2022-07-20 08:39:37Z",
+      "bbox": [
+        36.223424565099386,
+        36.38148637200655,
+        36.244766,
+        36.393881
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100D6789800_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300100D76F1300",
+      "datetime": "2022-08-05 08:51:08Z",
+      "bbox": [
+        36.223424565099386,
+        36.38148637200655,
+        36.244766,
+        36.393881
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100D76F1300_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300100D797E100",
+      "datetime": "2022-07-26 08:19:46Z",
+      "bbox": [
+        36.902291,
+        37.56700781050274,
+        36.907018915273646,
+        37.596933
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100D797E100_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300100DB913300",
+      "datetime": "2022-10-10 08:19:25Z",
+      "bbox": [
+        36.624329,
+        36.39013709905114,
+        36.660298004347126,
+        36.434875
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100DB913300_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300100DD62DB00",
+      "datetime": "2022-12-16 08:45:41Z",
+      "bbox": [
+        36.984131,
+        36.62209547550028,
+        36.98876836022566,
+        36.624878
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100DD62DB00_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300100DF069700",
+      "datetime": "2022-12-27 08:40:17Z",
+      "bbox": [
+        36.219925,
+        37.05728911986827,
+        36.24640949022549,
+        37.09977
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100DF069700_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300100DF6BFE00",
+      "datetime": "2022-12-22 08:24:28Z",
+      "bbox": [
+        36.12415130102568,
+        36.24395687383244,
+        36.16396796123111,
+        36.27198326414973
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100DF6BFE00_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300100E0287700",
+      "datetime": "2022-12-27 08:40:06Z",
+      "bbox": [
+        36.525266507887416,
+        37.01900019304103,
+        36.584934405130404,
+        37.06238691153841
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E0287700_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300100E131D000",
+      "datetime": "2023-02-12 08:15:28Z",
+      "bbox": [
+        36.75260519673157,
+        36.617952810818636,
+        36.765250412315915,
+        36.6570100235317
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E131D000_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E1700300",
+      "datetime": "2023-01-26 08:38:19Z",
+      "bbox": [
+        36.984131,
+        36.57702880001943,
+        36.9899377727831,
+        36.61457805679255
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E1700300_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300100E18A1000",
+      "datetime": "2023-01-26 08:37:58Z",
+      "bbox": [
+        37.081958,
+        36.71384382804513,
+        37.09832681109929,
+        36.733161
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E18A1000_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300100E18CB600",
+      "datetime": "2023-02-11 08:51:46Z",
+      "bbox": [
+        36.03834375064989,
+        36.11406960564486,
+        36.058402721380816,
+        36.15263143297041
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E18CB600_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E19A4400",
+      "datetime": "2023-02-11 08:52:15Z",
+      "bbox": [
+        36.67194008955399,
+        37.742921934483,
+        36.67510927013846,
+        37.75292284596646
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E19A4400_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E1B9D900",
+      "datetime": "2023-02-12 08:16:31Z",
+      "bbox": [
+        36.036838063589464,
+        36.69241280406675,
+        36.091605860326744,
+        36.722983669639376
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E1B9D900_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E21A3000",
+      "datetime": "2023-02-22 08:50:16Z",
+      "bbox": [
+        36.723680053094384,
+        37.788990045192016,
+        36.730439383288605,
+        37.79360976480217
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E21A3000_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E26DC400",
+      "datetime": "2023-02-12 08:16:45Z",
+      "bbox": [
+        36.101348035914086,
+        37.36984756994655,
+        36.12211901805698,
+        37.41402735975632
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E26DC400_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E287FA00",
+      "datetime": "2023-02-28 08:30:09Z",
+      "bbox": [
+        36.44824804443833,
+        36.3865065751563,
+        36.49319175391663,
+        36.39178432707271
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E287FA00_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E2901100",
+      "datetime": "2023-02-11 08:52:48Z",
+      "bbox": [
+        37.01238203496642,
+        36.62259035443709,
+        37.04465452907213,
+        36.655156976732286
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E2901100_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E291D100",
+      "datetime": "2023-02-11 08:52:30Z",
+      "bbox": [
+        36.914574444289975,
+        37.747472144813926,
+        36.958671950985064,
+        37.75164551936933
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E291D100_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E2A73B00",
+      "datetime": "2023-02-11 08:53:08Z",
+      "bbox": [
+        35.83991709050044,
+        36.153451840463674,
+        35.89213830336223,
+        36.1635041708588
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E2A73B00_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E2B30500",
+      "datetime": "2023-02-09 08:26:11Z",
+      "bbox": [
+        36.10565587088676,
+        36.37870170048156,
+        36.15906787603889,
+        36.41108994278732
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E2B30500_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E2BF8000",
+      "datetime": "2023-02-23 08:14:23Z",
+      "bbox": [
+        37.124576507059466,
+        37.48062714224388,
+        37.1356057474239,
+        37.5239390669561
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E2BF8000_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E2C66F00",
+      "datetime": "2023-02-28 08:29:28Z",
+      "bbox": [
+        36.67583498183849,
+        37.74300577449306,
+        36.73181583503233,
+        37.75868486279098
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E2C66F00_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E304B400",
+      "datetime": "2023-03-05 08:47:54Z",
+      "bbox": [
+        36.43752659213378,
+        36.3862769071086,
+        36.49319175391663,
+        36.40705503478506
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E304B400_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E3154100",
+      "datetime": "2023-02-28 08:29:42Z",
+      "bbox": [
+        36.931160568910215,
+        37.747757016307354,
+        36.958671950985064,
+        37.750004374878124
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E3154100_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E32E3D00",
+      "datetime": "2023-02-28 08:29:01Z",
+      "bbox": [
+        36.223847522961876,
+        36.56174066916971,
+        36.2641016053202,
+        36.58147112972342
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E32E3D00_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E32F7A00",
+      "datetime": "2023-03-05 08:47:39Z",
+      "bbox": [
+        36.21383092626825,
+        36.24608127487043,
+        36.219550864846134,
+        36.252806635855656
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E32F7A00_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E383D900",
+      "datetime": "2023-03-11 08:28:27Z",
+      "bbox": [
+        37.147118071048915,
+        37.48098291477038,
+        37.19212992517057,
+        37.49586178449911
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E383D900_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E3D52E00",
+      "datetime": "2023-02-22 08:50:34Z",
+      "bbox": [
+        36.20346300119828,
+        36.20077745578817,
+        36.22114522183734,
+        36.233179179599425
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E3D52E00_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300100E49E8000",
+      "datetime": "2023-03-11 08:29:14Z",
+      "bbox": [
+        36.233731890265176,
+        36.201482804222664,
+        36.276699890247954,
+        36.22189139397725
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300100E49E8000_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300500BFF94C00",
+      "datetime": "2021-09-27 08:40:58Z",
+      "bbox": [
+        36.219925,
+        37.05729182746156,
+        36.24640949022549,
+        37.09977
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300500BFF94C00_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300500BFF95000",
+      "datetime": "2021-09-27 08:41:51Z",
+      "bbox": [
+        36.223424565099386,
+        36.38148637200655,
+        36.244766,
+        36.393881
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300500BFF95000_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "10300500D9F8D100",
+      "datetime": "2023-02-08 09:01:51Z",
+      "bbox": [
+        37.1871740231829,
+        37.16617993121835,
+        37.19967076171948,
+        37.20300563112067
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300500D9F8D100_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300500D9F8D200",
+      "datetime": "2023-02-08 09:02:04Z",
+      "bbox": [
+        36.721042994042286,
+        37.60872490845679,
+        36.73592684756639,
+        37.6388459951458
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300500D9F8D200_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300500D9F8D400",
+      "datetime": "2023-02-08 09:02:25Z",
+      "bbox": [
+        36.074011762291256,
+        37.00874778197391,
+        36.07963421733413,
+        37.05669028501088
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300500D9F8D400_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10300500D9F8D500",
+      "datetime": "2023-02-08 09:02:33Z",
+      "bbox": [
+        35.9830382609213,
+        36.2857648360932,
+        36.00948856219959,
+        36.32611087960102
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10300500D9F8D500_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "104001008058CD00",
+      "datetime": "2023-01-07 08:39:58Z",
+      "bbox": [
+        36.223424565099386,
+        36.38148637200655,
+        36.244766,
+        36.393881
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/104001008058CD00_collection.json",
+      "is_post": false
+    },
+    {
+      "id": "1040010082530900",
+      "datetime": "2023-02-13 08:20:02Z",
+      "bbox": [
+        36.48006588630717,
+        37.19831957762963,
+        36.52291344302925,
+        37.24220925725636
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/1040010082530900_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "1040010082698700",
+      "datetime": "2023-02-07 08:27:01Z",
+      "bbox": [
+        36.56528740012546,
+        37.33524687967764,
+        36.57487346308867,
+        37.36126862708789
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/1040010082698700_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "1040010082990000",
+      "datetime": "2023-02-28 08:52:14Z",
+      "bbox": [
+        36.02178647697893,
+        36.78090801910831,
+        36.02834983021479,
+        36.812077668075915
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/1040010082990000_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "1040010082B6D600",
+      "datetime": "2023-02-28 08:52:43Z",
+      "bbox": [
+        37.127176401642046,
+        37.66092082515837,
+        37.1877678333081,
+        37.692537568633696
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/1040010082B6D600_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "1040010082B85E00",
+      "datetime": "2023-02-07 08:27:26Z",
+      "bbox": [
+        37.04960614445558,
+        36.71332093470512,
+        37.09832681109929,
+        36.743165676877595
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/1040010082B85E00_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "1040010083278E00",
+      "datetime": "2023-02-13 08:20:11Z",
+      "bbox": [
+        36.542555454626935,
+        37.06442518183344,
+        36.58350669573142,
+        37.08057901665034
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/1040010083278E00_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "1050050044DE7E00",
+      "datetime": "2023-02-07 08:38:58Z",
+      "bbox": [
+        36.5706723643652,
+        37.20018459898955,
+        36.57920447602127,
+        37.2221669589583
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/1050050044DE7E00_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "1050050044DE7F00",
+      "datetime": "2023-02-07 08:38:41Z",
+      "bbox": [
+        36.39524413110014,
+        37.24150796988812,
+        36.40880059448903,
+        37.27632822643855
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/1050050044DE7F00_collection.json",
+      "is_post": true
+    },
+    {
+      "id": "10500500F0DD9700",
+      "datetime": "2021-09-09 08:36:18Z",
+      "bbox": [
+        36.804077,
+        36.528779670952574,
+        36.82365634826953,
+        36.554871
+      ],
+      "url": "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/ard/acquisition_collections/10500500F0DD9700_collection.json",
+      "is_post": false
+    }
+  ],
+  "pre_post_pairs": [
+    {
+      "pre_id": "10300100E18A1000",
+      "pre_date": "2023-01-26",
+      "pre_bbox": [
+        37.081958,
+        36.71384382804513,
+        37.09832681109929,
+        36.733161
+      ],
+      "post_id": "1040010082B85E00",
+      "post_date": "2023-02-07",
+      "post_bbox": [
+        37.04960614445558,
+        36.71332093470512,
+        37.09832681109929,
+        36.743165676877595
+      ],
+      "intersection": [
+        37.081958,
+        36.71384382804513,
+        37.09832681109929,
+        36.733161
+      ],
+      "overlap_km2_approx": 3.9
+    }
+  ]
+}

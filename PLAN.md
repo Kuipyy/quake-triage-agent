@@ -184,13 +184,13 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - **DoD:** Repo GitHub'da, testler yeşil, LLM çağrısı çalışıyor. ✓
 
 ### Hafta 1 (2–8 Kasım) — Veri ve keşif
-- [ ] KATE-CD → `data/raw/kate_cd/`. EDA: sınıf dengesi (hasarlı piksel oranı), örnek ızgara figürü → `reports/figures/`
-- [ ] KATE-CD'de şehir veya koordinat bilgisi var mı kontrol et, sonucu `docs/decisions.md`'ye yaz
-- [ ] Vantor STAC'ta Kahramanmaraş olayını sorgula. Öncesi ve sonrası görüntüsü olan, HOTOSM yıkılmış bina yoğunluğu yüksek 1–2 km²'lik bir **demo bölgesi** seç. COG'dan sadece o pencereyi oku (tam dosya indirme).
-- [ ] Demo bölgesi için: HOTOSM yıkılmış binalar ve bina sınırları, WorldPop raster kırpması, OSMnx yol ağı (önbelleğe alınmış)
-- [ ] TAMP ve INSARAG PDF'leri → `data/raw/docs/`
-- [ ] `scripts/check_data.py`: tüm dosyaların varlığını ve boyutlarını doğrular
-- **DoD:** `check_data.py` geçer, demo bölgesi kararı (veya yedek plan) `docs/decisions.md`'de yazılı.
+- [x] KATE-CD → `data/raw/kate_cd/`. EDA: sınıf dengesi (hasarlı piksel oranı), örnek ızgara figürü → `reports/figures/`
+- [x] KATE-CD'de şehir veya koordinat bilgisi var mı kontrol et, sonucu `docs/decisions.md`'ye yaz
+- [x] Vantor STAC'ta Kahramanmaraş olayını sorgula. Öncesi ve sonrası görüntüsü olan, HOTOSM yıkılmış bina yoğunluğu yüksek 1–2 km²'lik bir **demo bölgesi** seç. COG'dan sadece o pencereyi oku (tam dosya indirme).
+- [x] Demo bölgesi için: HOTOSM yıkılmış binalar ve bina sınırları, WorldPop raster kırpması, OSMnx yol ağı (önbelleğe alınmış)
+- [x] TAMP ve INSARAG PDF'leri → `data/raw/docs/`
+- [x] `scripts/check_data.py`: tüm dosyaların varlığını ve boyutlarını doğrular
+- **DoD:** `check_data.py` geçer, demo bölgesi kararı (veya yedek plan) `docs/decisions.md`'de yazılı. ✓
 
 ### Hafta 2 (9–15 Kasım) — Baseline model
 - [ ] Dataset sınıfı (Parquet → tensör), augmentasyon (flip, rot90, hafif renk oynaması; aynı geometrik dönüşüm öncesi/sonrası/maskeye birlikte uygulanır)
