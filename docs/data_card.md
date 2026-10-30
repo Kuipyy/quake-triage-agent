@@ -11,12 +11,12 @@ marked `TBD` until verified.
 | Dataset | Role | License | Status |
 |---|---|---|---|
 | KATE-CD | Model training / evaluation | No license on the HF page; cite the paper | Downloaded, EDA done |
-| Vantor (Maxar) Open Data | Georeferenced demo imagery | CC BY-NC 4.0 | TBD |
-| HOTOSM destroyed buildings | Building-level validation labels | ODbL | TBD |
-| HOTOSM / OSM buildings + roads | Footprints, floors, road network | ODbL | TBD |
-| WorldPop Turkey 100 m | Population estimate | CC BY 4.0 | TBD |
-| AFAD TAMP | RAG corpus (TR) | Public document | TBD |
-| INSARAG Guidelines 2020 | RAG corpus (EN) | Public document | TBD |
+| Vantor (Maxar) Open Data | Georeferenced demo imagery | CC BY-NC 4.0 | Fallback — no overlapping pre/post tiles for Antakya |
+| HOTOSM destroyed buildings | Building-level validation labels | ODbL | Downloaded; 3239 buildings Turkey-wide, 732 in Antakya demo area |
+| HOTOSM / OSM buildings + roads | Footprints, floors, road network | ODbL | Downloaded for Antakya bbox |
+| WorldPop Turkey 100 m | Population estimate | CC BY 4.0 | Downloaded (20.5 MB); clipping to demo area in Week 4 |
+| AFAD TAMP | RAG corpus (TR) | Public document | Downloaded; text layer OK (Turkish chars correct) |
+| INSARAG Guidelines 2020 | RAG corpus (EN) | Public document | Downloaded; **text layer empty** (scanned PDF) — OCR needed in Week 6 |
 
 ## KATE-CD
 
@@ -39,7 +39,8 @@ marked `TBD` until verified.
 - **Source:** STAC `https://maxar-opendata.s3.amazonaws.com/events/catalog.json`, event `Kahramanmaras-turkey-earthquake-23`.
 - **Use:** pre/post GeoTIFF window (about 1–2 km²) for the demo area; read only the window from the COG.
 - **License:** CC BY-NC 4.0. Attribution required; no commercial use.
-- **Demo area, acquisition dates, GSD, CRS, checksums:** TBD.
+- **Demo area:** fallback plan activated — no overlapping pre/post tile pair covers Antakya (see `docs/decisions.md`). Kilis pre/post pair exists (2023-01-26 / 2023-02-07, bbox ≈ [37.082, 36.714, 37.098, 36.733]) but only 1 HOTOSM destroyed building in that area.
+- **Acquisition dates, GSD, CRS, checksums:** TBD (tiles not downloaded locally; accessed as COG from S3).
 
 ## HOTOSM destroyed buildings
 
@@ -47,20 +48,25 @@ marked `TBD` until verified.
 - **Use:** building-level labels for validating the detector on the demo area.
 - **Known issue:** crowd-sourced and incomplete. An unlabeled building is not necessarily intact, so precision is
   under-estimated; lead with recall and say so in the results.
-- **Checksums, feature count in demo area:** TBD.
+- **Feature count (total):** 3239 buildings Turkey-wide; 732 in Antakya demo bbox (36.10–36.25°E, 36.15–36.30°N).
+- **SHA-256 (first 16 hex):** `1fad1825b8019bce...` (see `data/manifest.json` once generated).
+- **Download date:** 2026-10-31.
 
 ## HOTOSM / OSM buildings and roads
 
 - **Source:** HDX `hotosm_tur_buildings` or OSMnx/Overpass.
 - **Use:** footprints, floor counts (`building:levels`, often missing), drivable road graph.
 - **Known issue:** floor count coverage is partial; the fallback rule is documented in the occupancy step (Week 4).
-- **Query date and cache path:** TBD.
+- **Query date:** 2026-10-31. **Cache paths:** `data/raw/demo/antakya_buildings.gpkg` (1876 buildings, 598 KB), `data/raw/demo/antakya_roads.graphml` (314 nodes / 717 edges, 356 KB).
+- **Demo bbox:** 36.10–36.25°E, 36.15–36.30°N (Antakya, Hatay). CRS: WGS84 (EPSG:4326) from OSMnx; reprojected to EPSG:32637 in pipeline.
+- **SHA-256 (first 16 hex):** buildings `51e75a0da61fd6c9...`, roads `ee74e58ce98f80b6...`.
 
 ## WorldPop Turkey 100 m
 
 - **Source:** `hub.worldpop.org/geodata/summary?id=75773`.
 - **Known issue:** pre-earthquake population at 100 m resolution; a coarse approximation per building.
-- **Vintage, checksums:** TBD.
+- **Vintage:** 2020 (UN-adjusted, constrained). **Resolution:** 100 m. **File:** `data/raw/demo/worldpop_turkey_100m.tif` (20.5 MB, full Turkey; clipped to demo bbox in Week 4).
+- **SHA-256 (first 16 hex):** `97b3703d5727bbbd...`. **Download date:** 2026-10-31.
 
 ## AFAD TAMP and INSARAG Guidelines 2020
 
@@ -68,4 +74,6 @@ marked `TBD` until verified.
 - **Use:** RAG corpus with `[source#section]` citations.
 - **Known issues:** check that the PDF has a usable text layer and that Turkish characters survive extraction.
   INSARAG publishes a new version effective 1 January 2027 (noted in `README.md`).
-- **Checksums, page counts:** TBD.
+- **AFAD TAMP:** 65 pages. Text layer present; Turkish characters extracted correctly with `pypdf`. SHA-256 `f0237b70b552a61e...`. Download date 2026-10-31.
+- **INSARAG Vol II Manual B (Operations):** 58 pages. **Text layer empty** (scanned PDF). `pypdf` returns blank strings. OCR (e.g. `pytesseract` or `pdfplumber` + fallback) needed before RAG ingestion in Week 6. SHA-256 `21956d2b9557f678...`. Download date 2026-10-31.
+- **INSARAG Vol III (Field Guide):** 46 pages. Same issue — scanned, no text layer. SHA-256 `e37e157cf7473dff...`. Download date 2026-10-31.

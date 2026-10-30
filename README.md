@@ -60,6 +60,9 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `metrics_eda` | `test.mean_damaged_ratio` | 0.02825 |
 | `metrics_eda` | `test.median_damaged_ratio` | 0.02032 |
 | `metrics_eda` | `test.pct_with_any_damage` | 1 |
+| `vantor_stac_summary` | `event_id` | Kahramanmaras-turkey-earthquake-23 |
+| `vantor_stac_summary` | `event_url` | https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23/collection.json |
+| `vantor_stac_summary` | `title` | Turkey and Syria Earthquake 2023 |
 <!-- results:end -->
 
 ## Data Sources & Licenses

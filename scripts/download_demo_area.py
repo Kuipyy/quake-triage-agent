@@ -3,9 +3,8 @@
 - OSM road network (cached GraphML)
 - WorldPop Turkey 100m raster (clipped to demo bbox)
 """
-import os
 from pathlib import Path
-import geopandas as gpd
+
 import osmnx as ox
 from dotenv import load_dotenv
 
@@ -58,7 +57,7 @@ def download_worldpop():
         print(f"WorldPop already exists → {out}")
         return
 
-    print(f"Downloading WorldPop Turkey 100m...")
+    print("Downloading WorldPop Turkey 100m...")
     print("  (This is ~10 MB — clipping to demo area will happen in Week 4)")
     with requests.get(url, stream=True, timeout=120) as r:
         r.raise_for_status()

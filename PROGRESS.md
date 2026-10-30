@@ -8,9 +8,9 @@
 - **Bekleyen manuel işler (the project owner):** —
 
 ## Önemli metrikler
-| Metrik | Değer | Tarih |
-|---|---|---|
-| — | — | — |
+
+Metrikler `reports/*.json` dosyalarından otomatik üretilir ve `README.md` sonuç tablosunda gösterilir.
+Güncel değerler için: `uv run python scripts/make_report.py --check` → [README.md](../README.md#results)
 
 ## Oturum kayıtları
 
@@ -23,7 +23,7 @@
 - Kararlar `docs/decisions.md`'ye yazıldı.
 - Sıradaki: Hafta 2 — baseline U-Net (early-fusion, 6 kanal).
 
-### 2026-10-31 — Hafta 0 tamamlandı
+### 2026-10-30 — Hafta 0 tamamlandı
 - Konu seçildi: deprem sonrası hasar tespiti ve ekip önceliklendirme ajanı (QuakeTriage).
 - Git repo init + GitHub private repo bağlandı (Kuipyy/quake-triage-agent).
 - pyproject.toml, uv.lock, .gitignore, .env.example, configs/default.yaml oluşturuldu.

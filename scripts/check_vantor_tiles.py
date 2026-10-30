@@ -1,5 +1,4 @@
 """Inspect the overlapping pre/post Vantor tile pair and fetch item details."""
-import json
 import requests
 
 BASE = "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23"

@@ -1,6 +1,7 @@
 """Download AFAD TAMP and INSARAG guidelines PDFs for RAG."""
-import requests
 from pathlib import Path
+
+import requests
 
 OUT_DIR = Path("data/raw/docs")
 OUT_DIR.mkdir(parents=True, exist_ok=True)

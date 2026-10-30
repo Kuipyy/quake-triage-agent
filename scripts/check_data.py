@@ -1,14 +1,18 @@
 """Verify all Week-1 data files exist and have reasonable sizes."""
-from pathlib import Path
 import sys
+from pathlib import Path
 
 REQUIRED = [
     # KATE-CD
     ("data/raw/kate_cd/data/train-00000-of-00001.parquet", 1e6, "KATE-CD train split"),
-    ("data/raw/kate_cd/data/validation-00000-of-00001.parquet", 100_000, "KATE-CD validation split"),
+    ("data/raw/kate_cd/data/validation-00000-of-00001.parquet", 100_000, "KATE-CD val split"),
     ("data/raw/kate_cd/data/test-00000-of-00001.parquet", 100_000, "KATE-CD test split"),
     # HOTOSM
-    ("data/raw/hotosm/hotosm_tur_destroyed_buildings_polygons_geojson.geojson", 100_000, "HOTOSM destroyed buildings"),
+    (
+        "data/raw/hotosm/hotosm_tur_destroyed_buildings_polygons_geojson.geojson",
+        100_000,
+        "HOTOSM destroyed buildings",
+    ),
     # Demo area
     ("data/raw/demo/antakya_buildings.gpkg", 10_000, "Antakya OSM buildings"),
     ("data/raw/demo/antakya_roads.graphml", 10_000, "Antakya OSM roads"),

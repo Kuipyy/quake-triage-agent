@@ -5,6 +5,7 @@ finds overlapping tiles.
 """
 import json
 import time
+
 import requests
 
 BASE = "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23"
@@ -93,7 +94,8 @@ def main():
     print(f"Overlapping pre/post pairs: {len(pairs)}")
     for p in pairs:
         print(f"  PRE {p['pre_date']} × POST {p['post_date']}  "
-              f"overlap≈{p['overlap_km2_approx']} km²  inter={[round(x,4) for x in p['intersection']]}")
+              f"overlap≈{p['overlap_km2_approx']} km²  "
+              f"inter={[round(x, 4) for x in p['intersection']]}")
 
     out = {"all_in_study_area": all_cols, "pre_post_pairs": pairs}
     with open("reports/vantor_matches.json", "w") as f:

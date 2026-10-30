@@ -4,6 +4,7 @@ Uses direct HTTP requests to navigate the static S3 catalog — much faster than
 pystac_client's recursive crawl.
 """
 import json
+
 import requests
 
 BASE = "https://maxar-opendata.s3.amazonaws.com/events"
