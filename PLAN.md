@@ -193,10 +193,10 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - **DoD:** `check_data.py` geçer, demo bölgesi kararı (veya yedek plan) `docs/decisions.md`'de yazılı. ✓
 
 ### Hafta 2 (9–15 Kasım) — Baseline model
-- [ ] Dataset sınıfı (Parquet → tensör), augmentasyon (flip, rot90, hafif renk oynaması; aynı geometrik dönüşüm öncesi/sonrası/maskeye birlikte uygulanır)
-- [ ] **Baseline:** early-fusion U-Net (6 kanal girdi, ResNet34 encoder, ImageNet ağırlıkları)
-- [ ] Kayıp: Dice + Focal. Eşik doğrulama setinde F1'e göre seçilir.
-- [ ] Eğitim: önce Mac MPS'te. Epoch başına 3 dakikadan uzun sürerse Kaggle GPU'ya geçilir (`kaggle/` + `kaggle kernels push`).
+- [x] Dataset sınıfı (Parquet → tensör), augmentasyon (flip, rot90, hafif renk oynaması; aynı geometrik dönüşüm öncesi/sonrası/maskeye birlikte uygulanır)
+- [x] **Baseline:** early-fusion U-Net (6 kanal girdi, ResNet34 encoder, ImageNet ağırlıkları)
+- [x] Kayıp: Dice + Focal. Eşik doğrulama setinde F1'e göre seçilir.
+- [x] Eğitim: önce Mac MPS'te. Epoch başına 3 dakikadan uzun sürerse Kaggle GPU'ya geçilir (`kaggle/` + `kaggle kernels push`). → MPS 409s/epoch → Kaggle notebook hazırlandı.
 - [ ] Değerlendirme: hasar sınıfı için IoU, F1, precision, recall → `reports/metrics_baseline.json`, tahmin örnekleri figürü
 - [ ] **Ek değerlendirme (hasarsız pencereler):** Demo bölgesinde HOTOSM etiketlenmeyen alanları "hasarsız" varsayarak sliding window uygula; yanlış pozitif oranını ayrıca raporla. *Eğitim veri setini değiştirme, yalnızca bu ek metriği ekle.*
 - **DoD:** Test metrikleri JSON'da, figür hazır, checkpoint `models/` altında.
