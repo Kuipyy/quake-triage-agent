@@ -1,0 +1,185 @@
+"""Evaluate the baseline U-Net checkpoint on the KATE-CD test set.
+
+Usage:
+    uv run python scripts/evaluate.py
+    uv run python scripts/evaluate.py --checkpoint models/baseline_best.pt --split test
+"""
+import argparse
+import json
+import time
+from pathlib import Path
+
+import numpy as np
+import torch
+from torch.utils.data import DataLoader
+
+from quaketriage.config import get
+from quaketriage.data.kate_cd import KateCDDataset
+from quaketriage.models.unet import build_unet
+from quaketriage.provenance import write_json
+
+ROOT = Path(__file__).parents[1]
+REPORTS_DIR = ROOT / "reports"
+FIGURES_DIR = REPORTS_DIR / "figures"
+REPORTS_DIR.mkdir(exist_ok=True)
+FIGURES_DIR.mkdir(exist_ok=True)
+
+
+def compute_metrics(logits: torch.Tensor, targets: torch.Tensor, threshold: float) -> dict:
+    preds = (torch.sigmoid(logits) > threshold).float()
+    tp = (preds * targets).sum()
+    fp = (preds * (1 - targets)).sum()
+    fn = ((1 - preds) * targets).sum()
+    precision = tp / (tp + fp + 1e-8)
+    recall = tp / (tp + fn + 1e-8)
+    f1 = 2 * precision * recall / (precision + recall + 1e-8)
+    iou = tp / (tp + fp + fn + 1e-8)
+    return {
+        "precision": precision.item(),
+        "recall": recall.item(),
+        "f1": f1.item(),
+        "iou": iou.item(),
+    }
+
+
+def bootstrap_ci(logits: torch.Tensor, targets: torch.Tensor, threshold: float,
+                 n_boot: int = 1000, seed: int = 42) -> dict:
+    """95% bootstrap confidence intervals over samples (images)."""
+    rng = np.random.default_rng(seed)
+    n = logits.shape[0]
+    metrics_keys = ["precision", "recall", "f1", "iou"]
+    samples = {k: [] for k in metrics_keys}
+
+    for _ in range(n_boot):
+        idx = rng.integers(0, n, size=n)
+        m = compute_metrics(logits[idx], targets[idx], threshold)
+        for k in metrics_keys:
+            samples[k].append(m[k])
+
+    ci = {}
+    for k in metrics_keys:
+        arr = np.array(samples[k])
+        ci[k] = {
+            "mean": float(np.mean(arr)),
+            "ci95_lo": float(np.percentile(arr, 2.5)),
+            "ci95_hi": float(np.percentile(arr, 97.5)),
+        }
+    return ci
+
+
+def save_prediction_figure(logits: torch.Tensor, targets: torch.Tensor,
+                            dataset: KateCDDataset, threshold: float, n: int = 8) -> None:
+    """Save a grid of pre/post/pred/gt images."""
+    try:
+        import matplotlib.pyplot as plt
+    except ImportError:
+        print("  matplotlib not installed — skipping figure.")
+        return
+
+    _MEAN = torch.tensor([0.485, 0.456, 0.406]).view(3, 1, 1)
+    _STD = torch.tensor([0.229, 0.224, 0.225]).view(3, 1, 1)
+
+    n = min(n, len(dataset))
+    fig, axes = plt.subplots(n, 4, figsize=(14, 3 * n))
+    axes = axes if n > 1 else [axes]
+
+    for i in range(n):
+        img_tensor, mask_tensor = dataset[i]
+        pre_t = img_tensor[:3]
+        post_t = img_tensor[3:]
+
+        # Denormalize
+        pre_rgb = ((pre_t * _STD + _MEAN).clamp(0, 1).permute(1, 2, 0).numpy())
+        post_rgb = ((post_t * _STD + _MEAN).clamp(0, 1).permute(1, 2, 0).numpy())
+
+        pred_mask = (torch.sigmoid(logits[i, 0]) > threshold).float().numpy()
+        gt_mask = mask_tensor[0].numpy()
+
+        axes[i][0].imshow(pre_rgb); axes[i][0].set_title("Pre"); axes[i][0].axis("off")
+        axes[i][1].imshow(post_rgb); axes[i][1].set_title("Post"); axes[i][1].axis("off")
+        axes[i][2].imshow(pred_mask, cmap="Reds", vmin=0, vmax=1)
+        axes[i][2].set_title(f"Pred (thr={threshold})"); axes[i][2].axis("off")
+        axes[i][3].imshow(gt_mask, cmap="Reds", vmin=0, vmax=1)
+        axes[i][3].set_title("Ground Truth"); axes[i][3].axis("off")
+
+    plt.tight_layout()
+    out_path = FIGURES_DIR / "predictions_baseline.png"
+    plt.savefig(out_path, dpi=100, bbox_inches="tight")
+    plt.close()
+    print(f"  Figure saved → {out_path.relative_to(ROOT)}")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--checkpoint", default=str(ROOT / "models/baseline_best.pt"))
+    parser.add_argument("--data-root", default=str(ROOT / "data/raw/kate_cd"))
+    parser.add_argument("--split", default="test", choices=["validation", "test"])
+    parser.add_argument("--batch-size", type=int, default=get("training.batch_size"))
+    parser.add_argument("--encoder", default=get("model.encoder"))
+    args = parser.parse_args()
+
+    ckpt_path = Path(args.checkpoint)
+    if not ckpt_path.exists():
+        raise FileNotFoundError(f"Checkpoint not found: {ckpt_path}")
+
+    device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+    print(f"Device: {device}")
+
+    print(f"Loading checkpoint: {ckpt_path}")
+    ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+    threshold = ckpt.get("threshold", get("thresholds.damage_prob"))
+    trained_epoch = ckpt.get("epoch", "?")
+    best_val_f1 = ckpt.get("best_f1", None)
+    print(f"  Epoch: {trained_epoch}  Val F1 (at save): {best_val_f1:.4f}  Threshold: {threshold}")
+
+    model = build_unet(encoder=args.encoder).to(device)
+    model.load_state_dict(ckpt["state_dict"])
+    model.eval()
+
+    ds = KateCDDataset(args.data_root, args.split)
+    loader = DataLoader(ds, batch_size=args.batch_size, shuffle=False, num_workers=0)
+    print(f"Dataset: {args.split} ({len(ds)} samples)")
+
+    t0 = time.time()
+    all_logits, all_masks = [], []
+    with torch.no_grad():
+        for imgs, masks in loader:
+            imgs = imgs.to(device)
+            logits = model(imgs)
+            all_logits.append(logits.cpu())
+            all_masks.append(masks.cpu())
+
+    all_logits = torch.cat(all_logits)
+    all_masks = torch.cat(all_masks)
+    elapsed = time.time() - t0
+
+    metrics = compute_metrics(all_logits, all_masks, threshold)
+    ci = bootstrap_ci(all_logits, all_masks, threshold)
+
+    print(f"\n--- {args.split.upper()} RESULTS (threshold={threshold}) ---")
+    for k, v in metrics.items():
+        lo, hi = ci[k]["ci95_lo"], ci[k]["ci95_hi"]
+        print(f"  {k:12s}: {v:.4f}  [95% CI: {lo:.4f}–{hi:.4f}]")
+    print(f"  Inference time: {elapsed:.1f}s")
+
+    save_prediction_figure(all_logits, all_masks, ds, threshold)
+
+    out = {
+        "checkpoint": str(ckpt_path.name),
+        "split": args.split,
+        "encoder": args.encoder,
+        "trained_epoch": trained_epoch,
+        "best_val_f1": best_val_f1,
+        "threshold": threshold,
+        "n_samples": len(ds),
+        "metrics": metrics,
+        "bootstrap_ci": ci,
+        "inference_secs": round(elapsed, 1),
+    }
+    out_path = REPORTS_DIR / "metrics_baseline.json"
+    write_json(out_path, out)
+    print(f"\nMetrics saved → {out_path.relative_to(ROOT)}")
+
+
+if __name__ == "__main__":
+    main()
