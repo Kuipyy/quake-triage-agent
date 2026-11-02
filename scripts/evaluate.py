@@ -95,12 +95,16 @@ def save_prediction_figure(logits: torch.Tensor, targets: torch.Tensor,
         pred_mask = (torch.sigmoid(logits[i, 0]) > threshold).float().numpy()
         gt_mask = mask_tensor[0].numpy()
 
-        axes[i][0].imshow(pre_rgb); axes[i][0].set_title("Pre"); axes[i][0].axis("off")
-        axes[i][1].imshow(post_rgb); axes[i][1].set_title("Post"); axes[i][1].axis("off")
-        axes[i][2].imshow(pred_mask, cmap="Reds", vmin=0, vmax=1)
-        axes[i][2].set_title(f"Pred (thr={threshold})"); axes[i][2].axis("off")
-        axes[i][3].imshow(gt_mask, cmap="Reds", vmin=0, vmax=1)
-        axes[i][3].set_title("Ground Truth"); axes[i][3].axis("off")
+        panels = [
+            (pre_rgb, "Pre", {}),
+            (post_rgb, "Post", {}),
+            (pred_mask, f"Pred (thr={threshold})", {"cmap": "Reds", "vmin": 0, "vmax": 1}),
+            (gt_mask, "Ground Truth", {"cmap": "Reds", "vmin": 0, "vmax": 1}),
+        ]
+        for ax, (img, title, kw) in zip(axes[i], panels):
+            ax.imshow(img, **kw)
+            ax.set_title(title)
+            ax.axis("off")
 
     plt.tight_layout()
     out_path = FIGURES_DIR / f"predictions_{tag}.png"

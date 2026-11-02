@@ -61,6 +61,8 @@ class SiameseUNet(nn.Module):
         return self.segmentation_head(self.decoder(diff))
 
 
-def build_siamese_unet(encoder: str = "resnet34", encoder_weights: str | None = "imagenet") -> nn.Module:
+def build_siamese_unet(
+    encoder: str = "resnet34", encoder_weights: str | None = "imagenet"
+) -> nn.Module:
     """Return a Siamese U-Net with the given encoder."""
     return SiameseUNet(encoder=encoder, encoder_weights=encoder_weights)

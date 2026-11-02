@@ -65,6 +65,7 @@ packages = ["src/quaketriage"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+extend-exclude = ["*.ipynb"]  # Kaggle notebooks are not linted
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]

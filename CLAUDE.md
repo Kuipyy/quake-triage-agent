@@ -13,7 +13,7 @@ Agentic post-earthquake building damage assessment + rescue prioritization. Full
 - Code, comments, commit messages, README: English.
 
 ## Commands
-- Install/sync: `uv sync`
+- Install/sync: `uv sync --all-extras` (plain `uv sync` REMOVES torch/agent extras and breaks tests)
 - Tests: `uv run pytest -q`
 - Lint: `uv run ruff check . --fix`
 - Run scripts: `uv run python scripts/<name>.py`
