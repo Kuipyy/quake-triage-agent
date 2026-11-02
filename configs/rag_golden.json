@@ -1,0 +1,123 @@
+{
+ "_comment": "Gold set for retrieval accuracy. `gold` lists acceptable sources: a query is a hit at k if any of the top-k chunks is in one of the listed docs and its page range overlaps the listed pages (page = PDF page index, 1-based). Pages were verified by reading the source text; Q4 was widened after reading INSARAG Vol II 6.1/6.2, which answers it better than the Vol III one-liner.",
+ "questions": [
+  {
+   "q": "What is the purpose of the ASR Level 1 Wide Area Assessment?",
+   "gold": [
+    {
+     "doc": "INSARAG_Vol2_ManB",
+     "pages": [
+      31
+     ]
+    }
+   ]
+  },
+  {
+   "q": "What is the Level 2 Worksite Triage Assessment used for?",
+   "gold": [
+    {
+     "doc": "INSARAG_Vol2_ManB",
+     "pages": [
+      32
+     ]
+    }
+   ]
+  },
+  {
+   "q": "Why should the affected area be divided into sectors during a USAR response?",
+   "gold": [
+    {
+     "doc": "INSARAG_Vol2_ManB",
+     "pages": [
+      25
+     ]
+    }
+   ]
+  },
+  {
+   "q": "Which marking system should USAR teams apply at the worksite?",
+   "gold": [
+    {
+     "doc": "INSARAG_Vol3_Field",
+     "pages": [
+      23
+     ]
+    },
+    {
+     "doc": "INSARAG_Vol2_ManB",
+     "pages": [
+      42,
+      45,
+      46
+     ]
+    }
+   ]
+  },
+  {
+   "q": "What must a team do before attempting a technical search of a collapsed structure?",
+   "gold": [
+    {
+     "doc": "INSARAG_Vol3_Field",
+     "pages": [
+      19
+     ]
+    }
+   ]
+  },
+  {
+   "q": "Where and with whom should a triage point be set up during rescue operations?",
+   "gold": [
+    {
+     "doc": "INSARAG_Vol3_Field",
+     "pages": [
+      23
+     ]
+    }
+   ]
+  },
+  {
+   "q": "TAMP'a göre müdahale yönetimi hangi üç aşamadan oluşur?",
+   "gold": [
+    {
+     "doc": "AFAD_TAMP",
+     "pages": [
+      18
+     ]
+    }
+   ]
+  },
+  {
+   "q": "Operasyon servisi nedir ve hangi alt servislere ayrılmıştır?",
+   "gold": [
+    {
+     "doc": "AFAD_TAMP",
+     "pages": [
+      25
+     ]
+    }
+   ]
+  },
+  {
+   "q": "AFAD hangi kanun gereği kurulmuştur?",
+   "gold": [
+    {
+     "doc": "AFAD_TAMP",
+     "pages": [
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "q": "In the Turkish national disaster response plan, which three phases make up response management?",
+   "gold": [
+    {
+     "doc": "AFAD_TAMP",
+     "pages": [
+      18
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -30,6 +30,16 @@ inference:
   overlap: 64         # pixels shared between neighbouring windows
   tta: true           # chosen uncertainty method: 8-view rot90 x flip TTA, std = uncertainty (docs/decisions.md)
 
+rag:
+  embedding_model: intfloat/multilingual-e5-small   # chosen by scripts/rag_ablation.py
+  passage_prefix: "passage: "
+  query_prefix: "query: "
+  hybrid: true          # dense cosine + BM25, reciprocal-rank fusion
+  max_seq_length: 256   # model default is 128; chunks are ~150-200 tokens
+  chunk_chars: 700
+  chunk_overlap_chars: 120
+  top_k: 5
+
 thresholds:
   damage_prob: 0.2       # operating threshold, F1-optimal on KATE-CD validation (docs/decisions.md)
   uncertainty_high: 0.2  # buildings above this go to verification queue
