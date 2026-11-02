@@ -5,7 +5,11 @@ One section per project week until the first tagged release.
 
 ## [Unreleased]
 
-### Week 3 — Siamese model, uncertainty, guard, RAG text (in progress)
+### Week 3 — Siamese model, uncertainty, guard, RAG text
+- Siamese trained on Kaggle (23 epochs, best epoch 13); paired bootstrap vs baseline on test (thr 0.2, val-tuned):
+  F1 0.602 vs 0.502, ΔF1 +0.104 [+0.038, +0.166] (`scripts/compare_models.py`, `reports/comparison_*`).
+- `scripts/evaluate.py --threshold-mode {ckpt,f1,f2}`: thresholds chosen on validation only.
+- Uncertainty decision: 8-view TTA (`docs/decisions.md`); `infer_area.py` uses it; operating threshold 0.2 in config.
 - `SiameseUNet` (shared encoder, |pre-post| skip features) and `--model` flag in `train.py`/`evaluate.py`;
   separate Kaggle kernel under `kaggle/siamese/` (baseline notebook untouched).
 - Image-quality guard (`data/quality.py`): blank/bright ratios + block SSIM; SSIM threshold recalibrated 0.4 -> 0.05

@@ -1,0 +1,39 @@
+{
+  "model": "siamese",
+  "checkpoint": "siamese_best.pt",
+  "split": "test",
+  "threshold": 0.5,
+  "T": 10,
+  "dropout_p": 0.1,
+  "n": 38,
+  "results": {
+    "single": {
+      "f1": 0.586,
+      "ece": 0.01182,
+      "brier": 0.01687,
+      "uncertainty_error_ratio": null,
+      "mean_uncertainty": null
+    },
+    "mc_dropout": {
+      "f1": 0.575,
+      "ece": 0.00619,
+      "brier": 0.01664,
+      "uncertainty_error_ratio": 5.707,
+      "mean_uncertainty": 0.01717
+    },
+    "tta": {
+      "f1": 0.5862,
+      "ece": 0.00785,
+      "brier": 0.01522,
+      "uncertainty_error_ratio": 20.912,
+      "mean_uncertainty": 0.01
+    }
+  },
+  "note": "MC dropout applied at inference only (checkpoint trained without dropout).",
+  "provenance": {
+    "created_utc": "2026-11-02T20:12:34+00:00",
+    "git_sha": "64beaad",
+    "git_dirty": true,
+    "seed": null
+  }
+}

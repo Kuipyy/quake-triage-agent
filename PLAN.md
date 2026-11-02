@@ -202,10 +202,10 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - **DoD:** Test metrikleri JSON'da, figür hazır, checkpoint `models/` altında. ✓ (yalnızca hasarsız pencere değerlendirmesi Hafta 3'e taşındı)
 
 ### Hafta 3 (16–22 Kasım) — Siamese model, belirsizlik, guard, RAG ön işlemesi
-- [x] **Siamese U-Net (kod + test; eğitim Kaggle'da bekliyor):** paylaşılan encoder, her ölçekte |f_öncesi − f_sonrası| farkı decoder'a verilir. Baseline ile karşılaştırma tablosu.
-- [ ] **Belirsizlik:** SMP decoder'ına dropout katmanı ekle. MC Dropout (T=10) ve TTA (flip/rot90 kombinasyonları) yöntemlerini ECE ve güvenilirlik diyagramıyla karşılaştır; kazanan yöntem `docs/decisions.md`'ye yazılır.
+- [x] **Siamese U-Net** (eğitildi; `reports/comparison_siamese_vs_baseline_f1.json`: ΔF1 +0.104 [+0.038, +0.166]): paylaşılan encoder, her ölçekte |f_öncesi − f_sonrası| farkı decoder'a verilir. Baseline ile karşılaştırma tablosu.
+- [x] **Belirsizlik** (karar: 8 görünümlü TTA, bkz. `docs/decisions.md`): SMP decoder'ına dropout katmanı ekle. MC Dropout (T=10) ve TTA (flip/rot90 kombinasyonları) yöntemlerini ECE ve güvenilirlik diyagramıyla karşılaştır; kazanan yöntem `docs/decisions.md`'ye yazılır.
 - [x] **Görüntü kalitesi guard'ı** (`quality.py`): boş/siyah alan oranı, aşırı parlak/bulutlu piksel oranı, değişmemesi beklenen alanlarda SSIM ile hizalama skoru. Birim testleri yazılır.
-- [ ] `scripts/infer_area.py`: demo bölgesinde kayan pencere (sliding window) ile çıkarım → hasar olasılığı ve belirsizlik GeoTIFF'leri
+- [x] `scripts/infer_area.py` (Kilis kesitinde gerçek görüntüyle denendi; Antakya'da görüntü yok, bkz. karar): demo bölgesinde kayan pencere (sliding window) ile çıkarım → hasar olasılığı ve belirsizlik GeoTIFF'leri
 - [x] **RAG ön işlemesi — başlangıç:** INSARAG Vol II/III için metin katmanlı PDF alternatif ara (insarag.org güncel sürüm veya HTML). Bulunamazsa `pytesseract` + İngilizce dil paketi ile OCR uygula. TAMP için `pypdf` doğrudan yeterli (metin katmanı doğrulandı). Ham metin ve metadata (belge, bölüm, sayfa) `data/interim/rag_text/` altına kaydedilir.
 - **DoD:** Karşılaştırma tablosu, demo bölgesi rasterları, guard testleri yeşil, ham RAG metni hazır.
 

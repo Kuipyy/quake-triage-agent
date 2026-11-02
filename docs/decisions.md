@@ -17,6 +17,20 @@
 | 2026-10-31 | INSARAG PDF strategy: find text-layer version first; fallback to pytesseract (EN) | **Superseded 2026-11-02** (PDFs have a text layer; see entry below). INSARAG Vol II/III were believed to have no extractable text. Preferred: find a newer or alternative version with text layer. Fallback: pytesseract with English language pack. | pdfplumber + heuristic extraction; paying for an OCR API |
 | 2026-10-31 | Demo area: Antakya — fallback plan activated | Vantor catalog has only 1 overlapping pre/post tile pair (Kilis area), but Kilis has 1 HOTOSM destroyed building vs Antakya's 732. No matching Vantor post-earthquake tile exists for Antakya. HOTOSM destroyed buildings used as simulated detector output for the planning demo. Model performance reported on KATE-CD only. README notes this clearly. | Use Kilis tiles (real imagery but almost no validation data); use xBD for a different region |
 
+## 2026-11-02 — Siamese U-Net adopted over early-fusion baseline
+Decision: the Siamese U-Net (shared ResNet34 encoder, |pre−post| skip features) is the primary change-detection model.
+Evidence (KATE-CD test, 38 images, thresholds chosen on validation by F1 → 0.2 for both models; `reports/comparison_siamese_vs_baseline_f1.json`): F1 0.602 vs 0.502, paired-bootstrap ΔF1 = +0.104 [+0.038, +0.166], IoU +0.099 [+0.037, +0.155], recall +0.099 [+0.015, +0.175]; precision +0.096 [−0.003, +0.196] (not significant). The same direction holds with F2-selected thresholds (ΔF1 +0.081 [+0.032, +0.135]).
+Caveat: single training run per model (no seed variation); 38 test images, so absolute numbers carry wide CIs.
+
+## 2026-11-02 — Uncertainty method: 8-view TTA
+Decision: pixel uncertainty = std over 8 dihedral test-time-augmentation views (rot90 × flip); the mean over views is the reported probability. Implemented in `quaketriage/uncertainty.py`, used by `infer_area.py`.
+Evidence (`reports/uncertainty_{baseline,siamese}_{validation,test}.json`, 4 model×split combinations): TTA has the lowest Brier score in all four and by far the best error awareness (mean uncertainty on wrong ÷ correct pixels: 13.9–20.9 vs 5.2–7.2 for MC Dropout) while keeping F1 on the Siamese model (val 0.562 vs 0.555 single pass). MC Dropout has a marginally lower ECE (Siamese val 0.0103 vs 0.0110, test 0.0062 vs 0.0079; ECE is dominated by the ~96 % easy negatives). For the baseline, TTA cost 2–2.5 F1 points at a fixed threshold.
+Caveats: MC Dropout was applied at inference only (checkpoints were trained without dropout), so it was not tested at its best; a dropout-trained Siamese run on Kaggle could re-open this. TTA needs 8 forward passes per tile (vs T=10 for MC Dropout), so cost is comparable.
+
+## 2026-11-02 — Threshold selection rule
+Decision: the operating threshold is chosen on the validation split, never on test. Default: F1-optimal (0.2 for both models). The checkpoint's stored 0.5 was never tuned (the Kaggle sweep result went only to the history JSON), so the earlier 0.5 numbers are kept only as reference (`reports/metrics_*.json` without suffix).
+F2 (recall-weighted) was evaluated as requested (`reports/metrics_*_f2.json`): the optimum keeps hitting the edge of the search grid (0.05 with the first grid; 0.01 baseline / 0.02 Siamese after extending it to 0.01), so the selection is unstable with only 44 validation images, and probabilities that low are not a trustworthy operating point. F2 is therefore offered as a *high-recall profile* (Siamese test: recall 0.588, precision 0.598), not as the default.
+
 ## 2026-11-02 — RAG source text: no OCR needed
 Decision: extract INSARAG Vol II/III and AFAD TAMP with `pypdf` directly (`scripts/extract_rag_text.py`); `pypdf` moved from the `agent` extra to base dependencies.
 Reason: all three PDFs have a text layer (≤2 low-text pages each, outlines present), so `pytesseract` (not installed) is unnecessary.

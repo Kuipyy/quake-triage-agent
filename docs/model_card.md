@@ -6,8 +6,8 @@ sections stay `TBD` rather than being guessed. Numbers must come from `reports/*
 ## Model details
 - **Task:** bi-temporal change detection; predicts a per-pixel damage probability from a pre/post image pair.
 - **Baseline (Week 2):** early-fusion U-Net, 6 input channels, ResNet34 encoder, ImageNet weights. Checkpoint `baseline_best.pt` (epoch 33, Kaggle GPU).
-- **Siamese variant (Week 3):** shared encoder, feature differences fed to the decoder at each scale. TBD
-- **Uncertainty (Week 3):** MC Dropout vs 8-view TTA compared on the baseline (`reports/uncertainty_baseline_*.json`); final choice pending the dropout-trained model and the Siamese comparison.
+- **Siamese variant (Week 3, primary model):** shared ResNet34 encoder, |pre−post| feature differences fed to the decoder at each scale. Checkpoint `siamese_best.pt` (epoch 13 of 23, early stopping, Kaggle GPU, single run).
+- **Uncertainty (Week 3):** 8-view TTA (std over views) chosen over MC Dropout; see `docs/decisions.md` and `reports/uncertainty_*.json`.
 - **Checkpoint, config hash, git SHA, seed:** TBD (written by the training script).
 
 ## Intended use
@@ -21,8 +21,11 @@ sections stay `TBD` rather than being guessed. Numbers must come from `reports/*
 ## Evaluation
 | Level | Data | Metrics | Result |
 |---|---|---|---|
-| Pixel | KATE-CD test (38), baseline, thr 0.5 | F1 0.490 [0.370–0.582], precision 0.657 [0.551–0.760], recall 0.391 [0.259–0.511], IoU 0.325 [0.227–0.410] (`reports/metrics_baseline.json`) | Siamese: TBD |
-| Calibration | KATE-CD test, baseline | ECE: single 0.0186, MC Dropout 0.0113, TTA 0.0131 (MC Dropout applied at inference only; `reports/uncertainty_baseline_test.json`) | Final method: TBD |
+| Pixel | KATE-CD test (38), baseline, thr 0.2 (val-tuned) | F1 0.502 [0.381–0.592], precision 0.635, recall 0.414, IoU 0.335 (`reports/metrics_baseline_f1.json`) | thr 0.5 (untuned): F1 0.490 |
+| Pixel | KATE-CD test (38), **Siamese**, thr 0.2 (val-tuned) | F1 0.602 [0.497–0.681], precision 0.732, recall 0.511, IoU 0.430 (`reports/metrics_siamese_f1.json`) | thr 0.5 (untuned): F1 0.586 |
+| Comparison | paired bootstrap, Siamese − baseline | ΔF1 +0.104 [+0.038, +0.166]; ΔIoU +0.099 [+0.037, +0.155]; Δrecall +0.099 [+0.015, +0.175]; Δprecision +0.096 [−0.003, +0.196] (`reports/comparison_siamese_vs_baseline_f1.json`) | single run per model |
+| Calibration | KATE-CD test, Siamese | ECE: single 0.0118, MC Dropout 0.0062, **TTA 0.0079**; Brier TTA 0.0152 (best); uncertainty/error ratio TTA 20.9 (`reports/uncertainty_siamese_test.json`) | MC Dropout inference-only |
+| Pixel (high-recall profile) | KATE-CD test, Siamese, F2-val-tuned thr 0.02 | recall 0.588, precision 0.598, F1 0.593 (`reports/metrics_siamese_f2.json`) | threshold unstable, see decisions |
 | Building | Demo area + HOTOSM destroyed labels | precision, recall, F1 | TBD |
 
 ## Limitations and risks

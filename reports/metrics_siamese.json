@@ -1,0 +1,50 @@
+{
+  "checkpoint": "siamese_best.pt",
+  "model": "siamese",
+  "split": "test",
+  "encoder": "resnet34",
+  "trained_epoch": 13,
+  "best_val_f1": 0.5546755790710449,
+  "threshold": 0.5,
+  "threshold_selection": {
+    "mode": "ckpt",
+    "selected_on": null,
+    "objective": null
+  },
+  "n_samples": 38,
+  "metrics": {
+    "precision": 0.7764020562171936,
+    "recall": 0.47057193517684937,
+    "f1": 0.585983395576477,
+    "iou": 0.4144105315208435
+  },
+  "bootstrap_ci": {
+    "precision": {
+      "mean": 0.7789013170599938,
+      "ci95_lo": 0.6977481186389923,
+      "ci95_hi": 0.846898727118969
+    },
+    "recall": {
+      "mean": 0.4709834817051888,
+      "ci95_lo": 0.3520831629633904,
+      "ci95_hi": 0.5691357389092445
+    },
+    "f1": {
+      "mean": 0.5851515429913998,
+      "ci95_lo": 0.47910302579402925,
+      "ci95_hi": 0.6667998045682907
+    },
+    "iou": {
+      "mean": 0.4151975355148315,
+      "ci95_lo": 0.3150136724114418,
+      "ci95_hi": 0.5001497387886047
+    }
+  },
+  "inference_secs": 4.7,
+  "provenance": {
+    "created_utc": "2026-11-02T19:55:05+00:00",
+    "git_sha": "64beaad",
+    "git_dirty": true,
+    "seed": null
+  }
+}
