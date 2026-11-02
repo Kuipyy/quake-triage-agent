@@ -47,7 +47,13 @@ Thumbs.db
 # Jupyter
 .ipynb_checkpoints/
 *.ipynb
-!kaggle/*.ipynb
+!kaggle/**/*.ipynb
 
 # Ruff
 .ruff_cache/
+
+# OSMnx HTTP cache (OpenStreetMap data, re-downloadable)
+/cache/
+
+# Claude Code local settings
+.claude/settings.local.json

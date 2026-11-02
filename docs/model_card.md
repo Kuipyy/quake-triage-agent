@@ -5,9 +5,9 @@ sections stay `TBD` rather than being guessed. Numbers must come from `reports/*
 
 ## Model details
 - **Task:** bi-temporal change detection; predicts a per-pixel damage probability from a pre/post image pair.
-- **Baseline (Week 2):** early-fusion U-Net, 6 input channels, ResNet34 encoder, ImageNet weights. TBD
+- **Baseline (Week 2):** early-fusion U-Net, 6 input channels, ResNet34 encoder, ImageNet weights. Checkpoint `baseline_best.pt` (epoch 33, Kaggle GPU).
 - **Siamese variant (Week 3):** shared encoder, feature differences fed to the decoder at each scale. TBD
-- **Uncertainty (Week 3):** TBD (MC Dropout or test-time augmentation / ensemble; see `docs/review/`).
+- **Uncertainty (Week 3):** MC Dropout vs 8-view TTA compared on the baseline (`reports/uncertainty_baseline_*.json`); final choice pending the dropout-trained model and the Siamese comparison.
 - **Checkpoint, config hash, git SHA, seed:** TBD (written by the training script).
 
 ## Intended use
@@ -21,7 +21,8 @@ sections stay `TBD` rather than being guessed. Numbers must come from `reports/*
 ## Evaluation
 | Level | Data | Metrics | Result |
 |---|---|---|---|
-| Pixel | KATE-CD test (38) | IoU, F1, precision, recall, ECE, with bootstrap CI | TBD |
+| Pixel | KATE-CD test (38), baseline, thr 0.5 | F1 0.490 [0.370–0.582], precision 0.657 [0.551–0.760], recall 0.391 [0.259–0.511], IoU 0.325 [0.227–0.410] (`reports/metrics_baseline.json`) | Siamese: TBD |
+| Calibration | KATE-CD test, baseline | ECE: single 0.0186, MC Dropout 0.0113, TTA 0.0131 (MC Dropout applied at inference only; `reports/uncertainty_baseline_test.json`) | Final method: TBD |
 | Building | Demo area + HOTOSM destroyed labels | precision, recall, F1 | TBD |
 
 ## Limitations and risks

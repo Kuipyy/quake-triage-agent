@@ -16,7 +16,7 @@ marked `TBD` until verified.
 | HOTOSM / OSM buildings + roads | Footprints, floors, road network | ODbL | Downloaded for Antakya bbox |
 | WorldPop Turkey 100 m | Population estimate | CC BY 4.0 | Downloaded (20.5 MB); clipping to demo area in Week 4 |
 | AFAD TAMP | RAG corpus (TR) | Public document | Downloaded; text layer OK (Turkish chars correct) |
-| INSARAG Guidelines 2020 | RAG corpus (EN) | Public document | Downloaded; **text layer empty** (scanned PDF) — OCR needed in Week 6 |
+| INSARAG Guidelines 2020 | RAG corpus (EN) | Public document | Downloaded; text layer OK (re-checked 2026-11-02, see `docs/decisions.md`) — extracted with `pypdf`, no OCR |
 
 ## KATE-CD
 
@@ -75,5 +75,5 @@ marked `TBD` until verified.
 - **Known issues:** check that the PDF has a usable text layer and that Turkish characters survive extraction.
   INSARAG publishes a new version effective 1 January 2027 (noted in `README.md`).
 - **AFAD TAMP:** 65 pages. Text layer present; Turkish characters extracted correctly with `pypdf`. SHA-256 `f0237b70b552a61e...`. Download date 2026-10-31.
-- **INSARAG Vol II Manual B (Operations):** 58 pages. **Text layer empty** (scanned PDF). `pypdf` returns blank strings. OCR (e.g. `pytesseract` or `pdfplumber` + fallback) needed before RAG ingestion in Week 6. SHA-256 `21956d2b9557f678...`. Download date 2026-10-31.
-- **INSARAG Vol III (Field Guide):** 46 pages. Same issue — scanned, no text layer. SHA-256 `e37e157cf7473dff...`. Download date 2026-10-31.
+- **INSARAG Vol II Manual B (Operations):** 58 pages. Text layer present (2 low-text pages; ~120k characters via `pypdf`). The Week-1 note that the PDF was scanned was wrong. Extracted to `data/interim/rag_text/`. SHA-256 `21956d2b9557f678...`. Download date 2026-10-31.
+- **INSARAG Vol III (Field Guide):** 46 pages. Text layer present (1 low-text page; ~72k characters). SHA-256 `e37e157cf7473dff...`. Download date 2026-10-31.

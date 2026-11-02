@@ -2,14 +2,14 @@
 .PHONY: help sync test lint format report
 
 help:
-	@echo "sync    - install/sync dependencies (uv sync)"
+	@echo "sync    - install/sync dependencies (uv sync --all-extras)"
 	@echo "test    - run the test suite"
 	@echo "lint    - ruff check with auto-fix"
 	@echo "format  - ruff format"
 	@echo "report  - refresh the results table in README.md from reports/*.json"
 
 sync:
-	uv sync
+	uv sync --all-extras
 
 test:
 	uv run pytest -q
