@@ -14,8 +14,10 @@ One section per project week until the first tagged release.
   Kilis Vantor crop (`scripts/download_kilis_crop.py`) used as a real-imagery pipeline demo.
 - Uncertainty framework: MC Dropout (forward hooks) vs 8-view TTA, ECE + reliability diagrams (`scripts/eval_uncertainty.py`).
 - RAG raw text extraction (`scripts/extract_rag_text.py`): all PDFs have a text layer, no OCR needed.
-- Fixes: CI no longer collects torch tests when torch is missing; `uv sync --all-extras` documented;
-  notebooks under `kaggle/**` are tracked.
+- Fixes: `uv sync --all-extras` documented; notebooks under `kaggle/**` are tracked.
+- CI installs CPU-only PyTorch on Linux (`[tool.uv.sources]`), so all unit tests run there; actions bumped to
+  Node-24 versions; `tests/conftest.py` still skips torch tests if torch is absent.
+- Refactor: shared `quaketriage/metrics.py` (train/evaluate/eval_uncertainty); outputs verified bit-identical.
 
 ### Week 2 — Baseline model
 - `KateCDDataset`, early-fusion U-Net (ResNet34, 6 channels), Dice + Focal loss, Kaggle GPU training notebook.
