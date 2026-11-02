@@ -4,8 +4,8 @@
 
 ## Durum özeti
 - **Aktif hafta:** Hafta 3 — Siamese model, belirsizlik, guard, RAG ön işlemesi
-- **Sıradaki adım:** Siamese U-Net, MC Dropout + TTA karşılaştırması, quality guard, infer_area.py
-- **Bekleyen manuel işler (the project owner):** —
+- **Sıradaki adım:** Siamese eğitimi bitince (Kaggle, 17/50 epoch'ta val F1=0.555) `evaluate.py --model siamese`, `eval_uncertainty.py --model siamese`; karşılaştırma tablosu; dropout'lu 3. Kaggle koşusu; `infer_area.py` Siamese ile; week-03 notu
+- **Bekleyen manuel işler (the project owner):** `models/siamese_best.pt` indirip `models/` altına koy (Kaggle kernel: quaketriage-siamese-training)
 
 ## Önemli metrikler
 
@@ -13,6 +13,16 @@ Metrikler `reports/*.json` dosyalarından otomatik üretilir ve `README.md` sonu
 Güncel değerler için: `uv run python scripts/make_report.py --check` → [README.md](../README.md#results)
 
 ## Oturum kayıtları
+
+### 2026-11-02 — Hafta 3 (devam ediyor)
+- Siamese U-Net (`SiameseUNet`, paylaşılan encoder, |pre−post| skip) + `--model` bayrağı (train/evaluate). Ayrı Kaggle kernel: `kaggle/siamese/` (baseline notebook'una dokunulmadı).
+- Kalite guard'ı `data/quality.py` (boş/parlak oran + blok SSIM). SSIM eşiği KATE-CD ölçümüyle 0.4 → 0.05'e çekildi (`decisions.md`).
+- RAG ham metin: 3 PDF'te de metin katmanı var, OCR gerekmedi (`scripts/extract_rag_text.py`).
+- `scripts/infer_area.py` iskeleti (kayan pencere, guard, prob/belirsizlik GeoTIFF). Kilis kesiti (`download_kilis_crop.py`) ile gerçek görüntüde denendi; sadece pipeline gösterimi.
+- Belirsizlik çerçevesi: `uncertainty.py`, `eval_uncertainty.py`. Baseline (val): tek geçiş ECE 0.0247, MC Dropout 0.0163, TTA 0.0159; hata/belirsizlik oranı MC 7.2, TTA 13.9. Karar bekliyor: dropout'suz eğitilmiş modelde MC adil değil.
+- Kararlar: Siamese sonrası dropout'lu 3. koşu (ücretsiz Kaggle kotası), final modelde eşik F2 ile seçilecek (recall odaklı) — the project owner onayladı.
+- Siamese eğitimi: epoch 17/50, val F1=0.5548 (baseline 0.5196), 47 sn/epoch.
+- Not: `uv sync` ekstraları siler → `uv sync --all-extras`.
 
 ### 2026-11-02 — Hafta 2 tamamlandı
 - `KateCDDataset` sınıfı yazıldı (Parquet → tensör, flip/rot90/renk augmentasyonu).
