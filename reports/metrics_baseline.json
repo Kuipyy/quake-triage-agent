@@ -1,5 +1,6 @@
 {
   "checkpoint": "baseline_best.pt",
+  "model": "early_fusion",
   "split": "test",
   "encoder": "resnet34",
   "trained_epoch": 33,
@@ -34,10 +35,10 @@
       "ci95_hi": 0.41022045388817785
     }
   },
-  "inference_secs": 3.5,
+  "inference_secs": 3.4,
   "provenance": {
-    "created_utc": "2026-11-02T19:07:14+00:00",
-    "git_sha": "5fef46f",
+    "created_utc": "2026-11-02T19:48:03+00:00",
+    "git_sha": "91fbe6a",
     "git_dirty": true,
     "seed": null
   }

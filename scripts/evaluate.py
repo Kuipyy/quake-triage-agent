@@ -8,12 +8,12 @@ import argparse
 import time
 from pathlib import Path
 
-import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
 from quaketriage.config import get
 from quaketriage.data.kate_cd import KateCDDataset
+from quaketriage.metrics import bootstrap_ci, compute_metrics
 from quaketriage.models.unet import build_siamese_unet, build_unet
 from quaketriage.provenance import write_json
 
@@ -22,48 +22,6 @@ REPORTS_DIR = ROOT / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 REPORTS_DIR.mkdir(exist_ok=True)
 FIGURES_DIR.mkdir(exist_ok=True)
-
-
-def compute_metrics(logits: torch.Tensor, targets: torch.Tensor, threshold: float) -> dict:
-    preds = (torch.sigmoid(logits) > threshold).float()
-    tp = (preds * targets).sum()
-    fp = (preds * (1 - targets)).sum()
-    fn = ((1 - preds) * targets).sum()
-    precision = tp / (tp + fp + 1e-8)
-    recall = tp / (tp + fn + 1e-8)
-    f1 = 2 * precision * recall / (precision + recall + 1e-8)
-    iou = tp / (tp + fp + fn + 1e-8)
-    return {
-        "precision": precision.item(),
-        "recall": recall.item(),
-        "f1": f1.item(),
-        "iou": iou.item(),
-    }
-
-
-def bootstrap_ci(logits: torch.Tensor, targets: torch.Tensor, threshold: float,
-                 n_boot: int = 1000, seed: int = 42) -> dict:
-    """95% bootstrap confidence intervals over samples (images)."""
-    rng = np.random.default_rng(seed)
-    n = logits.shape[0]
-    metrics_keys = ["precision", "recall", "f1", "iou"]
-    samples = {k: [] for k in metrics_keys}
-
-    for _ in range(n_boot):
-        idx = rng.integers(0, n, size=n)
-        m = compute_metrics(logits[idx], targets[idx], threshold)
-        for k in metrics_keys:
-            samples[k].append(m[k])
-
-    ci = {}
-    for k in metrics_keys:
-        arr = np.array(samples[k])
-        ci[k] = {
-            "mean": float(np.mean(arr)),
-            "ci95_lo": float(np.percentile(arr, 2.5)),
-            "ci95_hi": float(np.percentile(arr, 97.5)),
-        }
-    return ci
 
 
 def save_prediction_figure(logits: torch.Tensor, targets: torch.Tensor,

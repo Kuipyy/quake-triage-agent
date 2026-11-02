@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 
 from quaketriage.config import get  # noqa: E402
 from quaketriage.data.kate_cd import KateCDDataset  # noqa: E402
+from quaketriage.metrics import metrics_from_probs  # noqa: E402
 from quaketriage.models.unet import build_siamese_unet, build_unet  # noqa: E402
 from quaketriage.provenance import write_json  # noqa: E402
 from quaketriage.uncertainty import (  # noqa: E402
@@ -27,12 +28,6 @@ from quaketriage.uncertainty import (  # noqa: E402
 )
 
 ROOT = Path(__file__).parents[1]
-
-
-def f1_at(probs: torch.Tensor, targets: torch.Tensor, thr: float) -> float:
-    p = (probs > thr).float()
-    tp, fp, fn = (p * targets).sum(), (p * (1 - targets)).sum(), ((1 - p) * targets).sum()
-    return float(2 * tp / (2 * tp + fp + fn + 1e-8))
 
 
 def main() -> None:
@@ -79,7 +74,7 @@ def main() -> None:
         mean, std = torch.cat(means), torch.cat(stds)
         rb = reliability_bins(mean, y)
         results[name] = {
-            "f1": round(f1_at(mean, y, thr), 4),
+            "f1": round(metrics_from_probs(mean, y, thr)["f1"], 4),
             "ece": round(rb["ece"], 5),
             "brier": round(float(((mean - y) ** 2).mean()), 5),
             "uncertainty_error_ratio": (None if name == "single" else round(

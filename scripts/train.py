@@ -13,29 +13,13 @@ from torch.utils.data import DataLoader
 
 from quaketriage.config import get
 from quaketriage.data.kate_cd import KateCDDataset
+from quaketriage.metrics import compute_metrics
 from quaketriage.models.unet import DiceFocalLoss, build_siamese_unet, build_unet
 from quaketriage.provenance import write_json
 
 ROOT = Path(__file__).parents[1]
 MODELS_DIR = ROOT / "models"
 MODELS_DIR.mkdir(exist_ok=True)
-
-
-def compute_metrics(logits: torch.Tensor, targets: torch.Tensor, threshold: float):
-    preds = (torch.sigmoid(logits) > threshold).float()
-    tp = (preds * targets).sum()
-    fp = (preds * (1 - targets)).sum()
-    fn = ((1 - preds) * targets).sum()
-    precision = tp / (tp + fp + 1e-8)
-    recall = tp / (tp + fn + 1e-8)
-    f1 = 2 * precision * recall / (precision + recall + 1e-8)
-    iou = tp / (tp + fp + fn + 1e-8)
-    return {
-        "precision": precision.item(),
-        "recall": recall.item(),
-        "f1": f1.item(),
-        "iou": iou.item(),
-    }
 
 
 def main():

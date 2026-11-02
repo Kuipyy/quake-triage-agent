@@ -49,6 +49,7 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | Report | Metric | Value |
 |---|---|---|
 | `metrics_baseline` | `checkpoint` | baseline_best.pt |
+| `metrics_baseline` | `model` | early_fusion |
 | `metrics_baseline` | `split` | test |
 | `metrics_baseline` | `encoder` | resnet34 |
 | `metrics_baseline` | `trained_epoch` | 33 |
@@ -71,7 +72,7 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `metrics_baseline` | `bootstrap_ci.iou.mean` | 0.3224 |
 | `metrics_baseline` | `bootstrap_ci.iou.ci95_lo` | 0.2272 |
 | `metrics_baseline` | `bootstrap_ci.iou.ci95_hi` | 0.4102 |
-| `metrics_baseline` | `inference_secs` | 3.5 |
+| `metrics_baseline` | `inference_secs` | 3.4 |
 | `metrics_eda` | `train.n_samples` | 404 |
 | `metrics_eda` | `train.mean_damaged_ratio` | 0.03669 |
 | `metrics_eda` | `train.median_damaged_ratio` | 0.02069 |
