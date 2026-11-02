@@ -1,5 +1,5 @@
 {
-  "id": "YOUR_KAGGLE_USERNAME/quaketriage-siamese",
+  "id": "YOUR_KAGGLE_USERNAME/quaketriage-siamese-training",
   "title": "QuakeTriage \u2014 Siamese Training",
   "code_file": "train_siamese.ipynb",
   "language": "python",
