@@ -3,12 +3,15 @@
 - OSM road network (cached GraphML)
 - WorldPop Turkey 100m raster (clipped to demo bbox)
 """
+import time
 from pathlib import Path
 
 import osmnx as ox
 from dotenv import load_dotenv
 
 load_dotenv()
+ox.settings.http_user_agent = "quaketriage-student-research/0.1 (non-commercial prototype)"
+ox.settings.requests_timeout = 300
 
 # Antakya demo bbox (minlon, minlat, maxlon, maxlat) — covers dense HOTOSM area
 DEMO_BBOX = (36.10, 36.15, 36.25, 36.30)   # ~17 km²
@@ -16,6 +19,29 @@ DEMO_PLACE = "Antakya, Hatay, Turkey"
 
 OUT_DIR = Path("data/raw/demo")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def check_inside_bbox(gdf, what: str, tol: float = 0.01) -> None:
+    """Fail loudly if a download is not inside DEMO_BBOX (lesson from the osmnx bbox-order bug)."""
+    minx, miny, maxx, maxy = gdf.total_bounds
+    w, s_, e, n = DEMO_BBOX
+    if not (minx >= w - tol and miny >= s_ - tol and maxx <= e + tol and maxy <= n + tol):
+        raise RuntimeError(f"{what} lies outside DEMO_BBOX {DEMO_BBOX}: "
+                           f"{[round(v, 4) for v in (minx, miny, maxx, maxy)]}")
+
+
+def with_retries(fn, attempts: int = 8, base_delay: int = 60):
+    """Public Overpass servers are often at capacity: retry with exponential back-off."""
+    for i in range(1, attempts + 1):
+        try:
+            return fn()
+        except Exception as exc:  # noqa: BLE001 - any network/parse error is retryable here
+            if i == attempts:
+                raise
+            delay = min(base_delay * 2 ** (i - 1), 900)
+            print(f"  attempt {i}/{attempts} failed ({type(exc).__name__}); retry in {delay}s",
+                  flush=True)
+            time.sleep(delay)
 
 
 def download_buildings():
@@ -27,6 +53,7 @@ def download_buildings():
     )
     # Keep only polygons (actual building footprints)
     gdf = gdf[gdf.geometry.geom_type.isin(["Polygon", "MultiPolygon"])].copy()
+    check_inside_bbox(gdf, "buildings")
     out = OUT_DIR / "antakya_buildings.gpkg"
     gdf.to_file(out, driver="GPKG")
     print(f"  {len(gdf)} buildings → {out}")
@@ -42,6 +69,7 @@ def download_roads():
     out = OUT_DIR / "antakya_roads.graphml"
     ox.save_graphml(G, filepath=str(out))
     nodes, edges = ox.graph_to_gdfs(G)
+    check_inside_bbox(nodes, "road nodes")
     print(f"  {len(nodes)} nodes, {len(edges)} edges → {out}")
     return G
 
@@ -73,8 +101,8 @@ def download_worldpop():
 
 
 def main():
-    download_buildings()
-    download_roads()
+    with_retries(download_buildings)
+    with_retries(download_roads)
     download_worldpop()
     print("\nAll demo area data downloaded.")
 

@@ -47,6 +47,23 @@ thresholds:
   guard_bright_ratio: 0.2
   guard_ssim_min: 0.05  # ~5th pct of KATE-CD pairs (see docs/decisions.md)
 
+population:
+  # ASSUMPTIONS (not measured data) used to turn WorldPop cell counts into per-building occupancy.
+  night_factor: 0.9                 # share of residents at home at 04:17 (Feb 2023 quake)
+  non_residential_night_factor: 0.1 # schools, shops, offices, mosques... at night
+  default_floors: 3                 # when neither building:levels nor a type rule applies
+  floors_by_type:                   # fallback by OSM `building` value
+    house: 2
+    detached: 2
+    semidetached_house: 2
+    residential: 3
+    apartments: 5
+    commercial: 3
+    retail: 2
+    school: 3
+    hospital: 4
+  residential_types: [yes, house, detached, semidetached_house, residential, apartments, terrace]
+
 topsis:
   weights:
     damage_prob: 0.35
