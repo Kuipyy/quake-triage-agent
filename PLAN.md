@@ -202,7 +202,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - **DoD:** Test metrikleri JSON'da, figür hazır, checkpoint `models/` altında. ✓ (yalnızca hasarsız pencere değerlendirmesi Hafta 3'e taşındı)
 
 ### Hafta 3 (16–22 Kasım) — Siamese model, belirsizlik, guard, RAG ön işlemesi
-- [ ] **Siamese U-Net:** paylaşılan encoder, her ölçekte |f_öncesi − f_sonrası| farkı decoder'a verilir. Baseline ile karşılaştırma tablosu.
+- [x] **Siamese U-Net (kod + test; eğitim Kaggle'da bekliyor):** paylaşılan encoder, her ölçekte |f_öncesi − f_sonrası| farkı decoder'a verilir. Baseline ile karşılaştırma tablosu.
 - [ ] **Belirsizlik:** SMP decoder'ına dropout katmanı ekle. MC Dropout (T=10) ve TTA (flip/rot90 kombinasyonları) yöntemlerini ECE ve güvenilirlik diyagramıyla karşılaştır; kazanan yöntem `docs/decisions.md`'ye yazılır.
 - [ ] **Görüntü kalitesi guard'ı** (`quality.py`): boş/siyah alan oranı, aşırı parlak/bulutlu piksel oranı, değişmemesi beklenen alanlarda SSIM ile hizalama skoru. Birim testleri yazılır.
 - [ ] `scripts/infer_area.py`: demo bölgesinde kayan pencere (sliding window) ile çıkarım → hasar olasılığı ve belirsizlik GeoTIFF'leri

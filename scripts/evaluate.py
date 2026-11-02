@@ -5,7 +5,6 @@ Usage:
     uv run python scripts/evaluate.py --checkpoint models/baseline_best.pt --split test
 """
 import argparse
-import json
 import time
 from pathlib import Path
 
@@ -15,7 +14,7 @@ from torch.utils.data import DataLoader
 
 from quaketriage.config import get
 from quaketriage.data.kate_cd import KateCDDataset
-from quaketriage.models.unet import build_unet
+from quaketriage.models.unet import build_siamese_unet, build_unet
 from quaketriage.provenance import write_json
 
 ROOT = Path(__file__).parents[1]
@@ -68,7 +67,8 @@ def bootstrap_ci(logits: torch.Tensor, targets: torch.Tensor, threshold: float,
 
 
 def save_prediction_figure(logits: torch.Tensor, targets: torch.Tensor,
-                            dataset: KateCDDataset, threshold: float, n: int = 8) -> None:
+                            dataset: KateCDDataset, threshold: float, tag: str = "baseline",
+                            n: int = 8) -> None:
     """Save a grid of pre/post/pred/gt images."""
     try:
         import matplotlib.pyplot as plt
@@ -103,7 +103,7 @@ def save_prediction_figure(logits: torch.Tensor, targets: torch.Tensor,
         axes[i][3].set_title("Ground Truth"); axes[i][3].axis("off")
 
     plt.tight_layout()
-    out_path = FIGURES_DIR / "predictions_baseline.png"
+    out_path = FIGURES_DIR / f"predictions_{tag}.png"
     plt.savefig(out_path, dpi=100, bbox_inches="tight")
     plt.close()
     print(f"  Figure saved → {out_path.relative_to(ROOT)}")
@@ -111,14 +111,17 @@ def save_prediction_figure(logits: torch.Tensor, targets: torch.Tensor,
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--checkpoint", default=str(ROOT / "models/baseline_best.pt"))
+    parser.add_argument("--model", choices=["early_fusion", "siamese"], default="early_fusion")
+    parser.add_argument("--checkpoint", default=None,
+                        help="default: models/baseline_best.pt or models/siamese_best.pt")
     parser.add_argument("--data-root", default=str(ROOT / "data/raw/kate_cd"))
     parser.add_argument("--split", default="test", choices=["validation", "test"])
     parser.add_argument("--batch-size", type=int, default=get("training.batch_size"))
     parser.add_argument("--encoder", default=get("model.encoder"))
     args = parser.parse_args()
 
-    ckpt_path = Path(args.checkpoint)
+    tag = "baseline" if args.model == "early_fusion" else "siamese"
+    ckpt_path = Path(args.checkpoint) if args.checkpoint else ROOT / f"models/{tag}_best.pt"
     if not ckpt_path.exists():
         raise FileNotFoundError(f"Checkpoint not found: {ckpt_path}")
 
@@ -132,7 +135,8 @@ def main():
     best_val_f1 = ckpt.get("best_f1", None)
     print(f"  Epoch: {trained_epoch}  Val F1 (at save): {best_val_f1:.4f}  Threshold: {threshold}")
 
-    model = build_unet(encoder=args.encoder).to(device)
+    builder = build_unet if args.model == "early_fusion" else build_siamese_unet
+    model = builder(encoder=args.encoder).to(device)
     model.load_state_dict(ckpt["state_dict"])
     model.eval()
 
@@ -162,10 +166,11 @@ def main():
         print(f"  {k:12s}: {v:.4f}  [95% CI: {lo:.4f}–{hi:.4f}]")
     print(f"  Inference time: {elapsed:.1f}s")
 
-    save_prediction_figure(all_logits, all_masks, ds, threshold)
+    save_prediction_figure(all_logits, all_masks, ds, threshold, tag)
 
     out = {
         "checkpoint": str(ckpt_path.name),
+        "model": args.model,
         "split": args.split,
         "encoder": args.encoder,
         "trained_epoch": trained_epoch,
@@ -176,7 +181,7 @@ def main():
         "bootstrap_ci": ci,
         "inference_secs": round(elapsed, 1),
     }
-    out_path = REPORTS_DIR / "metrics_baseline.json"
+    out_path = REPORTS_DIR / f"metrics_{tag}.json"
     write_json(out_path, out)
     print(f"\nMetrics saved → {out_path.relative_to(ROOT)}")
 

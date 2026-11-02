@@ -13,7 +13,7 @@ from torch.utils.data import DataLoader
 
 from quaketriage.config import get
 from quaketriage.data.kate_cd import KateCDDataset
-from quaketriage.models.unet import DiceFocalLoss, build_unet
+from quaketriage.models.unet import DiceFocalLoss, build_siamese_unet, build_unet
 from quaketriage.provenance import write_json
 
 ROOT = Path(__file__).parents[1]
@@ -47,6 +47,7 @@ def main():
     parser.add_argument("--patience", type=int, default=get("training.early_stopping_patience"))
     parser.add_argument("--threshold", type=float, default=get("thresholds.damage_prob"))
     parser.add_argument("--encoder", default=get("model.encoder"))
+    parser.add_argument("--model", choices=["early_fusion", "siamese"], default="early_fusion")
     args = parser.parse_args()
 
     device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
@@ -57,7 +58,12 @@ def main():
     train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True, num_workers=0)
     val_loader = DataLoader(val_ds, batch_size=args.batch_size, shuffle=False, num_workers=0)
 
-    model = build_unet(encoder=args.encoder).to(device)
+    if args.model == "siamese":
+        model = build_siamese_unet(encoder=args.encoder).to(device)
+        ckpt_name = "siamese_best.pt"
+    else:
+        model = build_unet(encoder=args.encoder).to(device)
+        ckpt_name = "baseline_best.pt"
     loss_fn = DiceFocalLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
@@ -122,7 +128,7 @@ def main():
         if metrics["f1"] > best_f1:
             best_f1 = metrics["f1"]
             patience_left = args.patience
-            ckpt = MODELS_DIR / "baseline_best.pt"
+            ckpt = MODELS_DIR / ckpt_name
             torch.save({"epoch": epoch, "state_dict": model.state_dict(),
                         "best_f1": best_f1, "threshold": args.threshold}, ckpt)
         else:
@@ -131,8 +137,8 @@ def main():
                 print(f"Early stopping at epoch {epoch}.")
                 break
 
-    print(f"\nBest val F1: {best_f1:.4f}  checkpoint → {MODELS_DIR / 'baseline_best.pt'}")
-    write_json(ROOT / "outputs" / "training_history.json", {"history": history})
+    print(f"\nBest val F1: {best_f1:.4f}  checkpoint → {MODELS_DIR / ckpt_name}")
+    write_json(ROOT / "outputs" / f"training_history_{args.model}.json", {"history": history})
 
 
 if __name__ == "__main__":
