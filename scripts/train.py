@@ -29,7 +29,7 @@ def main():
     parser.add_argument("--batch-size", type=int, default=get("training.batch_size"))
     parser.add_argument("--lr", type=float, default=get("training.learning_rate"))
     parser.add_argument("--patience", type=int, default=get("training.early_stopping_patience"))
-    parser.add_argument("--threshold", type=float, default=get("thresholds.damage_prob"))
+    parser.add_argument("--threshold", type=float, default=get("training.monitor_threshold"))
     parser.add_argument("--encoder", default=get("model.encoder"))
     parser.add_argument("--model", choices=["early_fusion", "siamese"], default="early_fusion")
     args = parser.parse_args()

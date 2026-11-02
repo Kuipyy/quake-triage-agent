@@ -23,14 +23,15 @@ training:
   early_stopping_patience: 10
   learning_rate: 1.0e-4
   image_size: 512
+  monitor_threshold: 0.5  # fixed threshold for val F1 used to pick the best epoch
 
 inference:
   tile_size: 512
   overlap: 64         # pixels shared between neighbouring windows
-  tta_flips: true     # uncertainty placeholder: std over identity/hflip/vflip (method chosen later)
+  tta: true           # chosen uncertainty method: 8-view rot90 x flip TTA, std = uncertainty (docs/decisions.md)
 
 thresholds:
-  damage_prob: 0.5       # tuned on validation set
+  damage_prob: 0.2       # operating threshold, F1-optimal on KATE-CD validation (docs/decisions.md)
   uncertainty_high: 0.2  # buildings above this go to verification queue
   guard_blank_ratio: 0.3
   guard_bright_ratio: 0.2

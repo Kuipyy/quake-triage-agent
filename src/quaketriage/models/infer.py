@@ -13,6 +13,7 @@ import torch
 
 from quaketriage.data.kate_cd import _MEAN, _STD
 from quaketriage.data.quality import QualityInput, check_image_quality
+from quaketriage.uncertainty import predict_tta
 
 
 def window_starts(size: int, tile: int, stride: int) -> list[int]:
@@ -40,17 +41,11 @@ def to_tensor(pre: np.ndarray, post: np.ndarray) -> torch.Tensor:
 def predict_tile(
     model: torch.nn.Module, x: torch.Tensor, tta: bool = False
 ) -> tuple[np.ndarray, np.ndarray | None]:
-    """Return (prob HxW, std HxW or None). With ``tta``: identity/hflip/vflip, std = uncertainty."""
-    views = [(lambda t: t, lambda t: t)]
+    """Return (prob HxW, std HxW or None). With ``tta``: 8-view TTA, std = uncertainty."""
     if tta:
-        views += [
-            (lambda t: t.flip(-1), lambda t: t.flip(-1)),
-            (lambda t: t.flip(-2), lambda t: t.flip(-2)),
-        ]
-    probs = torch.stack([inv(torch.sigmoid(model(fwd(x)))) for fwd, inv in views])
-    prob = probs.mean(0)[0, 0].cpu().numpy()
-    std = probs.std(0)[0, 0].cpu().numpy() if tta else None
-    return prob, std
+        probs = predict_tta(model, x)
+        return probs.mean(0)[0, 0].cpu().numpy(), probs.std(0)[0, 0].cpu().numpy()
+    return torch.sigmoid(model(x))[0, 0].cpu().numpy(), None
 
 
 @dataclass

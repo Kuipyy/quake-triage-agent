@@ -17,7 +17,7 @@ import torch
 
 from quaketriage.config import get
 from quaketriage.models.infer import infer_area, predict_tile
-from quaketriage.models.unet import build_siamese_unet, build_unet
+from quaketriage.models.loading import load_model
 
 ROOT = Path(__file__).parents[1]
 
@@ -38,14 +38,6 @@ def write_band(path: Path, data: np.ndarray, profile: dict) -> None:
         dst.write(data.astype("float32"), 1)
 
 
-def load_model(kind: str, checkpoint: Path, encoder: str, device: torch.device):
-    builder = build_unet if kind == "early_fusion" else build_siamese_unet
-    model = builder(encoder=encoder, encoder_weights=None).to(device)
-    ckpt = torch.load(checkpoint, map_location=device, weights_only=False)
-    model.load_state_dict(ckpt["state_dict"])
-    return model.eval(), ckpt.get("threshold", get("thresholds.damage_prob"))
-
-
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--pre", required=True)
@@ -54,8 +46,9 @@ def main() -> None:
     ap.add_argument("--model", choices=["early_fusion", "siamese"], default="early_fusion")
     ap.add_argument("--checkpoint", default=None)
     ap.add_argument("--encoder", default=get("model.encoder"))
-    ap.add_argument("--tta", action="store_true", default=get("inference.tta_flips"),
-                    help="flip-TTA std as uncertainty placeholder")
+    ap.add_argument("--tta", action="store_true", default=get("inference.tta"),
+                    help="8-view TTA std as uncertainty")
+    ap.add_argument("--threshold", type=float, default=get("thresholds.damage_prob"))
     ap.add_argument("--no-guard", action="store_true")
     ap.add_argument("--out", default=str(ROOT / get("paths.outputs") / "rasters"))
     args = ap.parse_args()
@@ -63,7 +56,7 @@ def main() -> None:
     tag = "baseline" if args.model == "early_fusion" else "siamese"
     ckpt = Path(args.checkpoint) if args.checkpoint else ROOT / f"models/{tag}_best.pt"
     device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-    model, thr = load_model(args.model, ckpt, args.encoder, device)
+    model, _ = load_model(args.model, ckpt, args.encoder, device)
 
     pre, profile = read_rgb(Path(args.pre))
     post, post_profile = read_rgb(Path(args.post))
@@ -83,6 +76,7 @@ def main() -> None:
     if res.uncertainty is not None:
         write_band(out / f"{args.name}_uncertainty.tif", res.uncertainty, profile)
 
+    thr = args.threshold
     valid = ~np.isnan(res.prob)
     damaged = float((res.prob[valid] > thr).mean()) if valid.any() else float("nan")
     summary = {"tiles": res.n_tiles, "rejected": len(res.rejected),

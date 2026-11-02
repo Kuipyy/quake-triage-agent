@@ -50,3 +50,19 @@ def test_shape_mismatch_raises():
     a, _ = _imgs(64, 64)
     with pytest.raises(ValueError):
         infer_area(a, a[:32], lambda x: (None, None), tile=64, overlap=0)
+
+
+def test_predict_tile_tta_matches_plain_for_equivariant_model():
+    import torch
+
+    from quaketriage.models.infer import predict_tile
+
+    class Pointwise(torch.nn.Module):
+        def forward(self, x):
+            return x[:, :1]
+
+    x = torch.randn(1, 6, 32, 32)
+    p0, s0 = predict_tile(Pointwise(), x, tta=False)
+    p1, s1 = predict_tile(Pointwise(), x, tta=True)
+    assert s0 is None and p0.shape == (32, 32)
+    assert np.allclose(p0, p1, atol=1e-6) and s1.max() < 1e-6

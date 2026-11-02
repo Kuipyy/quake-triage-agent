@@ -13,7 +13,7 @@ from torch.utils.data import DataLoader
 
 from quaketriage.config import get
 from quaketriage.data.kate_cd import KateCDDataset
-from quaketriage.metrics import bootstrap_ci, compute_metrics
+from quaketriage.metrics import best_threshold, bootstrap_ci, compute_metrics
 from quaketriage.models.unet import build_siamese_unet, build_unet
 from quaketriage.provenance import write_json
 
@@ -80,6 +80,10 @@ def main():
     parser.add_argument("--split", default="test", choices=["validation", "test"])
     parser.add_argument("--batch-size", type=int, default=get("training.batch_size"))
     parser.add_argument("--encoder", default=get("model.encoder"))
+    parser.add_argument(
+        "--threshold-mode", choices=["ckpt", "f1", "f2"], default="ckpt",
+        help="ckpt: threshold stored in the checkpoint (default); f1/f2: sweep on the "
+             "VALIDATION split, then apply to --split (F2 weights recall more).")
     args = parser.parse_args()
 
     tag = "baseline" if args.model == "early_fusion" else "siamese"
@@ -98,25 +102,31 @@ def main():
     print(f"  Epoch: {trained_epoch}  Val F1 (at save): {best_val_f1:.4f}  Threshold: {threshold}")
 
     builder = build_unet if args.model == "early_fusion" else build_siamese_unet
-    model = builder(encoder=args.encoder).to(device)
+    model = builder(encoder=args.encoder, encoder_weights=None).to(device)
     model.load_state_dict(ckpt["state_dict"])
     model.eval()
 
-    ds = KateCDDataset(args.data_root, args.split)
-    loader = DataLoader(ds, batch_size=args.batch_size, shuffle=False, num_workers=0)
-    print(f"Dataset: {args.split} ({len(ds)} samples)")
+    def predict_logits(split: str):
+        data = KateCDDataset(args.data_root, split)
+        loader = DataLoader(data, batch_size=args.batch_size, shuffle=False, num_workers=0)
+        print(f"Dataset: {split} ({len(data)} samples)")
+        logits, masks = [], []
+        with torch.no_grad():
+            for imgs, m in loader:
+                logits.append(model(imgs.to(device)).cpu())
+                masks.append(m)
+        return data, torch.cat(logits), torch.cat(masks)
+
+    selection = {"mode": args.threshold_mode, "selected_on": None, "objective": None}
+    if args.threshold_mode != "ckpt":
+        beta = 1.0 if args.threshold_mode == "f1" else 2.0
+        _, val_logits, val_masks = predict_logits("validation")
+        threshold, score = best_threshold(val_logits, val_masks, beta=beta)
+        selection.update(selected_on="validation", objective=f"F{beta:g}", value=round(score, 4))
+        print(f"Threshold selected on validation by F{beta:g}: {threshold} (score {score:.4f})")
 
     t0 = time.time()
-    all_logits, all_masks = [], []
-    with torch.no_grad():
-        for imgs, masks in loader:
-            imgs = imgs.to(device)
-            logits = model(imgs)
-            all_logits.append(logits.cpu())
-            all_masks.append(masks.cpu())
-
-    all_logits = torch.cat(all_logits)
-    all_masks = torch.cat(all_masks)
+    ds, all_logits, all_masks = predict_logits(args.split)
     elapsed = time.time() - t0
 
     metrics = compute_metrics(all_logits, all_masks, threshold)
@@ -128,7 +138,8 @@ def main():
         print(f"  {k:12s}: {v:.4f}  [95% CI: {lo:.4f}–{hi:.4f}]")
     print(f"  Inference time: {elapsed:.1f}s")
 
-    save_prediction_figure(all_logits, all_masks, ds, threshold, tag)
+    suffix = "" if args.threshold_mode == "ckpt" else f"_{args.threshold_mode}"
+    save_prediction_figure(all_logits, all_masks, ds, threshold, tag + suffix)
 
     out = {
         "checkpoint": str(ckpt_path.name),
@@ -138,12 +149,13 @@ def main():
         "trained_epoch": trained_epoch,
         "best_val_f1": best_val_f1,
         "threshold": threshold,
+        "threshold_selection": selection,
         "n_samples": len(ds),
         "metrics": metrics,
         "bootstrap_ci": ci,
         "inference_secs": round(elapsed, 1),
     }
-    out_path = REPORTS_DIR / f"metrics_{tag}.json"
+    out_path = REPORTS_DIR / f"metrics_{tag}{suffix}.json"
     write_json(out_path, out)
     print(f"\nMetrics saved → {out_path.relative_to(ROOT)}")
 
