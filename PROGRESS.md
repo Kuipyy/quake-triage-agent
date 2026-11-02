@@ -3,9 +3,9 @@
 > Her oturum sonunda Claude günceller. En yeni kayıt en üstte.
 
 ## Durum özeti
-- **Aktif hafta:** Hafta 3 — Siamese model, belirsizlik, guard, RAG ön işlemesi
-- **Sıradaki adım:** Siamese eğitimi bitince (Kaggle, 17/50 epoch'ta val F1=0.555) `evaluate.py --model siamese`, `eval_uncertainty.py --model siamese`; karşılaştırma tablosu; dropout'lu 3. Kaggle koşusu; `infer_area.py` Siamese ile; week-03 notu
-- **Bekleyen manuel işler (the project owner):** `models/siamese_best.pt` indirip `models/` altına koy (Kaggle kernel: quaketriage-siamese-training)
+- **Aktif hafta:** Hafta 4 — Bina bazında skor, nüfus, RAG chunk/embed (Hafta 3 tamamlandı)
+- **Sıradaki adım:** Hafta 4 başında açık soru: Antakya'da gerçek dedektör çıktısı yok; HOTOSM etiketleri girdi *ve* doğrulama olursa bina bazında precision/recall döngüsel olur → the project owner ile çözüm seç (ör. HOTOSM'u gürültü/kayma ekleyerek simüle et, ya da bina doğrulamasını Kilis/KATE-CD dışında raporlama)
+- **Bekleyen manuel işler (the project owner):** —
 
 ## Önemli metrikler
 
@@ -14,15 +14,15 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 
 ## Oturum kayıtları
 
-### 2026-11-02 — Hafta 3 (devam ediyor)
-- Siamese U-Net (`SiameseUNet`, paylaşılan encoder, |pre−post| skip) + `--model` bayrağı (train/evaluate). Ayrı Kaggle kernel: `kaggle/siamese/` (baseline notebook'una dokunulmadı).
-- Kalite guard'ı `data/quality.py` (boş/parlak oran + blok SSIM). SSIM eşiği KATE-CD ölçümüyle 0.4 → 0.05'e çekildi (`decisions.md`).
-- RAG ham metin: 3 PDF'te de metin katmanı var, OCR gerekmedi (`scripts/extract_rag_text.py`).
-- `scripts/infer_area.py` iskeleti (kayan pencere, guard, prob/belirsizlik GeoTIFF). Kilis kesiti (`download_kilis_crop.py`) ile gerçek görüntüde denendi; sadece pipeline gösterimi.
-- Belirsizlik çerçevesi: `uncertainty.py`, `eval_uncertainty.py`. Baseline (val): tek geçiş ECE 0.0247, MC Dropout 0.0163, TTA 0.0159; hata/belirsizlik oranı MC 7.2, TTA 13.9. Karar bekliyor: dropout'suz eğitilmiş modelde MC adil değil.
-- Kararlar: Siamese sonrası dropout'lu 3. koşu (ücretsiz Kaggle kotası), final modelde eşik F2 ile seçilecek (recall odaklı) — the project owner onayladı.
-- Siamese eğitimi: epoch 17/50, val F1=0.5548 (baseline 0.5196), 47 sn/epoch.
-- Not: `uv sync` ekstraları siler → `uv sync --all-extras`.
+### 2026-11-02 — Hafta 3 tamamlandı
+- **Siamese:** Kaggle'da eğitildi (23 epoch, en iyi 13), `models/siamese_best.pt` CLI ile indirildi. Test (thr 0.2, val'de seçildi): F1 0.602 vs baseline 0.502, ΔF1 +0.104 [+0.038, +0.166] (eşleştirilmiş bootstrap, `reports/comparison_siamese_vs_baseline_f1.json`).
+- **Eşik kuralı:** val'de seçilir (`evaluate.py --threshold-mode`); operasyon eşiği 0.2. F2 kararsız (ızgara kenarı) → "yüksek recall profili", varsayılan değil.
+- **Belirsizlik kararı:** 8 görünümlü TTA > MC Dropout (4 model×split'te Brier ve hata farkındalığı). Dropout'lu 3. Kaggle koşusu atlandı (the project owner onayı).
+- **Guard:** SSIM eşiği 0.05 (KATE-CD dağılımı). **infer_area.py:** Siamese + TTA, Kilis kesitinde çalışıyor (doğruluk kanıtı değil).
+- **RAG:** ham metin `data/interim/rag_text/` (OCR gerekmedi).
+- **Altyapı:** CI yeşil (CPU torch), `metrics.py` birleştirildi (çıktılar birebir aynı), `compare_models.py`, `models/loading.py`.
+- Ayrı Kaggle kernel `kaggle/siamese/` (baseline notebook'una dokunulmadı). Not: düz `uv sync` ekstraları siler → `uv sync --all-extras`.
+- Notlar: `docs/notes/week-03.md`. Sınırlama: model başına tek koşu, 38 test görüntüsü.
 
 ### 2026-11-02 — Hafta 2 tamamlandı
 - `KateCDDataset` sınıfı yazıldı (Parquet → tensör, flip/rot90/renk augmentasyonu).
