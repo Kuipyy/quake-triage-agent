@@ -214,7 +214,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [ ] HOTOSM yıkılmış etiketleriyle bina bazında precision/recall/F1. Bu, gerçek koşullara yakın test sonucudur.
 - [ ] Nüfus tahmini: WorldPop hücre nüfusu, binalara taban alanı × kat sayısı oranında dağıtılır. Gece katsayısı eklenir (deprem 04:17'de oldu, konutlar dolu).
 - [ ] Doğrulama kuyruğu kuralı: belirsizlik > τ veya guard uyarısı olan bina "saha doğrulaması gerekli" olarak işaretlenir.
-- [ ] **RAG chunk + embed:** Hafta 3'te hazırlanan ham metni bölüm bazında parçala (chunk). Metadata: belge, bölüm, sayfa. Çok dilli embedding (`paraphrase-multilingual-MiniLM-L12-v2`), numpy kosinüs benzerliği ile arama. Retrieval doğruluğu küçük altın setinde (10 soru-cevap) ölçülür.
+- [x] **RAG chunk + embed** (e5-small + BM25 hibrit; recall@1 0.8, MRR 0.80; bkz. `docs/decisions.md`): Hafta 3'te hazırlanan ham metni bölüm bazında parçala (chunk). Metadata: belge, bölüm, sayfa. Çok dilli embedding (`paraphrase-multilingual-MiniLM-L12-v2`), numpy kosinüs benzerliği ile arama. Retrieval doğruluğu küçük altın setinde (10 soru-cevap) ölçülür.
 - **DoD:** `data/processed/buildings.gpkg` (tüm alanlarla; GeoJSON yalnızca `reports/` altında harita çıktısı için WGS84'e çevrilerek üretilir), `reports/metrics_building.json`, harita önizleme HTML'i, RAG retrieval testi yeşil.
 
 ### Hafta 5 (30 Kasım – 6 Aralık) — Önceliklendirme ve rota

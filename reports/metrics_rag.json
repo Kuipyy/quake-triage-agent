@@ -1,0 +1,69 @@
+{
+  "n_questions": 10,
+  "n_chunks": 458,
+  "recall_at_1": 0.8,
+  "recall_at_3": 0.8,
+  "recall_at_5": 0.8,
+  "mrr": 0.8,
+  "embedding_model": "intfloat/multilingual-e5-small",
+  "hybrid": true,
+  "chunk_chars": 700,
+  "per_question": [
+    {
+      "q": "What is the purpose of the ASR Level 1 Wide Area Assessment?",
+      "rank": 1,
+      "top1": "INSARAG_Vol2_ManB p30-31"
+    },
+    {
+      "q": "What is the Level 2 Worksite Triage Assessment used for?",
+      "rank": 1,
+      "top1": "INSARAG_Vol2_ManB p31-32"
+    },
+    {
+      "q": "Why should the affected area be divided into sectors during a USAR response?",
+      "rank": 1,
+      "top1": "INSARAG_Vol2_ManB p25-25"
+    },
+    {
+      "q": "Which marking system should USAR teams apply at the worksite?",
+      "rank": 1,
+      "top1": "INSARAG_Vol2_ManB p45-45"
+    },
+    {
+      "q": "What must a team do before attempting a technical search of a collapsed structure?",
+      "rank": null,
+      "top1": "INSARAG_Vol2_ManB p20-20"
+    },
+    {
+      "q": "Where and with whom should a triage point be set up during rescue operations?",
+      "rank": 1,
+      "top1": "INSARAG_Vol3_Field p23-23"
+    },
+    {
+      "q": "TAMP'a göre müdahale yönetimi hangi üç aşamadan oluşur?",
+      "rank": 1,
+      "top1": "AFAD_TAMP p18-18"
+    },
+    {
+      "q": "Operasyon servisi nedir ve hangi alt servislere ayrılmıştır?",
+      "rank": 1,
+      "top1": "AFAD_TAMP p25-25"
+    },
+    {
+      "q": "AFAD hangi kanun gereği kurulmuştur?",
+      "rank": 1,
+      "top1": "AFAD_TAMP p1-3"
+    },
+    {
+      "q": "In the Turkish national disaster response plan, which three phases make up response management?",
+      "rank": null,
+      "top1": "INSARAG_Vol2_ManB p7-7"
+    }
+  ],
+  "provenance": {
+    "created_utc": "2026-11-02T20:35:54+00:00",
+    "git_sha": "3f6b11e",
+    "git_dirty": true,
+    "seed": null
+  }
+}

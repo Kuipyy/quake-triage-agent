@@ -5,6 +5,14 @@ One section per project week until the first tagged release.
 
 ## [Unreleased]
 
+### Week 4 — Building scores, population, RAG (in progress)
+- Found and fixed a wrong-bbox bug in `download_demo_area.py` (osmnx 2.x argument order): Week-1 buildings/roads
+  were ~10 km from the HOTOSM area. Corrected data pending an Overpass retry (public endpoints timed out).
+- `buildings/zonal.py`: per-building zonal statistics (mean probability/uncertainty, damaged fraction, NaN-aware,
+  `no_valid_pixels` flag for the verification queue); unit-tested on synthetic rasters.
+- RAG: section-aware chunker, local e5-small embeddings + BM25 hybrid search (`quaketriage.rag`), 10-question gold
+  set, retrieval ablation; recall@1 0.8, MRR 0.80 (`reports/metrics_rag.json`).
+
 ### Week 3 — Siamese model, uncertainty, guard, RAG text
 - Siamese trained on Kaggle (23 epochs, best epoch 13); paired bootstrap vs baseline on test (thr 0.2, val-tuned):
   F1 0.602 vs 0.502, ΔF1 +0.104 [+0.038, +0.166] (`scripts/compare_models.py`, `reports/comparison_*`).

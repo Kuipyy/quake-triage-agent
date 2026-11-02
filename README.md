@@ -212,6 +212,15 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `metrics_eda` | `test.mean_damaged_ratio` | 0.02825 |
 | `metrics_eda` | `test.median_damaged_ratio` | 0.02032 |
 | `metrics_eda` | `test.pct_with_any_damage` | 1 |
+| `metrics_rag` | `n_questions` | 10 |
+| `metrics_rag` | `n_chunks` | 458 |
+| `metrics_rag` | `recall_at_1` | 0.8 |
+| `metrics_rag` | `recall_at_3` | 0.8 |
+| `metrics_rag` | `recall_at_5` | 0.8 |
+| `metrics_rag` | `mrr` | 0.8 |
+| `metrics_rag` | `embedding_model` | intfloat/multilingual-e5-small |
+| `metrics_rag` | `hybrid` | True |
+| `metrics_rag` | `chunk_chars` | 700 |
 | `metrics_siamese` | `checkpoint` | siamese_best.pt |
 | `metrics_siamese` | `model` | siamese |
 | `metrics_siamese` | `split` | test |
@@ -296,6 +305,7 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `metrics_siamese_f2` | `bootstrap_ci.iou.ci95_lo` | 0.3312 |
 | `metrics_siamese_f2` | `bootstrap_ci.iou.ci95_hi` | 0.4992 |
 | `metrics_siamese_f2` | `inference_secs` | 4.1 |
+| `rag_ablation` | `n_questions` | 10 |
 | `uncertainty_baseline_test` | `model` | early_fusion |
 | `uncertainty_baseline_test` | `checkpoint` | baseline_best.pt |
 | `uncertainty_baseline_test` | `split` | test |
