@@ -23,6 +23,11 @@ training:
   learning_rate: 1.0e-4
   image_size: 512
 
+inference:
+  tile_size: 512
+  overlap: 64         # pixels shared between neighbouring windows
+  tta_flips: true     # uncertainty placeholder: std over identity/hflip/vflip (method chosen later)
+
 thresholds:
   damage_prob: 0.5       # tuned on validation set
   uncertainty_high: 0.2  # buildings above this go to verification queue

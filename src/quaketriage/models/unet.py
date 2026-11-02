@@ -7,11 +7,13 @@ import torch
 import torch.nn as nn
 
 
-def build_unet(in_channels: int = 6, encoder: str = "resnet34") -> nn.Module:
+def build_unet(
+    in_channels: int = 6, encoder: str = "resnet34", encoder_weights: str | None = "imagenet"
+) -> nn.Module:
     """Return an early-fusion U-Net with the given encoder."""
     model = smp.Unet(
         encoder_name=encoder,
-        encoder_weights="imagenet",
+        encoder_weights=encoder_weights,
         in_channels=in_channels,
         classes=1,
         activation=None,  # raw logits; sigmoid applied in loss/metrics
