@@ -1,0 +1,39 @@
+{
+  "model": "early_fusion",
+  "checkpoint": "baseline_best.pt",
+  "split": "validation",
+  "threshold": 0.5,
+  "T": 10,
+  "dropout_p": 0.1,
+  "n": 44,
+  "results": {
+    "single": {
+      "f1": 0.5196,
+      "ece": 0.02467,
+      "brier": 0.02702,
+      "uncertainty_error_ratio": null,
+      "mean_uncertainty": null
+    },
+    "mc_dropout": {
+      "f1": 0.5208,
+      "ece": 0.01629,
+      "brier": 0.02479,
+      "uncertainty_error_ratio": 7.161,
+      "mean_uncertainty": 0.01983
+    },
+    "tta": {
+      "f1": 0.5006,
+      "ece": 0.01593,
+      "brier": 0.02296,
+      "uncertainty_error_ratio": 13.882,
+      "mean_uncertainty": 0.01941
+    }
+  },
+  "note": "MC dropout applied at inference only (checkpoint trained without dropout).",
+  "provenance": {
+    "created_utc": "2026-11-02T19:33:57+00:00",
+    "git_sha": "be033aa",
+    "git_dirty": true,
+    "seed": null
+  }
+}

@@ -15,6 +15,7 @@ model:
   in_channels: 6  # pre + post concatenated
   num_classes: 1
   mc_dropout_samples: 10
+  mc_dropout_p: 0.1
 
 training:
   batch_size: 8
