@@ -10,26 +10,27 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
       - run: uvx ruff check .
 
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
-      # Install core + dev deps only (no train/agent/ui extras — keeps CI fast)
-      - run: uv sync --frozen
+      # Core + `train` extra: PyTorch is the CPU-only wheel on Linux (see [tool.uv.sources]).
+      # The agent/ui extras are not needed for the current tests.
+      - run: uv sync --frozen --extra train
       - run: uv run pytest -q -m "not slow and not network and not gpu"
 
   report-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
       - run: uv sync --frozen
