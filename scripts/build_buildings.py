@@ -34,6 +34,11 @@ ROOT = Path(__file__).parents[1]
 MISS_GRID = (0.0, 0.1, 0.2, 0.4)
 FA_GRID = (0.0, 0.02, 0.05, 0.1)
 SEEDS = range(5)
+KEEP_COLUMNS = [
+    "id", "element", "building", "name", "amenity", "building:levels", "floors",
+    "floor_area_m2", "residents_day", "estimated_persons", "destroyed_truth", "damage_prob",
+    "uncertainty", "damaged", "needs_verification", "verification_reason",
+]
 ZONE_BUFFER_M = 100.0  # OSM buildings kept within this distance of a HOTOSM polygon
 
 
@@ -70,7 +75,8 @@ def main() -> None:
 
     out = ROOT / get("paths.data_processed") / "buildings.gpkg"
     out.parent.mkdir(parents=True, exist_ok=True)
-    sim.to_crs(get_project_crs()).to_file(out, driver="GPKG")
+    keep = [c for c in KEEP_COLUMNS if c in sim.columns]
+    sim[keep + ["geometry"]].to_crs(get_project_crs()).to_file(out, driver="GPKG")
 
     grid = []
     for miss, fa in itertools.product(MISS_GRID, FA_GRID):

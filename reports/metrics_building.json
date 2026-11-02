@@ -1,6 +1,6 @@
 {
   "SIMULATED_DETECTOR": true,
-  "disclaimer": "damage_prob/uncertainty are simulated from HOTOSM labels; these numbers measure planning-pipeline robustness to detector noise, NOT model accuracy.",
+  "disclaimer": "damage_prob/uncertainty are simulated from HOTOSM labels; these numbers measure planning-pipeline robustness to detector noise, NOT model accuracy. Recall/precision follow from the chosen miss/false-alarm rates by construction. queue_share is NOT informative here: simulated uncertainty does not depend on whether the detector is right (on KATE-CD real uncertainty is 14-21x higher on wrong pixels, reports/uncertainty_*.json).",
   "n_buildings": 5895,
   "n_destroyed_truth": 732,
   "demo_set": {
@@ -259,8 +259,8 @@
     }
   ],
   "provenance": {
-    "created_utc": "2026-11-02T20:47:49+00:00",
-    "git_sha": "b9992c8",
+    "created_utc": "2026-11-02T20:49:53+00:00",
+    "git_sha": "902494d",
     "git_dirty": true,
     "seed": null
   }

@@ -201,7 +201,7 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `metrics_baseline_f2` | `bootstrap_ci.iou.ci95_hi` | 0.432 |
 | `metrics_baseline_f2` | `inference_secs` | 3.1 |
 | `metrics_building` | `SIMULATED_DETECTOR` | True |
-| `metrics_building` | `disclaimer` | damage_prob/uncertainty are simulated from HOTOSM labels; these numbers measure planning-pipeline robustness to detector noise, NOT model accuracy. |
+| `metrics_building` | `disclaimer` | damage_prob/uncertainty are simulated from HOTOSM labels; these numbers measure planning-pipeline robustness to detector noise, NOT model accuracy. Recall/precision follow from the chosen miss/false-alarm rates by construction. queue_share is NOT informative here: simulated uncertainty does not depend on whether the detector is right (on KATE-CD real uncertainty is 14-21x higher on wrong pixels, reports/uncertainty_*.json). |
 | `metrics_building` | `n_buildings` | 5895 |
 | `metrics_building` | `n_destroyed_truth` | 732 |
 | `metrics_building` | `demo_set.zone_buffer_m` | 100 |

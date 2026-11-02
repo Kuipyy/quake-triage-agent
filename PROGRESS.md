@@ -3,9 +3,9 @@
 > Her oturum sonunda Claude günceller. En yeni kayıt en üstte.
 
 ## Durum özeti
-- **Aktif hafta:** Hafta 4 — Bina bazında skor, nüfus, RAG chunk/embed (Hafta 3 tamamlandı)
-- **Sıradaki adım:** Hafta 4 başında açık soru: Antakya'da gerçek dedektör çıktısı yok; HOTOSM etiketleri girdi *ve* doğrulama olursa bina bazında precision/recall döngüsel olur → the project owner ile çözüm seç (ör. HOTOSM'u gürültü/kayma ekleyerek simüle et, ya da bina doğrulamasını Kilis/KATE-CD dışında raporlama)
-- **Bekleyen manuel işler (the project owner):** —
+- **Aktif hafta:** Hafta 5 — TOPSIS önceliklendirme, rota/zaman planı (Hafta 4 tamamlandı)
+- **Sıradaki adım:** `PLAN.md` Hafta 5 bölümünü oku; bina tablosu `data/processed/buildings.gpkg` (5.895 bina, simüle dedektör), yol grafiği `data/raw/demo/antakya_roads.graphml`; simüle gürültünün öncelik sırasına etkisi için `reports/metrics_building.json` ızgarası kullanılacak
+- **Bekleyen manuel işler (the project owner):** `reports/map_preview.html` dosyasını tarayıcıda aç ve bak (Claude Chrome uzantısına bağlanamadı); sorun görürsen söyle
 
 ## Önemli metrikler
 
@@ -13,6 +13,14 @@ Metrikler `reports/*.json` dosyalarından otomatik üretilir ve `README.md` sonu
 Güncel değerler için: `uv run python scripts/make_report.py --check` → [README.md](../README.md#results)
 
 ## Oturum kayıtları
+
+### 2026-11-02 — Hafta 4 tamamlandı
+- **Veri hatası:** OSM indirme `bbox` sırası yanlıştı (osmnx 2.x) → Hafta 1 verisi yanlış bölgeydi. Düzeltildi: 53.028 bina, 30.718 yol kenarı; `check_data.py` sınır doğrulaması eklendi; indirme scripti retry/backoff ile (Overpass kapasite sorunu yaşandı).
+- **Zonal istatistik** (`buildings/zonal.py`), **nüfus** (`buildings/population.py`, gece 0.9 / konut dışı 0.1 varsayımları config'te), **doğrulama kuyruğu** (`buildings/queue.py`); hepsi testli. YAML'da tırnaksız `yes` boolean oluyordu — düzeltildi.
+- **Bina bazlı değerlendirme:** bugünkü OSM'de yıkık binalar yok (8 örtüşme) → demo kümesi 732 HOTOSM yıkık + 5.163 yakın OSM binası; dedektör simüle (`buildings/simulate.py`); `reports/metrics_building.json` = gürültü duyarlılığı (SIMULATED işaretli), model doğruluğu iddiası değil.
+- **RAG:** bölüm farkında chunk, e5-small + BM25 hibrit; altın sette recall@1 0.8, MRR 0.80 (`reports/metrics_rag.json`, `reports/rag_ablation.json`). Bilinen kayıplar: Vol III tablo metni, İng→Türkçe.
+- **DoD:** `data/processed/buildings.gpkg`, `reports/metrics_building.json`, `reports/map_preview.html` (3.2 MB; tarayıcıda doğrulanamadı).
+- Notlar: `docs/notes/week-04.md`. CI yeşil, 76 test.
 
 ### 2026-11-02 — Hafta 3 tamamlandı
 - **Siamese:** Kaggle'da eğitildi (23 epoch, en iyi 13), `models/siamese_best.pt` CLI ile indirildi. Test (thr 0.2, val'de seçildi): F1 0.602 vs baseline 0.502, ΔF1 +0.104 [+0.038, +0.166] (eşleştirilmiş bootstrap, `reports/comparison_siamese_vs_baseline_f1.json`).
