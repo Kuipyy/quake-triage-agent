@@ -102,11 +102,15 @@ def alignment_ssim(
 def check_image_quality(inp: QualityInput) -> QualityReport:
     """Agent tool: decide whether a pre/post pair is trustworthy enough for inference."""
     if inp.pre.shape != inp.post.shape or inp.pre.ndim != 3:
-        raise ValueError(f"pre/post must share HxWxC shape, got {inp.pre.shape} vs {inp.post.shape}")
+        raise ValueError(
+            f"pre/post must share HxWxC shape, got {inp.pre.shape} vs {inp.post.shape}"
+        )
 
-    blank = max(blank_ratio(inp.pre, inp.blank_threshold), blank_ratio(inp.post, inp.blank_threshold))
+    blank = max(
+        blank_ratio(img, inp.blank_threshold) for img in (inp.pre, inp.post)
+    )
     bright = max(
-        bright_ratio(inp.pre, inp.bright_threshold), bright_ratio(inp.post, inp.bright_threshold)
+        bright_ratio(img, inp.bright_threshold) for img in (inp.pre, inp.post)
     )
     ssim = alignment_ssim(inp.pre, inp.post, inp.change_mask, inp.block)
 
