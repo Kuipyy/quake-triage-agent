@@ -197,9 +197,9 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [x] **Baseline:** early-fusion U-Net (6 kanal girdi, ResNet34 encoder, ImageNet ağırlıkları)
 - [x] Kayıp: Dice + Focal. Eşik doğrulama setinde F1'e göre seçilir.
 - [x] Eğitim: önce Mac MPS'te. Epoch başına 3 dakikadan uzun sürerse Kaggle GPU'ya geçilir (`kaggle/` + `kaggle kernels push`). → MPS 409s/epoch → Kaggle notebook hazırlandı.
-- [ ] Değerlendirme: hasar sınıfı için IoU, F1, precision, recall → `reports/metrics_baseline.json`, tahmin örnekleri figürü
+- [x] Değerlendirme: hasar sınıfı için IoU, F1, precision, recall → `reports/metrics_baseline.json`, tahmin örnekleri figürü
 - [ ] **Ek değerlendirme (hasarsız pencereler):** Demo bölgesinde HOTOSM etiketlenmeyen alanları "hasarsız" varsayarak sliding window uygula; yanlış pozitif oranını ayrıca raporla. *Eğitim veri setini değiştirme, yalnızca bu ek metriği ekle.*
-- **DoD:** Test metrikleri JSON'da, figür hazır, checkpoint `models/` altında.
+- **DoD:** Test metrikleri JSON'da, figür hazır, checkpoint `models/` altında. ✓ (yalnızca hasarsız pencere değerlendirmesi Hafta 3'e taşındı)
 
 ### Hafta 3 (16–22 Kasım) — Siamese model, belirsizlik, guard, RAG ön işlemesi
 - [ ] **Siamese U-Net:** paylaşılan encoder, her ölçekte |f_öncesi − f_sonrası| farkı decoder'a verilir. Baseline ile karşılaştırma tablosu.

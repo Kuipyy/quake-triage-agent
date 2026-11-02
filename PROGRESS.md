@@ -3,8 +3,8 @@
 > Her oturum sonunda Claude günceller. En yeni kayıt en üstte.
 
 ## Durum özeti
-- **Aktif hafta:** Hafta 2 — Baseline model (9–15 Kasım)
-- **Sıradaki adım:** Dataset sınıfı (Parquet → tensör), early-fusion U-Net baseline
+- **Aktif hafta:** Hafta 3 — Siamese model, belirsizlik, guard, RAG ön işlemesi
+- **Sıradaki adım:** Siamese U-Net, MC Dropout + TTA karşılaştırması, quality guard, infer_area.py
 - **Bekleyen manuel işler (the project owner):** —
 
 ## Önemli metrikler
@@ -13,6 +13,18 @@ Metrikler `reports/*.json` dosyalarından otomatik üretilir ve `README.md` sonu
 Güncel değerler için: `uv run python scripts/make_report.py --check` → [README.md](../README.md#results)
 
 ## Oturum kayıtları
+
+### 2026-11-02 — Hafta 2 tamamlandı
+- `KateCDDataset` sınıfı yazıldı (Parquet → tensör, flip/rot90/renk augmentasyonu).
+- Early-fusion U-Net (6 kanal, ResNet34, ImageNet): `src/quaketriage/models/unet.py`.
+- Kayıp: Dice + Focal (`DiceFocalLoss`); eşik val F1'e göre threshold sweep ile seçildi.
+- Eğitim MPS'te 409s/epoch → Kaggle GPU'ya taşındı. Notebook: `kaggle/train.ipynb` (internet + HF_TOKEN Kaggle Secret gerekti).
+- Kaggle eğitimi: epoch 33'te erken durdurma, val F1=0.520. Checkpoint `models/baseline_best.pt`.
+- `scripts/evaluate.py` yazıldı: bootstrap CI, figür, `reports/metrics_baseline.json`.
+- **Test sonuçları (threshold=0.5):** F1=0.490 [0.370–0.582], Precision=0.657, Recall=0.391, IoU=0.325.
+- Hasarsız pencere değerlendirmesi Hafta 3'e taşındı (`infer_area.py` ile birlikte yapılacak).
+- Kaggle kernel slug: `YOUR_KAGGLE_USERNAME/quaketriage-training` (metadata'daki `quaketriage-train`'den farklı — Kaggle otomatik değiştirdi).
+- Sıradaki: Hafta 3 — Siamese model, MC Dropout + TTA, quality guard, RAG metin çıkarımı.
 
 ### 2026-10-31 — Hafta 1 tamamlandı
 - KATE-CD indirildi (446 MB, 404+44+38 örnek). EDA: yalnızca pre_image/post_image/label sütunları, koordinat yok. Ortalama hasarlı piksel oranı %3.7 (train) — ciddi sınıf dengesizliği.
