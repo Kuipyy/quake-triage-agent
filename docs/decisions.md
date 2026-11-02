@@ -20,3 +20,7 @@
 ## 2026-11-02 — RAG source text: no OCR needed
 Decision: extract INSARAG Vol II/III and AFAD TAMP with `pypdf` directly (`scripts/extract_rag_text.py`); `pypdf` moved from the `agent` extra to base dependencies.
 Reason: all three PDFs have a text layer (≤2 low-text pages each, outlines present), so `pytesseract` (not installed) is unnecessary.
+
+## 2026-11-02 — Guard SSIM threshold recalibrated 0.4 → 0.05
+Decision: `thresholds.guard_ssim_min` = 0.05.
+Reason: block-SSIM between pre/post on unchanged areas of KATE-CD pairs (different sensors, sun angles, off-nadir) has median 0.24 (val) / 0.32 (test) and 5th percentile 0.06–0.08; the initial guess of 0.4 would reject 76–84% of the pairs the model was trained and evaluated on. The Kilis demo crop scores 0.20–0.27, i.e. typical for this data. Raw SSIM therefore only catches gross misregistration (≈0), not parallax; a feature-based co-registration check is a possible future improvement.

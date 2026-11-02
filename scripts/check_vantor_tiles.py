@@ -1,4 +1,6 @@
 """Inspect the overlapping pre/post Vantor tile pair and fetch item details."""
+from urllib.parse import urljoin
+
 import requests
 
 BASE = "https://maxar-opendata.s3.amazonaws.com/events/Kahramanmaras-turkey-earthquake-23"
@@ -31,12 +33,8 @@ def inspect_collection(col_id: str, label: str):
     print(f"  items: {len(item_links)}")
 
     for lk in item_links[:3]:
-        href = lk["href"].lstrip("./")
-        if not href.startswith("http"):
-            # resolve relative to collection URL directory
-            item_url = f"{BASE}/ard/acquisition_collections/{href}"
-        else:
-            item_url = href
+        # item links are relative to the collection file (e.g. ../37/<quadkey>/...)
+        item_url = urljoin(url, lk["href"])
         item = fetch_json(item_url)
         if item is None:
             continue
@@ -45,7 +43,7 @@ def inspect_collection(col_id: str, label: str):
         assets = item.get("assets", {})
         for k, v in assets.items():
             href_a = v.get("href", "")
-            print(f"    asset [{k}]: {href_a[:100]}")
+            print(f"    asset [{k}]: {urljoin(item_url, href_a)[:100]}")
 
 
 def main():

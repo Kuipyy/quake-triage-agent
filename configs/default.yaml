@@ -33,7 +33,7 @@ thresholds:
   uncertainty_high: 0.2  # buildings above this go to verification queue
   guard_blank_ratio: 0.3
   guard_bright_ratio: 0.2
-  guard_ssim_min: 0.4
+  guard_ssim_min: 0.05  # ~5th pct of KATE-CD pairs (see docs/decisions.md)
 
 topsis:
   weights:
