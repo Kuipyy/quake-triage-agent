@@ -22,7 +22,7 @@ def download_buildings():
     print("Downloading OSM building footprints for Antakya...")
     tags = {"building": True}
     gdf = ox.features_from_bbox(
-        bbox=(DEMO_BBOX[3], DEMO_BBOX[1], DEMO_BBOX[2], DEMO_BBOX[0]),  # N, S, E, W
+        bbox=DEMO_BBOX,  # osmnx >= 2: (left, bottom, right, top) = (W, S, E, N)
         tags=tags,
     )
     # Keep only polygons (actual building footprints)
@@ -36,7 +36,7 @@ def download_buildings():
 def download_roads():
     print("Downloading OSM road network for Antakya...")
     G = ox.graph_from_bbox(
-        bbox=(DEMO_BBOX[3], DEMO_BBOX[1], DEMO_BBOX[2], DEMO_BBOX[0]),  # N, S, E, W
+        bbox=DEMO_BBOX,  # osmnx >= 2: (left, bottom, right, top) = (W, S, E, N)
         network_type="drive",
     )
     out = OUT_DIR / "antakya_roads.graphml"

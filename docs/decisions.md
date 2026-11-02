@@ -38,3 +38,8 @@ Reason: all three PDFs have a text layer (≤2 low-text pages each, outlines pre
 ## 2026-11-02 — Guard SSIM threshold recalibrated 0.4 → 0.05
 Decision: `thresholds.guard_ssim_min` = 0.05.
 Reason: block-SSIM between pre/post on unchanged areas of KATE-CD pairs (different sensors, sun angles, off-nadir) has median 0.24 (val) / 0.32 (test) and 5th percentile 0.06–0.08; the initial guess of 0.4 would reject 76–84% of the pairs the model was trained and evaluated on. The Kilis demo crop scores 0.20–0.27, i.e. typical for this data. Raw SSIM therefore only catches gross misregistration (≈0), not parallax; a feature-based co-registration check is a possible future improvement.
+
+## 2026-11-02 — Antakya OSM download used the wrong bbox (fixed)
+Finding: `scripts/download_demo_area.py` passed `bbox` to osmnx as (N, S, E, W), the osmnx 1.x order; the installed osmnx 2.1.1 expects (left, bottom, right, top). The Week-1 buildings (1876) and road graph (717 edges) therefore covered lon 36.25–36.30 / lat 36.10–36.15, ~10 km away from the HOTOSM destroyed buildings (732 in lon 36.13–36.18 / lat 36.16–36.26), with zero overlap. Caught at the start of Week 4 when checking building/HOTOSM overlap.
+Fix: script now passes `DEMO_BBOX` unchanged. The old files were moved (not deleted) to `data/raw/demo/_wrong_bbox/`; the correct data is re-downloaded when Overpass is reachable (all public Overpass endpoints timed out on 2026-11-02).
+Lesson: after every download, assert that the result lies inside the intended bbox (added to `check_data.py` once the data is back).
