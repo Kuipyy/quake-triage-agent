@@ -16,3 +16,7 @@
 | 2026-10-31 | RAG preprocessing moved from Week 6 to Weeks 3–4 | Week 6 was overloaded (RAG + LLM adaptor + 9 tools + LangGraph + what-if + CLI). INSARAG PDFs are scanned (no text layer); OCR risk should be resolved early. Week 3: extract text + OCR if needed. Week 4: chunk + embed + retrieval test. | Keep in Week 6 and risk discovering OCR problem late |
 | 2026-10-31 | INSARAG PDF strategy: find text-layer version first; fallback to pytesseract (EN) | INSARAG Vol II/III have no extractable text. Preferred: find a newer or alternative version with text layer. Fallback: pytesseract with English language pack. | pdfplumber + heuristic extraction; paying for an OCR API |
 | 2026-10-31 | Demo area: Antakya — fallback plan activated | Vantor catalog has only 1 overlapping pre/post tile pair (Kilis area), but Kilis has 1 HOTOSM destroyed building vs Antakya's 732. No matching Vantor post-earthquake tile exists for Antakya. HOTOSM destroyed buildings used as simulated detector output for the planning demo. Model performance reported on KATE-CD only. README notes this clearly. | Use Kilis tiles (real imagery but almost no validation data); use xBD for a different region |
+
+## 2026-11-02 — RAG source text: no OCR needed
+Decision: extract INSARAG Vol II/III and AFAD TAMP with `pypdf` directly (`scripts/extract_rag_text.py`); `pypdf` moved from the `agent` extra to base dependencies.
+Reason: all three PDFs have a text layer (≤2 low-text pages each, outlines present), so `pytesseract` (not installed) is unnecessary.

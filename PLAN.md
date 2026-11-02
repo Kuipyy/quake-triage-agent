@@ -206,7 +206,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [ ] **Belirsizlik:** SMP decoder'ına dropout katmanı ekle. MC Dropout (T=10) ve TTA (flip/rot90 kombinasyonları) yöntemlerini ECE ve güvenilirlik diyagramıyla karşılaştır; kazanan yöntem `docs/decisions.md`'ye yazılır.
 - [x] **Görüntü kalitesi guard'ı** (`quality.py`): boş/siyah alan oranı, aşırı parlak/bulutlu piksel oranı, değişmemesi beklenen alanlarda SSIM ile hizalama skoru. Birim testleri yazılır.
 - [ ] `scripts/infer_area.py`: demo bölgesinde kayan pencere (sliding window) ile çıkarım → hasar olasılığı ve belirsizlik GeoTIFF'leri
-- [ ] **RAG ön işlemesi — başlangıç:** INSARAG Vol II/III için metin katmanlı PDF alternatif ara (insarag.org güncel sürüm veya HTML). Bulunamazsa `pytesseract` + İngilizce dil paketi ile OCR uygula. TAMP için `pypdf` doğrudan yeterli (metin katmanı doğrulandı). Ham metin ve metadata (belge, bölüm, sayfa) `data/interim/rag_text/` altına kaydedilir.
+- [x] **RAG ön işlemesi — başlangıç:** INSARAG Vol II/III için metin katmanlı PDF alternatif ara (insarag.org güncel sürüm veya HTML). Bulunamazsa `pytesseract` + İngilizce dil paketi ile OCR uygula. TAMP için `pypdf` doğrudan yeterli (metin katmanı doğrulandı). Ham metin ve metadata (belge, bölüm, sayfa) `data/interim/rag_text/` altına kaydedilir.
 - **DoD:** Karşılaştırma tablosu, demo bölgesi rasterları, guard testleri yeşil, ham RAG metni hazır.
 
 ### Hafta 4 (23–29 Kasım) — Bina bazında skor, nüfus, RAG chunk/embed
