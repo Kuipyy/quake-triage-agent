@@ -110,6 +110,21 @@ def save_manifest(entries: dict) -> None:
     MANIFEST_PATH.write_text(json.dumps(entries, indent=2, ensure_ascii=False) + "\n")
 
 
+def check_demo_extent(tol: float = 0.01) -> bool:
+    """Guard against the Week-1 bbox-order bug: demo buildings must lie inside the demo bbox."""
+    import geopandas as gpd
+
+    from quaketriage.config import get
+
+    w, s_, e, n = get("geo.demo_bbox")
+    path = BASE / "data/raw/demo/antakya_buildings.gpkg"
+    minx, miny, maxx, maxy = gpd.read_file(path).total_bounds
+    inside = minx >= w - tol and miny >= s_ - tol and maxx <= e + tol and maxy <= n + tol
+    print(f"  {'OK ' if inside else 'BAD'} Antakya buildings extent "
+          f"[{minx:.3f}, {miny:.3f}, {maxx:.3f}, {maxy:.3f}] vs demo bbox {[w, s_, e, n]}")
+    return bool(inside)
+
+
 def main() -> int:
     manifest = load_manifest()
     ok = True
@@ -149,6 +164,9 @@ def main() -> int:
             "size_bytes": size,
             "checked_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         }
+
+    if ok and not check_demo_extent():
+        ok = False
 
     save_manifest(updated)
     print(f"\nManifest written → {MANIFEST_PATH.relative_to(BASE)}")

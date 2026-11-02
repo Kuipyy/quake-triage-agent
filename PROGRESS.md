@@ -39,7 +39,7 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 ### 2026-10-31 — Hafta 1 tamamlandı
 - KATE-CD indirildi (446 MB, 404+44+38 örnek). EDA: yalnızca pre_image/post_image/label sütunları, koordinat yok. Ortalama hasarlı piksel oranı %3.7 (train) — ciddi sınıf dengesizliği.
 - Demo bölgesi kararı: **Antakya, yedek plan**. Vantor STAC'ta 76 koleksiyon tarandı; tek örtüşen pre/post çifti Kilis bölgesinde ama orada yalnızca 1 HOTOSM yıkılmış bina var. Antakya'da 732 yıkılmış bina → HOTOSM etiketleri simüle edilmiş dedektör çıktısı olarak kullanılacak.
-- Antakya demo verisi indirildi: 1876 OSM binası, 717 yol kenarı, WorldPop 100m (20 MB).
+- Antakya demo verisi indirildi (**not:** 1876 bina/717 kenar yanlış bölgeydi, Hafta 4'te düzeltildi: 53.028 bina, 30.718 kenar), WorldPop 100m (20 MB).
 - AFAD TAMP (3 MB), INSARAG Vol II Man B (2.8 MB), INSARAG Vol III (1.1 MB) indirildi.
 - `scripts/check_data.py` yeşil (10/10 dosya OK).
 - Kararlar `docs/decisions.md`'ye yazıldı.

@@ -62,7 +62,7 @@ population:
     retail: 2
     school: 3
     hospital: 4
-  residential_types: [yes, house, detached, semidetached_house, residential, apartments, terrace]
+  residential_types: ["yes", house, detached, semidetached_house, residential, apartments, terrace]
 
 topsis:
   weights:
@@ -88,4 +88,5 @@ llm:
   retry_base_delay: 2.0
 
 geo:
+  demo_bbox: [36.10, 36.15, 36.25, 36.30]  # Antakya (minlon, minlat, maxlon, maxlat); osmnx>=2 order
   crs: "EPSG:32637"  # UTM zone 37N — Kahramanmaraş area

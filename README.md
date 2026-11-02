@@ -200,6 +200,31 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `metrics_baseline_f2` | `bootstrap_ci.iou.ci95_lo` | 0.2563 |
 | `metrics_baseline_f2` | `bootstrap_ci.iou.ci95_hi` | 0.432 |
 | `metrics_baseline_f2` | `inference_secs` | 3.1 |
+| `metrics_building` | `SIMULATED_DETECTOR` | True |
+| `metrics_building` | `disclaimer` | damage_prob/uncertainty are simulated from HOTOSM labels; these numbers measure planning-pipeline robustness to detector noise, NOT model accuracy. |
+| `metrics_building` | `n_buildings` | 5895 |
+| `metrics_building` | `n_destroyed_truth` | 732 |
+| `metrics_building` | `demo_set.zone_buffer_m` | 100 |
+| `metrics_building` | `demo_set.osm_footprints_overlapping_hotosm` | 8 |
+| `metrics_building` | `demo_set.note` | destroyed footprints come from HOTOSM; others are nearby OSM buildings |
+| `metrics_building` | `base_scenario.miss_rate` | 0.2 |
+| `metrics_building` | `base_scenario.false_alarm_rate` | 0.03 |
+| `metrics_building` | `base_scenario.size_exponent` | 1 |
+| `metrics_building` | `base_scenario.seed` | 0 |
+| `metrics_building` | `base_scenario.metrics.n` | 5895 |
+| `metrics_building` | `base_scenario.metrics.n_truth` | 732 |
+| `metrics_building` | `base_scenario.metrics.tp` | 593 |
+| `metrics_building` | `base_scenario.metrics.fp` | 141 |
+| `metrics_building` | `base_scenario.metrics.fn` | 139 |
+| `metrics_building` | `base_scenario.metrics.precision` | 0.8079 |
+| `metrics_building` | `base_scenario.metrics.recall` | 0.8101 |
+| `metrics_building` | `base_scenario.metrics.f1` | 0.809 |
+| `metrics_building` | `base_scenario.metrics.persons_in_destroyed` | 1.252e+04 |
+| `metrics_building` | `base_scenario.metrics.person_recall` | 0.9275 |
+| `metrics_building` | `base_scenario.queue_share` | 0.019 |
+| `metrics_building` | `population.residents_day` | 6.177e+04 |
+| `metrics_building` | `population.estimated_persons_night` | 5.463e+04 |
+| `metrics_building` | `n_seeds` | 5 |
 | `metrics_eda` | `train.n_samples` | 404 |
 | `metrics_eda` | `train.mean_damaged_ratio` | 0.03669 |
 | `metrics_eda` | `train.median_damaged_ratio` | 0.02069 |

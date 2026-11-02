@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import geopandas as gpd
 import numpy as np
+import pandas as pd
 from pydantic import BaseModel, Field
 
 from quaketriage.config import get
@@ -32,7 +33,7 @@ def label_destroyed(
     crs = get_project_crs()
     b = buildings.to_crs(crs)
     h = hotosm.to_crs(crs)
-    union_geoms = h.geometry.buffer(0)
+    union_geoms = h.geometry.buffer(0).reset_index(drop=True)  # positional == label index
     pairs = gpd.sjoin(b[["geometry"]].reset_index(drop=True),
                       gpd.GeoDataFrame(geometry=union_geoms), predicate="intersects")
     overlap = np.zeros(len(b))
@@ -42,6 +43,36 @@ def label_destroyed(
         inter = b.geometry.iloc[i].intersection(cover)
         overlap[i] = inter.area / area[i] if area[i] > 0 else 0.0
     return overlap >= min_overlap
+
+
+def assemble_demo_buildings(
+    osm: gpd.GeoDataFrame, hotosm: gpd.GeoDataFrame, zone_buffer_m: float = 100.0,
+    min_overlap: float = 0.5,
+) -> tuple[gpd.GeoDataFrame, np.ndarray]:
+    """Demo building set: HOTOSM destroyed polygons + nearby OSM buildings (not destroyed).
+
+    The present-day OSM snapshot lacks most buildings that HOTOSM lists as destroyed (only a few
+    dozen overlap), so the destroyed footprints are taken from HOTOSM itself. OSM buildings that
+    overlap a HOTOSM polygon by >= ``min_overlap`` are dropped as duplicates; remaining OSM
+    buildings whose centroid lies within ``zone_buffer_m`` of a HOTOSM polygon are kept as
+    "not destroyed" (HOTOSM is incomplete, so this label is noisy). Returns (buildings in the
+    project CRS, boolean destroyed array).
+    """
+    crs = get_project_crs()
+    hot = gpd.GeoDataFrame(geometry=hotosm.to_crs(crs).geometry.buffer(0).reset_index(drop=True),
+                           crs=crs)
+    o = osm.to_crs(crs).reset_index(drop=True)
+    duplicate = label_destroyed(o, hot, min_overlap)
+    zone = hot.union_all().buffer(zone_buffer_m)
+    keep = o.geometry.centroid.within(zone).to_numpy() & ~duplicate
+    others = o[keep].copy()
+    destroyed_polys = hot.copy()
+    destroyed_polys["building"] = "yes"
+    destroyed_polys["source"] = "HOTOSM destroyed-building footprint"
+    out = gpd.GeoDataFrame(
+        pd.concat([others, destroyed_polys], ignore_index=True), crs=crs)
+    destroyed = np.r_[np.zeros(len(others), bool), np.ones(len(destroyed_polys), bool)]
+    return out, destroyed
 
 
 def simulate_detector(

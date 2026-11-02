@@ -9,12 +9,14 @@ from pathlib import Path
 import osmnx as ox
 from dotenv import load_dotenv
 
+from quaketriage.config import get
+
 load_dotenv()
 ox.settings.http_user_agent = "quaketriage-student-research/0.1 (non-commercial prototype)"
 ox.settings.requests_timeout = 300
 
 # Antakya demo bbox (minlon, minlat, maxlon, maxlat) — covers dense HOTOSM area
-DEMO_BBOX = (36.10, 36.15, 36.25, 36.30)   # ~17 km²
+DEMO_BBOX = tuple(get("geo.demo_bbox"))   # (minlon, minlat, maxlon, maxlat), ~17 km²
 DEMO_PLACE = "Antakya, Hatay, Turkey"
 
 OUT_DIR = Path("data/raw/demo")

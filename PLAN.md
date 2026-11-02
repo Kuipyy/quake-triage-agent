@@ -210,9 +210,9 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - **DoD:** Karşılaştırma tablosu, demo bölgesi rasterları, guard testleri yeşil, ham RAG metni hazır.
 
 ### Hafta 4 (23–29 Kasım) — Bina bazında skor, nüfus, RAG chunk/embed
-- [ ] Bina sınırları içinde zonal istatistik: `damage_prob` (ortalama), `uncertainty` (ortalama std), `damaged` (eşik)
-- [ ] HOTOSM yıkılmış etiketleriyle bina bazında precision/recall/F1. Bu, gerçek koşullara yakın test sonucudur.
-- [ ] Nüfus tahmini: WorldPop hücre nüfusu, binalara taban alanı × kat sayısı oranında dağıtılır. Gece katsayısı eklenir (deprem 04:17'de oldu, konutlar dolu).
+- [x] Bina sınırları içinde zonal istatistik (`buildings/zonal.py`, testli; Antakya'da görüntü yok, gerçek raster'a yalnızca Kilis kesitiyle uygulanabilir): `damage_prob` (ortalama), `uncertainty` (ortalama std), `damaged` (eşik)
+- [x] Bina bazında değerlendirme: HOTOSM etiketleri doğru kabul edildi, dedektör **simüle edildi** (gürültülü); precision/recall/kişi-ağırlıklı recall duyarlılık ızgarası `reports/metrics_building.json` (model doğruluğu değil, planlama hattının dayanıklılığı; bkz. `docs/decisions.md`).
+- [x] Nüfus tahmini (`buildings/population.py`; varsayımlar `configs/default.yaml` → `population.*`): WorldPop hücre nüfusu, binalara taban alanı × kat sayısı oranında dağıtılır. Gece katsayısı eklenir (deprem 04:17'de oldu, konutlar dolu).
 - [x] Doğrulama kuyruğu kuralı (`buildings/queue.py`, testli; gerçek veriye bağlanınca uygulanacak): belirsizlik > τ veya guard uyarısı olan bina "saha doğrulaması gerekli" olarak işaretlenir.
 - [x] **RAG chunk + embed** (e5-small + BM25 hibrit; recall@1 0.8, MRR 0.80; bkz. `docs/decisions.md`): Hafta 3'te hazırlanan ham metni bölüm bazında parçala (chunk). Metadata: belge, bölüm, sayfa. Çok dilli embedding (`paraphrase-multilingual-MiniLM-L12-v2`), numpy kosinüs benzerliği ile arama. Retrieval doğruluğu küçük altın setinde (10 soru-cevap) ölçülür.
 - **DoD:** `data/processed/buildings.gpkg` (tüm alanlarla; GeoJSON yalnızca `reports/` altında harita çıktısı için WGS84'e çevrilerek üretilir), `reports/metrics_building.json`, harita önizleme HTML'i, RAG retrieval testi yeşil.

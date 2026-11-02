@@ -21,6 +21,7 @@ from quaketriage.buildings.population import coverage, estimate_population
 from quaketriage.buildings.queue import flag_verification
 from quaketriage.buildings.simulate import (
     SimulatorConfig,
+    assemble_demo_buildings,
     building_metrics,
     label_destroyed,
     simulate_detector,
@@ -33,6 +34,7 @@ ROOT = Path(__file__).parents[1]
 MISS_GRID = (0.0, 0.1, 0.2, 0.4)
 FA_GRID = (0.0, 0.02, 0.05, 0.1)
 SEEDS = range(5)
+ZONE_BUFFER_M = 100.0  # OSM buildings kept within this distance of a HOTOSM polygon
 
 
 def main() -> None:
@@ -49,9 +51,11 @@ def main() -> None:
     bbox = buildings.total_bounds
     hotosm = hotosm.cx[bbox[0]:bbox[2], bbox[1]:bbox[3]]
 
-    destroyed = label_destroyed(buildings, hotosm)
-    print(f"{len(buildings)} buildings, {len(hotosm)} HOTOSM polygons in area, "
-          f"{int(destroyed.sum())} buildings labelled destroyed ({destroyed.mean():.1%})")
+    overlap_now = int(label_destroyed(buildings, hotosm).sum())
+    buildings, destroyed = assemble_demo_buildings(buildings, hotosm, ZONE_BUFFER_M)
+    print(f"only {overlap_now} current OSM footprints overlap HOTOSM polygons -> demo set built "
+          f"from {len(hotosm)} HOTOSM footprints + nearby OSM buildings: {len(buildings)} "
+          f"buildings, {int(destroyed.sum())} destroyed ({destroyed.mean():.1%})")
 
     buildings = estimate_population(buildings, raw / "demo/worldpop_turkey_100m.tif")
     cov = coverage(buildings)
@@ -85,8 +89,16 @@ def main() -> None:
     write_json(ROOT / get("paths.reports") / "metrics_building.json", {
         "SIMULATED_DETECTOR": True,
         "disclaimer": "damage_prob/uncertainty are simulated from HOTOSM labels; these numbers "
-                      "measure planning-pipeline robustness to detector noise, NOT model accuracy.",
+                      "measure planning-pipeline robustness to detector noise, NOT model accuracy. "
+                      "Recall/precision follow from the chosen miss/false-alarm rates by "
+                      "construction. queue_share is NOT informative here: simulated uncertainty "
+                      "does not depend on whether the detector is right (on KATE-CD real "
+                      "uncertainty is 14-21x higher on wrong pixels, reports/uncertainty_*.json).",
         "n_buildings": int(len(buildings)), "n_destroyed_truth": int(destroyed.sum()),
+        "demo_set": {
+            "zone_buffer_m": ZONE_BUFFER_M,
+            "osm_footprints_overlapping_hotosm": overlap_now,
+            "note": "destroyed footprints come from HOTOSM; others are nearby OSM buildings"},
         "base_scenario": {"miss_rate": args.miss, "false_alarm_rate": args.false_alarm,
                           "size_exponent": args.size_exponent, "seed": args.seed,
                           "metrics": metrics,

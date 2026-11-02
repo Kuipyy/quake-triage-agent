@@ -56,9 +56,9 @@ marked `TBD` until verified.
 
 - **Source:** HDX `hotosm_tur_buildings` or OSMnx/Overpass.
 - **Use:** footprints, floor counts (`building:levels`, often missing), drivable road graph.
-- **WARNING (2026-11-02):** the Week-1 download (1876 buildings, 717 road edges) used a wrong bbox order and covers lon 36.25–36.30 / lat 36.10–36.15, not the HOTOSM area. Moved to `data/raw/demo/_wrong_bbox/`; the counts above are void until the corrected re-download (see `docs/decisions.md`).
+- **Correction (2026-11-02):** the Week-1 download used a wrong bbox order and was replaced; the correct OSM query returned 53,028 building footprints and a road graph of 11,768 nodes / 30,718 edges inside the demo bbox (old, wrong files kept in `data/raw/demo/_wrong_bbox/`). `check_data.py` now asserts the extent. Today's OSM contains almost none of the buildings HOTOSM lists as destroyed (8 overlap), so the planning demo set is built from HOTOSM footprints + nearby OSM buildings (`docs/decisions.md`).
 - **Known issue:** floor count coverage is partial; the fallback rule is documented in the occupancy step (Week 4).
-- **Query date:** 2026-10-31. **Cache paths:** `data/raw/demo/antakya_buildings.gpkg` (1876 buildings, 598 KB), `data/raw/demo/antakya_roads.graphml` (314 nodes / 717 edges, 356 KB).
+- **Query date:** 2026-10-31. **Cache paths:** `data/raw/demo/antakya_buildings.gpkg` (53,028 buildings after the 2026-11-02 re-download; the original 1876 were the wrong area), `data/raw/demo/antakya_roads.graphml` (314 nodes / 717 edges, 356 KB).
 - **Demo bbox:** 36.10–36.25°E, 36.15–36.30°N (Antakya, Hatay). CRS: WGS84 (EPSG:4326) from OSMnx; reprojected to EPSG:32637 in pipeline.
 - **SHA-256 (first 16 hex):** buildings `51e75a0da61fd6c9...`, roads `ee74e58ce98f80b6...`.
 
