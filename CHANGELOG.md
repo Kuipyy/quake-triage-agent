@@ -5,6 +5,12 @@ One section per project week until the first tagged release.
 
 ## [Unreleased]
 
+### Week 6 — Agent
+- `agent/`: LLM adapter (Gemini, Groq fallback, retry, cache), nine tools with pydantic schemas, LangGraph agent
+  (router, code-level quality gate, partial what-if re-runs, per-turn metrics log), CLI (`python -m quaketriage.agent`).
+- Guard rules enforced in tool code; every tool output carries `SIMULATED_DETECTOR` and an uncertainty summary.
+- `reports/agent_demo_transcripts.md`: five real-LLM conversations (6 calls, Gemini).
+
 ### Week 5 — Prioritisation and routing
 - `planning/`: TOPSIS (+AHP weights), demo depot from an OSM object, road-graph snapping, debris risk (penalised/closed
   edges), prize-collecting VRP (OR-Tools, top-N candidates, cached travel-time matrix), walking leg for cut-off

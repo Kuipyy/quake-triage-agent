@@ -114,6 +114,7 @@ class LLM:
         self.calls = 0
         self.cache_hits = 0
         self.last_backend: str | None = None
+        self.used: list[str] = []  # backend of every real (non-cached) answer, in order
 
     def _key(self, prompt: str, system: str | None) -> str:
         b = self.backends[0]
@@ -142,6 +143,7 @@ class LLM:
                         self._sleep(self.base_delay * 2 ** attempt)
                     continue
                 self.last_backend = f"{backend.provider}/{backend.model}"
+                self.used.append(backend.provider)
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(json.dumps({"text": text, "backend": self.last_backend}))
                 return text

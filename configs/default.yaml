@@ -114,7 +114,7 @@ geo:
   crs: "EPSG:32637"  # UTM zone 37N — Kahramanmaraş area
 
 agent:
-  default_protocol_query: "USAR team coordination at the reception and departure centre and on-site operations"
+  default_protocol_query: "prioritising search sites and assessing structural damage of collapsed buildings for USAR operations"
   run_log: outputs/logs/agent_runs.jsonl   # one JSON line per turn: LLM calls, cache hits, latency
 
 regions:

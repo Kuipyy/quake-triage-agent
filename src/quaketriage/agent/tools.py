@@ -665,6 +665,12 @@ def write_sitrep(inp: WriteSitrepInput, ctx: ToolContext) -> WriteSitrepOutput:
                   f"visited, priority collected {p['priority_collected']:.2f}, estimated persons "
                   "reached "
                   f"{p['persons_reached']:.0f}."))
+        n_held = int(b["needs_verification"].sum()) if b is not None and \
+            "needs_verification" in b else 0
+        L.append((f"- Doğrulama kuyruğundaki {n_held} bina plan dışı bırakıldı; Hafta 5 metrikleri "
+                  "kuyruk dahil hesaplandı.") if tr else
+                 (f"- {n_held} buildings in the verification queue were excluded from the plan; "
+                  "Week-5 metrics were computed including the queue."))
         if p["n_unreachable"]:
             L.append(f"- {p['n_unreachable']} " + ("aday bina ulaşılamaz." if tr
                                                     else "candidate buildings unreachable."))
@@ -769,3 +775,28 @@ def tool_schemas() -> list[dict]:
     """JSON-schema descriptions of all tools, for LLM function calling."""
     return [{"name": s.name, "description": s.description,
              "parameters": s.input_model.model_json_schema()} for s in TOOLS.values()]
+
+
+_CITE = __import__("re").compile(r"\[(\d+)\]")
+
+
+def validate_citations(markdown: str, hits: list[dict], chunks: list[dict]) -> dict:
+    """Check that every ``[n]`` in ``markdown`` points to a retrieved passage and that each
+    retrieved passage really exists in the index (same document, page range and text prefix).
+    Whether a passage *supports* a claim is not decidable here (manual check in Week 7)."""
+    refs = sorted({int(m) for m in _CITE.findall(markdown)})
+    known = {h["ref"] for h in hits}
+    index = {(c["doc"], f"{c['page_start']}-{c['page_end']}"): c["text"] for c in chunks}
+    missing_in_index = []
+    for h in hits:
+        text = index.get((h["doc"], h["pages"]))
+        probe = " ".join(h["text"].split())[:60]
+        found = text is not None and any(
+            " ".join(c["text"].split()).startswith(probe) or probe in " ".join(c["text"].split())
+            for c in chunks if c["doc"] == h["doc"])
+        if not found:
+            missing_in_index.append(h["ref"])
+    return {"cited_refs": refs, "dangling_refs": [r for r in refs if r not in known],
+            "refs_not_in_index": missing_in_index, "n_hits": len(hits),
+            "valid": not [r for r in refs if r not in known] and not missing_in_index
+            and bool(hits)}

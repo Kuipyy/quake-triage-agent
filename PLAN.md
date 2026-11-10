@@ -229,7 +229,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [x] `tools.py`: 9 araç (mimari bölümündeki liste), her biri saf Python fonksiyonu ve pydantic şeması ile
 - [x] `graph.py`: LangGraph StateGraph. Durum: bölge, sonuçlar, kısıtlar, araç izi.
 - [x] What-if: `update_constraints` aracı yalnızca değişen adımları yeniden çalıştırır (ör. ekip sayısı değiştiyse sadece rota)
-- [ ] CLI: `uv run python -m quaketriage.agent "..."`. 5 örnek konuşma uçtan uca çalışır.
+- [x] CLI: `uv run python -m quaketriage.agent "..."`. 5 örnek konuşma uçtan uca çalışır.
 - **DoD:** 5 senaryo çalışıyor, durum raporu (sitrep) atıflı üretiliyor.
 
 ### Hafta 7 (14–20 Aralık) — Değerlendirme

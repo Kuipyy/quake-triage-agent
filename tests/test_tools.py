@@ -326,3 +326,27 @@ def test_what_if_marks_steps_stale_and_not_done(ctx):
     ctx.call("update_constraints", {"num_teams": 3})
     assert "plan_routes" not in ctx.done and "write_sitrep" not in ctx.done
     assert "prioritize_sites" in ctx.done
+
+
+def test_sitrep_states_queue_exclusion_so_week5_numbers_are_not_confused(ctx):
+    _pipeline(ctx)
+    en = ctx.call("write_sitrep", {"language": "en"})["markdown"]
+    assert ("1 buildings in the verification queue were excluded from the plan; "
+            "Week-5 metrics were computed including the queue.") in en
+    tr = ctx.call("write_sitrep", {"language": "tr"})["markdown"]
+    assert ("Doğrulama kuyruğundaki 1 bina plan dışı bırakıldı; Hafta 5 metrikleri kuyruk dahil "
+            "hesaplandı.") in tr
+
+
+def test_validate_citations_flags_dangling_and_unindexed_passages():
+    from quaketriage.agent.tools import validate_citations
+    chunks = [{"doc": "INSARAG_Vol2", "page_start": 10, "page_end": 11,
+               "text": "USAR teams register at the reception and departure centre"}]
+    hit = {"ref": 1, "doc": "INSARAG_Vol2", "pages": "10-11",
+           "text": "USAR teams register at the reception and departure centre"}
+    ok = validate_citations("see [1]", [hit], chunks)
+    assert ok["valid"] and ok["cited_refs"] == [1]
+    assert validate_citations("see [2]", [hit], chunks)["dangling_refs"] == [2]
+    fake = dict(hit, text="invented text that is not in the index at all, really")
+    assert validate_citations("see [1]", [fake], chunks)["refs_not_in_index"] == [1]
+    assert not validate_citations("no hits", [], chunks)["valid"]

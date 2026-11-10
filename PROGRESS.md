@@ -3,9 +3,9 @@
 > Her oturum sonunda Claude günceller. En yeni kayıt en üstte.
 
 ## Durum özeti
-- **Aktif hafta:** Hafta 6 — Ajan (Hafta 5 tamamlandı)
-- **Sıradaki adım:** Hafta 6 devam: `graph.py` (LangGraph StateGraph; araçlar `agent/tools.py`'de `ToolContext.call`, şemalar `tool_schemas()`, bayat adımlar `update_constraints` çıktısında), sonra what-if yeniden çalıştırma, CLI, 5 konuşma. `llm.py` hazır (Gemini + Groq yedeği doğrulandı)
-- **Bekleyen manuel işler (the project owner):** yok
+- **Aktif hafta:** Hafta 7 — Değerlendirme (Hafta 6 tamamlandı)
+- **Sıradaki adım:** `PLAN.md` Hafta 7 bölümünü oku; ajan metrikleri için `outputs/logs/agent_runs.jsonl` (LLM çağrısı, cache_hits, gecikme, araçlar), senaryo seti `eval/agent_scenarios.yaml` yazılacak; atıf desteği örneklemle elle kontrol
+- **Bekleyen manuel işler (the project owner):** `reports/agent_demo_transcripts.md` dosyasını oku (cevaplar, atıflar, araç izleri mantıklı mı)
 
 ## Önemli metrikler
 
@@ -13,6 +13,14 @@ Metrikler `reports/*.json` dosyalarından otomatik üretilir ve `README.md` sonu
 Güncel değerler için: `uv run python scripts/make_report.py --check` → [README.md](../README.md#results)
 
 ## Oturum kayıtları
+
+### 2026-11-10 — Hafta 6 tamamlandı
+- **llm.py** (Gemini + Groq yedeği, backoff, önbellek), **tools.py** (9 araç; guard ve belirsizlik kuralı araç kodunda; her çıktıda SIMULATED_DETECTOR + belirsizlik), **graph.py** (router, koşullu kenarlar, kalite kapısı, what-if'te yalnız bayat adımlar), **CLI** `python -m quaketriage.agent`.
+- **Gerçek LLM demosu:** 5 konuşma, 6 LLM çağrısı, hepsi Gemini (Groq yedeği ayrıca tek çağrıyla doğrulandı); `reports/agent_demo_transcripts.md`. Atıflı sitrep: 5 atıf, hepsi indekste (`valid: true`; destek kontrolü Hafta 7).
+- **Sitrep satırı:** doğrulama kuyruğu plan dışı, Hafta 5 metrikleri kuyruk dahil.
+- Varsayılan protokol sorgusu hasar/triyaj odaklı yapıldı (ilk sorgu ilgisiz pasajlar getiriyordu).
+- Notlar: `docs/notes/week-06.md`. Testler yeşil.
+- **Bekleyen manuel iş (the project owner):** `reports/agent_demo_transcripts.md` dosyasını oku, cevaplar mantıklı mı bak.
 
 ### 2026-11-10 — Hafta 5 tamamlandı
 - **TOPSIS + AHP** (`planning/topsis.py`); demo depo = OSM "AFAD" binası (senaryo varsayımı), duyarlılık `reports/depot_sensitivity.json` (ilk 500 örtüşme 0,97+).

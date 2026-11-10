@@ -469,6 +469,7 @@ class Agent:
     # -- public API
     def ask(self, message: str) -> AgentResult:
         t0, calls0, hits0 = time.time(), self.llm.calls, self.llm.cache_hits
+        used0 = len(getattr(self.llm, "used", []))
         trace0 = len(self.ctx.trace)
         self._node_seconds = {}
         state = self.graph.invoke({"message": message, "region": self.region, "notes": []},
@@ -480,6 +481,7 @@ class Agent:
                    "router_fallback": state.get("router_fallback", False),
                    "llm_calls": self.llm.calls - calls0,
                    "cache_hits": self.llm.cache_hits - hits0,
+                   "providers": list(getattr(self.llm, "used", []))[used0:],
                    "latency_s": round(time.time() - t0, 3), "node_seconds": self._node_seconds,
                    "tools_called": tools}
         self.history.append(metrics)
