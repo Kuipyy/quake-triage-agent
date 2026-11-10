@@ -104,6 +104,10 @@ llm:
   model: "${LLM_MODEL}"
   max_retries: 3
   retry_base_delay: 2.0
+  fallback_provider: "${LLM_FALLBACK_PROVIDER:-}"   # used when the primary stays rate-limited
+  fallback_model: "${LLM_FALLBACK_MODEL:-}"
+  temperature: 0.0
+  cache_dir: outputs/cache/llm
 
 geo:
   demo_bbox: [36.10, 36.15, 36.25, 36.30]  # Antakya (minlon, minlat, maxlon, maxlat); osmnx>=2 order

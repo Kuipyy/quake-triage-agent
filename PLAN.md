@@ -225,7 +225,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - **DoD:** Plan JSON'ı + rota haritası, kıyaslama tablosu `reports/metrics_planning.json`, testler yeşil.
 
 ### Hafta 6 (7–13 Aralık) — Ajan
-- [ ] `llm.py`: Gemini/Groq adaptörü, yeniden deneme (retry), basit önbellek
+- [x] `llm.py`: Gemini/Groq adaptörü, yeniden deneme (retry), basit önbellek
 - [ ] `tools.py`: 9 araç (mimari bölümündeki liste), her biri saf Python fonksiyonu ve pydantic şeması ile
 - [ ] `graph.py`: LangGraph StateGraph. Durum: bölge, sonuçlar, kısıtlar, araç izi.
 - [ ] What-if: `update_constraints` aracı yalnızca değişen adımları yeniden çalıştırır (ör. ekip sayısı değiştiyse sadece rota)
