@@ -115,6 +115,10 @@ geo:
 
 agent:
   default_protocol_query: "prioritising search sites and assessing structural damage of collapsed buildings for USAR operations"
+  # a retrieved passage is shown in the sitrep only if it contains >= min distinct keywords
+  sitrep_protocol_keywords: [triage, assess, worksite, search site, priorit, damage, marking]
+  sitrep_protocol_min_keywords: 2
+  sitrep_protocol_max_hits: 3
   run_log: outputs/logs/agent_runs.jsonl   # one JSON line per turn: LLM calls, cache hits, latency
 
 regions:

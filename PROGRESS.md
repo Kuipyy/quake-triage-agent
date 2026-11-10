@@ -5,7 +5,7 @@
 ## Durum özeti
 - **Aktif hafta:** Hafta 7 — Değerlendirme (Hafta 6 tamamlandı)
 - **Sıradaki adım:** `PLAN.md` Hafta 7 bölümünü oku; ajan metrikleri için `outputs/logs/agent_runs.jsonl` (LLM çağrısı, cache_hits, gecikme, araçlar), senaryo seti `eval/agent_scenarios.yaml` yazılacak; atıf desteği örneklemle elle kontrol
-- **Bekleyen manuel işler (the project owner):** `reports/agent_demo_transcripts.md` dosyasını oku (cevaplar, atıflar, araç izleri mantıklı mı)
+- **Bekleyen manuel işler (the project owner):** yok (transkriptler okundu; düzeltmeler yapıldı)
 
 ## Önemli metrikler
 
@@ -20,7 +20,7 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 - **Sitrep satırı:** doğrulama kuyruğu plan dışı, Hafta 5 metrikleri kuyruk dahil.
 - Varsayılan protokol sorgusu hasar/triyaj odaklı yapıldı (ilk sorgu ilgisiz pasajlar getiriyordu).
 - Notlar: `docs/notes/week-06.md`. Testler yeşil.
-- **Bekleyen manuel iş (the project owner):** `reports/agent_demo_transcripts.md` dosyasını oku, cevaplar mantıklı mı bak.
+- Düzeltmeler: sitrep protokol bölümü (ilgili pasaj, cümle sınırı, İngilizce kaynak notu), yerelleştirilmiş uyarılar, doğrulama kuyruğundaki kişi sayısı, kaba atıf-destek kontrolü, konuşma 4 denetimi; Hafta 8'e plan önbelleği notu.
 
 ### 2026-11-10 — Hafta 5 tamamlandı
 - **TOPSIS + AHP** (`planning/topsis.py`); demo depo = OSM "AFAD" binası (senaryo varsayımı), duyarlılık `reports/depot_sensitivity.json` (ilk 500 örtüşme 0,97+).

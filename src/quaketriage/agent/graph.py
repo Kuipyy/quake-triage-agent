@@ -27,6 +27,7 @@ from quaketriage.agent.tools import (
     ToolContext,
     ToolError,
     UpdateConstraintsInput,
+    check_support,
 )
 from quaketriage.config import get
 
@@ -194,6 +195,7 @@ class Agent:
         self.regions = regions if regions is not None else get("regions")
         self.run_log = Path(run_log) if run_log else ROOT / get("agent.run_log")
         self.history: list[dict] = []
+        self.last_support: list[dict] = []
         self._node_seconds: dict[str, float] = {}
         self.graph = self._build()
 
@@ -210,7 +212,7 @@ class Agent:
         old = self.ctx
         self.ctx = ToolContext(constraints=old.constraints, base_graph=old.base_graph,
                                rag_index=old.rag_index, embed_query=old.embed_query,
-                               siamese_runner=old.siamese_runner)
+                               siamese_runner=old.siamese_runner, lang=old.lang)
         self.region = region
 
     # -- nodes
@@ -253,6 +255,7 @@ class Agent:
             region = self.region
         if region != self.region:
             self._reset_region(region)
+        self.ctx.lang = lang  # user-facing warnings (also the guard's) follow the user's language
         return {"intent": decision.intent, "language": lang, "region": region,
                 "constraint_changes": changes, "protocol_query": decision.protocol_query,
                 "notes": notes, "router_fallback": fallback, "results": {}, "stop_reason": None,
@@ -436,6 +439,7 @@ class Agent:
         valid = {h["ref"] for h in hits}
         for bad in refs - valid:  # a citation to a passage that was never retrieved is removed
             text = text.replace(f"[{bad}]", "")
+        self.last_support = check_support(text, hits)
         used = sorted(refs & valid) or [h["ref"] for h in hits[:2]]
         src = "; ".join(f"[{h['ref']}] {h['doc']}, p. {h['pages']}" for h in hits
                         if h["ref"] in used)
@@ -470,8 +474,10 @@ class Agent:
     def ask(self, message: str) -> AgentResult:
         t0, calls0, hits0 = time.time(), self.llm.calls, self.llm.cache_hits
         used0 = len(getattr(self.llm, "used", []))
+        cached0 = len(getattr(self.llm, "cached_from", []))
         trace0 = len(self.ctx.trace)
         self._node_seconds = {}
+        self.last_support = []
         state = self.graph.invoke({"message": message, "region": self.region, "notes": []},
                                   {"recursion_limit": 60})
         tools = [e["tool"] for e in self.ctx.trace[trace0:]]
@@ -482,8 +488,12 @@ class Agent:
                    "llm_calls": self.llm.calls - calls0,
                    "cache_hits": self.llm.cache_hits - hits0,
                    "providers": list(getattr(self.llm, "used", []))[used0:],
+                   "cached_providers": list(getattr(self.llm, "cached_from", []))[cached0:],
                    "latency_s": round(time.time() - t0, 3), "node_seconds": self._node_seconds,
-                   "tools_called": tools}
+                   "tools_called": tools,
+                   "citation_support": {
+                       "checked": len(self.last_support),
+                       "supported": sum(x["supported"] for x in self.last_support)}}
         self.history.append(metrics)
         try:
             self.run_log.parent.mkdir(parents=True, exist_ok=True)

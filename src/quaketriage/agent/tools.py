@@ -8,6 +8,7 @@ the graph re-runs only those.
 """
 from __future__ import annotations
 
+import re
 import time
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -28,6 +29,48 @@ from quaketriage.rag.index import SearchInput
 ROOT = Path(__file__).parents[3]
 PIPELINE = ("detect_damage", "score_buildings", "estimate_occupancy", "prioritize_sites",
             "plan_routes", "write_sitrep")
+
+
+_M = {
+    "en": {
+        "quality_failed": "image quality check failed: {reasons}",
+        "no_reason": "see guard",
+        "no_ranking": "no ranking produced",
+        "no_plan": "no route plan produced",
+        "guard": "image quality guard failed: no damage decision may be taken from this pair; "
+                 "request field verification",
+        "queue": "{n} buildings (~{p:.0f} people) exceed the uncertainty threshold or lack valid "
+                 "imagery: field verification required before dispatch",
+        "held": "{n} buildings held back for field verification",
+    },
+    "tr": {
+        "quality_failed": "görüntü kalite kontrolü başarısız: {reasons}",
+        "no_reason": "bkz. guard",
+        "no_ranking": "sıralama üretilmedi",
+        "no_plan": "rota planı üretilmedi",
+        "guard": "görüntü kalite koruması başarısız: bu görüntü çiftinden hasar kararı "
+                 "verilemez; saha doğrulaması isteyin",
+        "queue": "{n} bina (~{p:.0f} kişi) belirsizlik eşiğini aşıyor veya geçerli görüntüsü "
+                 "yok: sevkten önce saha doğrulaması gerekli",
+        "held": "{n} bina saha doğrulaması için ayrıldı",
+    },
+}
+_REASON_TR = (("blank/no-data ratio", "boş/veri-yok oranı"),
+              ("bright/cloud ratio", "parlak/bulut oranı"),
+              ("alignment SSIM", "hizalama SSIM"))
+
+
+def msg(lang: str, key: str, **kw) -> str:
+    return _M[lang][key].format(**kw)
+
+
+def localize_reason(reason: str, lang: str) -> str:
+    """Guard reasons come from ``data/quality.py`` in English; translate the known phrases."""
+    if lang != "tr":
+        return reason
+    for en, tr in _REASON_TR:
+        reason = reason.replace(en, tr)
+    return reason
 
 
 class UncertaintySummary(BaseModel):
@@ -120,11 +163,15 @@ class ToolContext:
     siamese_runner: Callable[[Path, Path], dict] | None = None
     image_uncertainty: UncertaintySummary | None = None  # from the Siamese/TTA path
     quality_reasons: list[str] = field(default_factory=list)
+    lang: str = "en"  # language of user-facing warnings (set per turn by the graph)
 
-    def quality_block(self) -> str | None:
+    def quality_block(self, lang: str | None = None) -> str | None:
         """Why decisions are blocked (failed image-quality guard), enforced inside the tools."""
         if self.quality_ok is False:
-            return "image quality check failed: " + "; ".join(self.quality_reasons or ["see guard"])
+            lang = lang or self.lang
+            reasons = "; ".join(localize_reason(r, lang) for r in self.quality_reasons) \
+                or msg(lang, "no_reason")
+            return msg(lang, "quality_failed", reasons=reasons)
         return None
 
     def ensure_scored(self) -> gpd.GeoDataFrame:
@@ -246,9 +293,10 @@ def check_image_quality(inp: CheckImageQualityInput, ctx: ToolContext) -> CheckI
     ctx.quality_ok = rep.ok
     ctx.quality_reasons = list(rep.reasons)
     return CheckImageQualityOutput(
-        **rep.model_dump(), status="ok" if rep.ok else "verification_required",
-        warnings=[] if rep.ok else ["image quality guard failed: no damage decision may be "
-                                    "taken from this pair; request field verification"])
+        **{**rep.model_dump(),
+           "reasons": [localize_reason(r, ctx.lang) for r in rep.reasons]},
+        status="ok" if rep.ok else "verification_required",
+        warnings=[] if rep.ok else [msg(ctx.lang, "guard")])
 
 
 # ------------------------------------------------------------------ 2. detect_damage
@@ -358,7 +406,15 @@ class ScoreBuildingsInput(BaseModel):
 class ScoreBuildingsOutput(ToolOutput):
     n_damaged: int
     n_needs_verification: int
+    persons_in_verification_queue: float = 0.0
     verification_reasons: dict[str, int]
+
+
+def _queue_persons(b: gpd.GeoDataFrame) -> float:
+    """Estimated people in buildings that wait for field verification."""
+    if "needs_verification" not in b or "estimated_persons" not in b:
+        return 0.0
+    return round(float(b.loc[b["needs_verification"], "estimated_persons"].sum()), 0)
 
 
 def score_buildings(inp: ScoreBuildingsInput, ctx: ToolContext) -> ScoreBuildingsOutput:
@@ -371,6 +427,7 @@ def score_buildings(inp: ScoreBuildingsInput, ctx: ToolContext) -> ScoreBuilding
     reasons = b.loc[b["needs_verification"], "verification_reason"].value_counts().to_dict()
     return ScoreBuildingsOutput(n_damaged=int(b["damaged"].sum()),
                                 n_needs_verification=int(b["needs_verification"].sum()),
+                                persons_in_verification_queue=_queue_persons(b),
                                 verification_reasons={str(k): int(v) for k, v in reasons.items()})
 
 
@@ -425,6 +482,7 @@ class PrioritizeSitesOutput(ToolOutput):
     weights: dict[str, float] = {}
     top: list[SiteRow] = []
     n_verification_queue: int = 0
+    persons_in_verification_queue: float = 0.0
     verification_queue: list[SiteRow] = Field(
         default=[], description="highest-priority buildings held back for field verification")
 
@@ -446,8 +504,9 @@ def prioritize_sites(inp: PrioritizeSitesInput, ctx: ToolContext) -> PrioritizeS
     held back in ``verification_queue`` instead of appearing in ``top``."""
     reason = ctx.quality_block()
     if reason:
-        return PrioritizeSitesOutput(status="verification_required",
-                                     warnings=[reason + "; no ranking produced"])
+        return PrioritizeSitesOutput(
+            status="verification_required",
+            warnings=[f"{reason}; {msg(ctx.lang, 'no_ranking')}"])
     ctx.ensure_scored()
     if inp.weights is not None:
         ctx.constraints.weights = inp.weights
@@ -461,12 +520,12 @@ def prioritize_sites(inp: PrioritizeSitesInput, ctx: ToolContext) -> PrioritizeS
     queued = out["needs_verification"].to_numpy(bool)
     warn = []
     if queued.any():
-        warn.append(f"{int(queued.sum())} buildings exceed the uncertainty threshold or lack valid "
-                    "imagery: field verification required before dispatch")
+        warn.append(msg(ctx.lang, "queue", n=int(queued.sum()), p=_queue_persons(out)))
     return PrioritizeSitesOutput(
         weights=out.attrs["topsis_weights"], warnings=warn,
         top=_site_rows(out[~queued].nlargest(inp.top_k, "priority")),
         n_verification_queue=int(queued.sum()),
+        persons_in_verification_queue=_queue_persons(out),
         verification_queue=_site_rows(out[queued].nlargest(inp.top_k, "priority")))
 
 
@@ -508,8 +567,9 @@ class PlanRoutesOutput(ToolOutput):
 def plan_routes_tool(inp: PlanRoutesInput, ctx: ToolContext) -> PlanRoutesOutput:
     reason = ctx.quality_block()
     if reason:
-        return PlanRoutesOutput(status="verification_required",
-                                warnings=[reason + "; no route plan produced"])
+        return PlanRoutesOutput(
+            status="verification_required",
+            warnings=[f"{reason}; {msg(ctx.lang, 'no_plan')}"])
     b = ctx.ensure_scored()
     if "priority" not in b:
         raise ToolError("no priorities yet; run prioritize_sites first")
@@ -540,8 +600,7 @@ def plan_routes_tool(inp: PlanRoutesInput, ctx: ToolContext) -> PlanRoutesOutput
              for r in plan["routes"]]
     return PlanRoutesOutput(
         n_excluded_verification=int(held.sum()),
-        warnings=([f"{int(held.sum())} buildings held back for field verification"]
-                  if held.any() else []),
+        warnings=([msg(ctx.lang, "held", n=int(held.sum()))] if held.any() else []),
         n_visited=plan["n_visited"],
         priority_collected=plan["priority_collected"], persons_reached=plan["persons_reached"],
         n_unreachable=plan["n_unreachable"], n_need_walking=plan["n_need_walking"],
@@ -589,6 +648,7 @@ class WriteSitrepInput(BaseModel):
 class WriteSitrepOutput(ToolOutput):
     markdown: str
     n_citations: int = 0
+    citations: list[dict] = Field(default=[], description="passages shown, numbered as in the text")
     missing_steps: list[str] = []
 
 
@@ -605,18 +665,57 @@ _TXT = {
 }
 
 
+_SENTENCE = re.compile(r"(?<=[.!?])\s+(?=[A-Z0-9(])")
+
+
+def _doc_lang(doc: str) -> str:
+    """AFAD documents are Turkish, INSARAG documents English."""
+    return "tr" if doc.upper().startswith("AFAD") else "en"
+
+
+def clip_sentences(text: str, max_chars: int = 220) -> str:
+    """Cut at a sentence boundary: drop a leading half-sentence, then add whole sentences while
+    they fit. A single over-long sentence is cut at a word boundary and marked with an ellipsis."""
+    text = " ".join(text.split())
+    parts = _SENTENCE.split(text)
+    if len(parts) > 1 and not parts[0][:1].isupper() and not parts[0][:1].isdigit():
+        parts = parts[1:]  # chunk started mid-sentence
+    out = ""
+    for sent in parts:
+        if out and len(out) + 1 + len(sent) > max_chars:
+            break
+        out = f"{out} {sent}".strip()
+        if len(out) >= 0.6 * max_chars:
+            break
+    if len(out) > max_chars * 1.5:
+        out = out[:max_chars].rsplit(" ", 1)[0] + "…"
+    elif out and out[-1] not in ".!?":
+        out += "…"
+    return out
+
+
+def relevant_hits(hits: list[dict]) -> list[dict]:
+    """Passages that really concern damage assessment / search triage (keyword rule from the
+    config), renumbered 1..k. Empty if nothing qualifies, then the sitrep omits the section."""
+    keys = [k.lower() for k in get("agent.sitrep_protocol_keywords")]
+    need = get("agent.sitrep_protocol_min_keywords")
+    top = get("agent.sitrep_protocol_max_hits")
+    kept = [h for h in hits if sum(k in h["text"].lower() for k in keys) >= need][:top]
+    return [{**h, "ref": i} for i, h in enumerate(kept, 1)]
+
+
 def write_sitrep(inp: WriteSitrepInput, ctx: ToolContext) -> WriteSitrepOutput:
     """Deterministic Markdown from the pipeline state: no number is produced by the LLM."""
     t = _TXT[inp.language]
     tr = inp.language == "tr"
-    reason = ctx.quality_block()
+    reason = ctx.quality_block(inp.language)
     if reason:
-        msg = ("Görüntü kalite kontrolü başarısız; hasar kararı verilmedi, saha doğrulaması "
-               "gerekli." if tr else "Image quality check failed; no damage decision was made, "
-               "field verification is required.")
+        headline = ("Görüntü kalite kontrolü başarısız; hasar kararı verilmedi, saha doğrulaması "
+                    "gerekli." if tr else "Image quality check failed; no damage decision was "
+                    "made, field verification is required.")
         return WriteSitrepOutput(
             status="verification_required", warnings=[reason],
-            markdown=f"# {t['title']}\n\n⚠ **{msg}**\n\n- {reason}")
+            markdown=f"# {t['title']}\n\n⚠ **{headline}**\n\n- {reason}")
     b = ctx.buildings
     missing = [s for s in PIPELINE[:-1] if s not in ctx.done]
     L = [f"# {t['title']}"]
@@ -632,11 +731,11 @@ def write_sitrep(inp: WriteSitrepInput, ctx: ToolContext) -> WriteSitrepOutput:
                   f"(prob > {ctx.constraints.damage_threshold}); about {persons:.0f} people in "
                   "damaged buildings."))
         nv = int(b["needs_verification"].sum()) if "needs_verification" in b else 0
-        L.append(f"- {nv} " + (
-            "bina saha doğrulaması gerektiriyor (belirsizlik/görüntü kalitesi); bu binalar "
-            "öncelik listesine ve rota planına alınmadı." if tr
-            else "buildings need field verification (uncertainty/imagery); they are excluded "
-            "from the priority list and the route plan."))
+        pq = _queue_persons(b)
+        L.append((f"- {nv} bina, ~{pq:.0f} kişi doğrulama bekliyor (belirsizlik/görüntü kalitesi); "
+                  "bu binalar öncelik listesine ve rota planına alınmadı.") if tr else
+                 (f"- {nv} buildings, ~{pq:.0f} people awaiting verification (uncertainty/"
+                  "imagery); they are excluded from the priority list and the route plan."))
     else:
         L.append(f"- {t['none']}")
     if ctx.quality_ok is False:
@@ -686,12 +785,14 @@ def write_sitrep(inp: WriteSitrepInput, ctx: ToolContext) -> WriteSitrepOutput:
           ["- Damage probabilities come from a simulated detector (HOTOSM labels + noise); model "
            "accuracy is reported on KATE-CD only and is no evidence for this report.",
            "- Depot, debris, walking and night-occupancy factors are scenario assumptions."])
-    if ctx.protocol_hits:
+    shown = relevant_hits(ctx.protocol_hits)
+    if shown:
         L.append(f"\n## {t['proto']}")
-        for h in ctx.protocol_hits:
-            snippet = " ".join(h["text"].split())[:220]
-            L.append(f"- [{h['ref']}] {snippet}… ({h['doc']}, p. {h['pages']})")
-    return WriteSitrepOutput(markdown="\n".join(L), n_citations=len(ctx.protocol_hits),
+        if tr and any(_doc_lang(h["doc"]) == "en" for h in shown):
+            L.append("_(Kaynak parçaları İngilizcedir (INSARAG); çevrilmedi.)_")
+        for h in shown:
+            L.append(f"- [{h['ref']}] {clip_sentences(h['text'])} ({h['doc']}, p. {h['pages']})")
+    return WriteSitrepOutput(markdown="\n".join(L), n_citations=len(shown), citations=shown,
                              missing_steps=missing)
 
 
@@ -800,3 +901,43 @@ def validate_citations(markdown: str, hits: list[dict], chunks: list[dict]) -> d
             "refs_not_in_index": missing_in_index, "n_hits": len(hits),
             "valid": not [r for r in refs if r not in known] and not missing_in_index
             and bool(hits)}
+
+
+_STOP = {"the", "and", "that", "with", "from", "this", "they", "their", "have", "also", "when",
+         "which", "will", "such", "into", "than", "then", "there", "these", "those", "been",
+         "being", "are", "was", "were", "for", "not", "but", "its", "can", "may", "must", "should"}
+
+
+def check_support(answer: str, hits: list[dict]) -> list[dict]:
+    """ROUGH support check for each cited sentence of ``answer``.
+
+    A sentence with ``[n]`` counts as supported if the cited passage contains all its acronyms /
+    numbers and at least half of its other content words (matched by 5-letter prefix, so
+    'register' ~ 'registration'). This catches invented terms and wrong passages, but it cannot
+    judge meaning, negation or omissions; it is a smoke test, not a fact check.
+    """
+    by_ref = {h["ref"]: " ".join(h["text"].split()) for h in hits}
+    out = []
+    for sent in re.split(r"(?<=[.!?])\s+", answer):
+        refs = [int(r) for r in _CITE.findall(sent)]
+        if not refs:
+            continue
+        body = _CITE.sub("", sent)
+        keys = set(re.findall(r"\b[A-Z]{2,}[A-Za-z/]*\b|\b\d+(?:\.\d+)?\b", body))
+        words = {w[:5] for w in re.findall(r"[A-Za-z]{4,}", body.lower()) if w not in _STOP}
+        for ref in refs:
+            passage = by_ref.get(ref)
+            if passage is None:
+                out.append({"ref": ref, "sentence": sent.strip(), "supported": False,
+                            "missing": ["<no such passage>"]})
+                continue
+            low = passage.lower()
+            miss_keys = sorted(k for k in keys
+                               if k not in passage and k.split("/")[0] not in passage)
+            ptoks = {w[:5] for w in re.findall(r"[A-Za-z]{4,}", low)}
+            miss_words = sorted(words - ptoks - {k.lower()[:5] for k in keys})
+            frac = 1 - len(miss_words) / max(1, len(words))
+            out.append({"ref": ref, "sentence": sent.strip(),
+                        "supported": not miss_keys and frac >= 0.5,
+                        "missing": miss_keys + miss_words[:5], "word_overlap": round(frac, 2)})
+    return out

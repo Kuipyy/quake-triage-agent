@@ -114,6 +114,7 @@ class LLM:
         self.calls = 0
         self.cache_hits = 0
         self.last_backend: str | None = None
+        self.cached_from: list[str] = []  # backend that originally produced each cache hit
         self.used: list[str] = []  # backend of every real (non-cached) answer, in order
 
     def _key(self, prompt: str, system: str | None) -> str:
@@ -125,7 +126,9 @@ class LLM:
         path = self.cache_dir / f"{self._key(prompt, system)}.json"
         if path.exists():
             self.cache_hits += 1
-            return json.loads(path.read_text())["text"]
+            data = json.loads(path.read_text())
+            self.cached_from.append(str(data.get("backend", "?")).split("/")[0])
+            return data["text"]
         errors = []
         for backend in self.backends:
             for attempt in range(self.max_retries + 1):

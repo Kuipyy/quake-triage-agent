@@ -192,3 +192,39 @@ def test_language_and_keyword_helpers():
     assert parse_router_json('x {"intent":"off_topic","language":"en"} y').intent == "off_topic"
     with pytest.raises(ValueError):
         parse_router_json("nothing here")
+
+
+def test_guard_messages_follow_language_even_after_region_switch(agent_factory, tmp_path):
+    import rasterio
+    from rasterio.transform import from_origin
+
+    def write(name, arr):
+        path = tmp_path / name
+        with rasterio.open(path, "w", driver="GTiff", height=128, width=128, count=3,
+                           dtype="uint8", crs="EPSG:4326",
+                           transform=from_origin(36.0, 36.0, 1e-5, 1e-5)) as dst:
+            dst.write(np.moveaxis(arr, -1, 0))
+        return str(path)
+
+    img = np.random.default_rng(0).integers(40, 200, (128, 128, 3), dtype=np.uint8)
+    regions = {"antakya": {"detector": "simulated"},
+               "kilis": {"detector": "siamese", "pre": write("a.tif", img),
+                         "post": write("b.tif", img * 0)}}
+    a = agent_factory(FakeLLM(_route("full_assessment", "tr", region="kilis")), regions)
+    r = a.ask("Kilis kesitini değerlendir")
+    assert r.stop_reason == "verification"
+    assert "saha doğrulaması gerekli" in r.answer
+    assert "görüntü kalite kontrolü başarısız" in r.answer
+    assert "image quality" not in r.answer  # no English leftovers in the Turkish answer
+
+
+def test_protocol_answer_records_rough_citation_support(agent_factory):
+    llm = FakeLLM(_route("protocol_question"),
+                  answer="USAR teams register at the RDC [1]. They must bring a helicopter [1].")
+    a = agent_factory(llm)
+    a.ctx.rag_index = RagIndex([{"doc": "INSARAG_Vol2", "section": "", "page_start": 10,
+                                 "page_end": 11, "text": "USAR teams register at the RDC"}],
+                               np.eye(1, dtype="float32"))
+    a.ask("How do USAR teams register?")
+    cs = a.history[-1]["citation_support"]
+    assert cs == {"checked": 2, "supported": 1}  # the invented helicopter claim is flagged

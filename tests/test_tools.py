@@ -180,17 +180,100 @@ def test_lookup_protocol_returns_cited_hits(ctx):
 
 
 # ------------------------------------------------------------------ 8
+RELEVANT = ("5.8 Worksite Triage The objective of ASR 2 Worksite Assessment is to assess collapsed "
+            "structures and identify viable sites for live rescues. The UCC will use the results "
+            "to prioritise search sites. Teams then report back to the OSOCC.")
+
+
+def _hit(ref, text, doc="INSARAG_Vol2_ManB", pages="36-36"):
+    return {"ref": ref, "doc": doc, "pages": pages, "section": "", "score": 0.9, "text": text}
+
+
 def test_sitrep_is_grounded_cited_and_labelled_simulated(ctx):
     _pipeline(ctx)
-    ctx.protocol_hits = [{"ref": 1, "doc": "INSARAG_Vol2", "pages": "10-11",
-                          "text": "USAR teams must register", "section": "", "score": 0.9}]
+    ctx.protocol_hits = [_hit(1, "USAR teams must register at the RDC"), _hit(2, RELEVANT)]
     out = ctx.call("write_sitrep", {"language": "en", "top_k": 3})
     md = out["markdown"]
-    assert "SIMULATED detector" in md and "[1]" in md and "INSARAG_Vol2, p. 10-11" in md
+    assert "SIMULATED detector" in md
+    # the irrelevant passage is dropped and the relevant one renumbered to [1]
+    assert "register at the RDC" not in md and "- [1] 5.8 Worksite Triage" in md
+    assert "INSARAG_Vol2_ManB, p. 36-36" in md
     assert f"{int(ctx.buildings['damaged'].sum())} damaged" in md
-    assert out["n_citations"] == 1 and out["missing_steps"] == []
+    assert out["n_citations"] == 1 and out["citations"][0]["ref"] == 1
+    assert out["missing_steps"] == []
     tr = ctx.call("write_sitrep", {"language": "tr"})["markdown"]
     assert "SİMÜLE DEDEKTÖR" in tr and "Durum Raporu" in tr
+    assert "İngilizcedir" in tr  # English source passages in a Turkish report are announced
+
+
+def test_sitrep_omits_protocol_section_without_relevant_passages(ctx):
+    _pipeline(ctx)
+    ctx.protocol_hits = [_hit(1, "USAR teams must register at the RDC")]
+    out = ctx.call("write_sitrep", {"language": "en"})
+    assert "Protocol basis" not in out["markdown"] and out["n_citations"] == 0
+
+
+def test_turkish_source_needs_no_translation_note(ctx):
+    _pipeline(ctx)
+    ctx.protocol_hits = [_hit(1, "Arama kurtarma triage ve assess çalışmalarında yapısal "
+                              "hasar tespiti yapılır. Çöken structures için öncelik verilir.",
+                              doc="AFAD_TAMP", pages="3-3")]
+    tr = ctx.call("write_sitrep", {"language": "tr"})["markdown"]
+    assert "Protokol dayanakları" in tr and "İngilizcedir" not in tr
+
+
+def test_clip_sentences_cuts_at_sentence_boundaries():
+    from quaketriage.agent.tools import clip_sentences
+    text = ("(medevac), demobilisation etc.) USAR Team Search. Perform a physical search of "
+            "collapsed structures. Assess voids and local failures. Mark the structure after "
+            "the search is complete and report to the UCC for further tasking.")
+    out = clip_sentences(text, max_chars=110)
+    assert out.startswith("Perform a physical search")  # the leading half sentence is dropped
+    assert "medevac" not in out and out.endswith(".") and "Mark the structure" not in out
+    long = "word " * 100
+    assert clip_sentences(long, 50).endswith("…") and len(clip_sentences(long, 50)) <= 60
+
+
+def test_user_facing_warnings_follow_the_users_language(ctx):
+    ctx.call("detect_damage", {})
+    ctx.lang = "tr"
+    q = ctx.call("prioritize_sites", {})
+    assert "sevkten önce saha doğrulaması" in q["warnings"][0] and "~" in q["warnings"][0]
+    assert "belirsizlik" in q["warnings"][0]
+    ctx.quality_ok, ctx.quality_reasons = False, ["bright/cloud ratio 0.90 > 0.2"]
+    blocked = ctx.call("prioritize_sites", {})
+    assert blocked["warnings"][0] == ("görüntü kalite kontrolü başarısız: parlak/bulut oranı "
+                                      "0.90 > 0.2; sıralama üretilmedi")
+    ctx.lang = "en"
+    again = ctx.call("plan_routes", {})
+    assert again["warnings"][0] == ("image quality check failed: bright/cloud ratio 0.90 > 0.2; "
+                                    "no route plan produced")
+    tr_report = ctx.call("write_sitrep", {"language": "tr"})  # sitrep follows its own language
+    assert "parlak/bulut" in tr_report["warnings"][0]
+
+
+def test_queue_persons_in_sitrep_and_tool_outputs(ctx):
+    _pipeline(ctx)
+    # building 12 (10 people at night) is the only uncertain one
+    assert ctx.call("score_buildings", {})["persons_in_verification_queue"] == 10
+    assert ctx.call("prioritize_sites", {})["persons_in_verification_queue"] == 10
+    assert "1 buildings, ~10 people awaiting verification" in ctx.call(
+        "write_sitrep", {"language": "en"})["markdown"]
+    assert "1 bina, ~10 kişi doğrulama bekliyor" in ctx.call(
+        "write_sitrep", {"language": "tr"})["markdown"]
+
+
+def test_check_support_catches_invented_terms_and_wrong_passages():
+    from quaketriage.agent.tools import check_support
+    hits = [{"ref": 1, "text": "The operations phase starts with arrival at the Reception/"
+             "Departure Centre (RDC), registration with the UCC/OSOCC and reporting to LEMA."}]
+    good = check_support("Teams register with the UCC/OSOCC [1].", hits)
+    assert good[0]["supported"] is True
+    bad = check_support("Teams register with the ICAO tower [1].", hits)
+    assert bad[0]["supported"] is False and "ICAO" in bad[0]["missing"]
+    assert check_support("Teams must pay a fee of 500 dollars [1].", hits)[0]["supported"] is False
+    assert check_support("No citation here.", hits) == []
+    assert check_support("Something [7].", hits)[0]["missing"] == ["<no such passage>"]
 
 
 def test_sitrep_names_missing_steps(ctx):
