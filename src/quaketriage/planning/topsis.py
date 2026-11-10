@@ -68,7 +68,8 @@ class TopsisInput(BaseModel):
     """Input schema of the prioritisation tool."""
 
     depots: list[tuple[float, float]] = Field(
-        min_length=1, description="Depot points as (lon, lat) in WGS84.")
+        default_factory=lambda: [tuple(d) for d in get("routing.depots")], min_length=1,
+        description="Depot points as (lon, lat) in WGS84; default routing.depots from config.")
     weights: dict[str, float] | None = Field(
         default=None, description="Override config weights (same keys as topsis.weights).")
     ahp_pairwise: list[list[float]] | None = Field(

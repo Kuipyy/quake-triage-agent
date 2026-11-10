@@ -80,6 +80,12 @@ routing:
   mission_duration_hours: 6
   intervention_time_minutes: 30  # per building
   debris_risk_buffer_meters: 50
+  # Demo depots as [lon, lat] (WGS84); code converts to the project CRS and snaps to the road graph.
+  # SCENARIO ASSUMPTION, not a real operations centre: centroid of the OSM building tagged
+  # name=AFAD, office=government (way 1139261935, Antakya), read from Overpass on 2026-11-10.
+  # See docs/decisions.md.
+  depots:
+    - [36.17179, 36.20657]
 
 llm:
   provider: "${LLM_PROVIDER}"
