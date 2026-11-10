@@ -5,6 +5,12 @@ One section per project week until the first tagged release.
 
 ## [Unreleased]
 
+### Week 5 — Prioritisation and routing
+- `planning/`: TOPSIS (+AHP weights), demo depot from an OSM object, road-graph snapping, debris risk (penalised/closed
+  edges), prize-collecting VRP (OR-Tools, top-N candidates, cached travel-time matrix), walking leg for cut-off
+  buildings, nearest-first and random baselines. All results flagged SIMULATED detector.
+- `reports/metrics_planning.json`, `plan_demo.json`, `depot_sensitivity.json`, `route_map.html`.
+
 ### Week 4 — Building scores, population, RAG
 - Found and fixed a wrong-bbox bug in `download_demo_area.py` (osmnx 2.x argument order): Week-1 buildings/roads
   were ~10 km from the HOTOSM area. Corrected data pending an Overpass retry (public endpoints timed out).
