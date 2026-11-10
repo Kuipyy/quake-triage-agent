@@ -48,7 +48,8 @@ def build_preview_map(buildings: gpd.GeoDataFrame, simplify_m: float = 0.5) -> f
                        style_function=lambda _: outline, show=False).add_to(m)
     folium.LayerControl().add_to(m)
     legend = ("<div style='position:fixed;bottom:30px;right:10px;max-width:340px;"
-              "z-index:9999;background:white;padding:8px 10px;border:1px solid #999;font:12px sans-serif'>"
+              "z-index:9999;background:white;padding:8px 10px;"
+              "border:1px solid #999;font:12px sans-serif'>"
               "<b>SIMULATED detector &mdash; demo only</b><br>damage prob.: "
               "<span style='color:#b30000'>&#9632;</span> &gt;0.6 "
               "<span style='color:#e34a33'>&#9632;</span> &gt;0.4 "
