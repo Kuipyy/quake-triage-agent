@@ -64,6 +64,142 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 <!-- results:begin -->
 | Report | Metric | Value |
 |---|---|---|
+| `ablation_uncertainty_filter` | `SIMULATED_DETECTOR` | True |
+| `ablation_uncertainty_filter` | `disclaimer` | Measures the simulated noise model, not real model behaviour: simulated uncertainty peaks near the decision threshold and does not depend on whether the detector is right. k>1 rows are ASSUMED error-aware variants. |
+| `ablation_uncertainty_filter` | `setup.miss_rate` | 0.2 |
+| `ablation_uncertainty_filter` | `setup.false_alarm_rate` | 0.03 |
+| `ablation_uncertainty_filter` | `setup.size_exponent` | 1 |
+| `ablation_uncertainty_filter` | `setup.tau` | 0.2 |
+| `ablation_uncertainty_filter` | `setup.top_n` | 400 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.reported_tp.mean` | 576.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.reported_tp.std` | 9 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.reported_fp.mean` | 150 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.reported_fp.std` | 11.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.held_back_tp.mean` | 8.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.held_back_tp.std` | 2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.held_back_fp.mean` | 3 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.held_back_fp.std` | 1.9 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.queue_size.mean` | 99.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.queue_size.std` | 9.7 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_tp.mean` | 249.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_tp.std` | 5.5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_fp.mean` | 150.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_fp.std` | 5.5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.reported_tp.mean` | 585.4 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.reported_tp.std` | 8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.reported_fp.mean` | 153 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.reported_fp.std` | 10 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.held_back_tp.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.held_back_tp.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.held_back_fp.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.held_back_fp.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.queue_size.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.queue_size.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_tp.mean` | 249.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_tp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_fp.mean` | 150.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_fp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.ASSUMED` | False |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.reported_tp.mean` | 576.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.reported_tp.std` | 9 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.reported_fp.mean` | 141 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.reported_fp.std` | 9.3 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.held_back_tp.mean` | 8.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.held_back_tp.std` | 2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.held_back_fp.mean` | 12 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.held_back_fp.std` | 2.3 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.queue_size.mean` | 157 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.queue_size.std` | 6.1 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_tp.mean` | 248.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_tp.std` | 5.7 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_fp.mean` | 151.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_fp.std` | 5.7 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.reported_tp.mean` | 585.4 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.reported_tp.std` | 8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.reported_fp.mean` | 153 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.reported_fp.std` | 10 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.held_back_tp.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.held_back_tp.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.held_back_fp.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.held_back_fp.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.queue_size.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.queue_size.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_tp.mean` | 249.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_tp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_fp.mean` | 150.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_fp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.ASSUMED` | True |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.reported_tp.mean` | 576.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.reported_tp.std` | 9 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.reported_fp.mean` | 132.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.reported_fp.std` | 10.4 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.held_back_tp.mean` | 8.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.held_back_tp.std` | 2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.held_back_fp.mean` | 20.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.held_back_fp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.queue_size.mean` | 228.4 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.queue_size.std` | 13.3 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_tp.mean` | 248.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_tp.std` | 6.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_fp.mean` | 151.4 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_fp.std` | 6.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.reported_tp.mean` | 585.4 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.reported_tp.std` | 8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.reported_fp.mean` | 153 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.reported_fp.std` | 10 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.held_back_tp.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.held_back_tp.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.held_back_fp.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.held_back_fp.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.queue_size.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.queue_size.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_tp.mean` | 249.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_tp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_fp.mean` | 150.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_fp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.ASSUMED` | True |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.reported_tp.mean` | 576.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.reported_tp.std` | 9 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.reported_fp.mean` | 116.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.reported_fp.std` | 6.7 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.held_back_tp.mean` | 8.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.held_back_tp.std` | 2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.held_back_fp.mean` | 36.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.held_back_fp.std` | 8.7 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.queue_size.mean` | 276.4 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.queue_size.std` | 10.9 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_tp.mean` | 249.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_tp.std` | 5.9 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_fp.mean` | 150.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_fp.std` | 5.9 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.reported_tp.mean` | 585.4 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.reported_tp.std` | 8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.reported_fp.mean` | 153 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.reported_fp.std` | 10 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.held_back_tp.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.held_back_tp.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.held_back_fp.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.held_back_fp.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.queue_size.mean` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.queue_size.std` | 0 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_tp.mean` | 249.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_tp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_fp.mean` | 150.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_fp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.ASSUMED` | True |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.n_visited` | 44 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.dispatched_true_destroyed` | 26 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.dispatched_false_positive` | 18 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.persons_reached` | 3964 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.priority_collected` | 27.71 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.n_excluded_verification` | 112 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.n_visited` | 44 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.dispatched_true_destroyed` | 27 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.dispatched_false_positive` | 17 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.persons_reached` | 3969 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.priority_collected` | 27.8 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.n_excluded_verification` | 0 |
+| `ablation_uncertainty_filter` | `seconds` | 64 |
 | `agent_eval` | `metrics.task_success.passed` | 30 |
 | `agent_eval` | `metrics.task_success.total` | 38 |
 | `agent_eval` | `metrics.task_success.rate` | 0.789 |
@@ -686,6 +822,30 @@ results cannot be attributed to Gemini; latency and request counts include the r
 independent evaluation. The numbers rest on a single run and LLM output is not deterministic.
 Antakya results use the simulated detector and guard cases use injected faults. The citation-support
 check is a crude keyword test.
+
+## Ablations
+
+**1. Early-fusion baseline vs Siamese U-Net (real KATE-CD test set, n = 38 tiles; Week 3, reused).**
+Operating threshold chosen on validation, evaluated once on test (`reports/comparison_siamese_vs_baseline_f1.json`).
+
+| Model | Precision | Recall | F1 | IoU |
+|---|---|---|---|---|
+| Early fusion | 0.635 | 0.414 | 0.502 | 0.335 |
+| Siamese | 0.732 | 0.511 | 0.602 | 0.430 |
+
+Paired bootstrap, Siamese minus baseline: F1 +0.104 (95 % CI 0.038 to 0.166), IoU +0.099 (0.037 to 0.155). Small test set, one dataset.
+
+**2. Uncertainty filter (verification queue) on vs off — SIMULATED detector, Antakya** (`scripts/ablation_uncertainty_filter.py`, `reports/ablation_uncertainty_filter.json`).
+This measures the simulation's noise model, not real model behaviour: the simulated uncertainty peaks near the decision threshold and does *not* depend on whether the detector is right. Mean over 5 noise seeds; "FP" = reported damaged but not destroyed in the HOTOSM ground truth (that truth is itself incomplete, so FP is an upper bound).
+
+| Uncertainty of wrong detections | Queue size | False positives reported, off -> on | True positives held back |
+|---|---|---|---|
+| as simulated (k = 1) | ~100 | 153 -> 150 (-2 %) | 8.8 of 594 (1.5 %) |
+| x2 (ASSUMED) | ~157 | 153 -> 141 (-8 %) | 8.8 |
+| x3 (ASSUMED) | ~228 | 153 -> 133 (-13 %) | 8.8 |
+| x5 (ASSUMED) | ~276 | 153 -> 116 (-24 %) | 8.8 |
+
+With the simulation as it is, the filter removes false and true positives in about the same proportion (no real benefit). It only helps when wrong detections are more uncertain, which is the case for the real model on KATE-CD (14-21x higher uncertainty on wrong pixels) — the x2..x5 rows are an assumption showing the sensitivity, not a measurement. In the full pipeline (seed 0, real route solve) the 44 dispatched stops contain 18 false positives with the filter and 17 without (persons reached 3964 vs 3969): the filter changes the plan very little here. The top-400 candidate set is unchanged (about 151 non-destroyed buildings in it either way), because priority ranks by more than the damage flag.
 
 ## Limitations
 

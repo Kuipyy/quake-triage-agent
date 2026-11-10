@@ -85,3 +85,9 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 - Başarısız: W08, A03, A04, P03, P04, P06, P07, P08 (`reports/agent_eval.json` → `failed_scenarios`). Beklentiler sonuç görüldükten sonra değiştirilmedi.
 - Uyarı: senaryoları ajanı yazan taraf hazırladı; tek koşu; LLM deterministik değil. 236 LLM isteği / 52 başarılı cevap (429 yeniden denemeleri).
 - Sıradaki: ablasyonlar (baseline vs Siamese; belirsizlik filtresi açık/kapalı), hata analizi, README sınırlamalar/etik, week-07 notu.
+
+## Hafta 7 — ablasyonlar ve değerlendirme düzeltmeleri (2026-11-10)
+- README tablosu yalnız özet metrik; agent_eval JSON'da ayrıntı. Groq 44/52 not düşüldü. Protokol: sıkı 3/8, elle incelenmiş 4/8 (P06 yanlış cevap; kök neden: router sorguyu kısa İngilizce anahtar kelimeye çeviriyor — henüz düzeltilmedi).
+- `damage_threshold` yalnız düşürülebilir (test var).
+- Ablasyon: Siamese F1 0.60 vs 0.50 (KATE-CD, Hafta 3). Belirsizlik filtresi (SİMÜLE): FP 153→150; hata-duyarlı varsayım (k=5) ile 153→116. Plan düzeyinde fark ~1 bina.
+- Sıradaki: hata analizi (en kötü 10 bina + görsel inceleme), README sınırlamalar/etik, week-07 notu.
