@@ -112,3 +112,15 @@ llm:
 geo:
   demo_bbox: [36.10, 36.15, 36.25, 36.30]  # Antakya (minlon, minlat, maxlon, maxlat); osmnx>=2 order
   crs: "EPSG:32637"  # UTM zone 37N — Kahramanmaraş area
+
+agent:
+  default_protocol_query: "USAR team coordination at the reception and departure centre and on-site operations"
+  run_log: outputs/logs/agent_runs.jsonl   # one JSON line per turn: LLM calls, cache hits, latency
+
+regions:
+  antakya:
+    detector: simulated          # no imagery in this demo: SIMULATED detector from HOTOSM labels
+  kilis:
+    detector: siamese            # real Siamese model on the Vantor crop; no building table
+    pre: data/raw/demo/kilis_pre.tif
+    post: data/raw/demo/kilis_post.tif

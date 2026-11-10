@@ -43,3 +43,21 @@ def test_update_markdown_requires_markers(tmp_path):
     md.write_text("no markers")
     with pytest.raises(ValueError):
         update_markdown(md, "x")
+
+
+def test_readme_planning_claims_match_metrics():
+    """README prose must not drift from reports/metrics_planning.json."""
+    import json
+    from pathlib import Path
+
+    root = Path(__file__).parents[1]
+    path = root / "reports" / "metrics_planning.json"
+    if not path.exists():
+        return
+    b = json.loads(path.read_text())["baselines_closures_with_walking"]
+    readme = (root / "README.md").read_text()
+    gain = round((b["vrp"]["priority_collected"] / b["priority_first"]["priority_collected"] - 1)
+                 * 100)
+    assert f"{gain} % more priority than the highest-priority-first rule" in readme
+    for key in ("vrp", "priority_first", "greedy_nearest"):
+        assert f"{b[key]['priority_collected']:.2f}" in readme

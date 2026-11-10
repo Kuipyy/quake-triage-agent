@@ -84,7 +84,8 @@ def test_call_rejects_unknown_tool_and_bad_args(ctx):
 # ------------------------------------------------------------------ 2-4
 def test_detect_damage_simulated_is_flagged(ctx):
     out = ctx.call("detect_damage", {})
-    assert out["simulated"] is True and out["n_buildings"] == 5 and out["n_above_threshold"] == 3
+    assert out["SIMULATED_DETECTOR"] is True and out["n_buildings"] == 5
+    assert out["n_above_threshold"] == 3
     ctx.buildings = ctx.buildings.drop(columns="uncertainty")
     with pytest.raises(ToolError, match="uncertainty"):
         ctx.call("detect_damage", {})
@@ -96,7 +97,7 @@ def test_detect_damage_siamese_needs_paths_and_uses_runner(ctx, tmp_path):
     ctx.siamese_runner = lambda pre, post: {"mean_prob": 0.123456, "n_tiles": 4}
     out = ctx.call("detect_damage", {"source": "siamese", "pre_path": "a.tif",
                                      "post_path": "b.tif"})
-    assert out["simulated"] is False and out["mean_prob"] == 0.1235
+    assert out["SIMULATED_DETECTOR"] is False and out["mean_prob"] == 0.1235
     assert out["detail"]["n_tiles"] == 4
 
 
@@ -104,7 +105,7 @@ def test_score_buildings_flags_damage_and_queue(ctx):
     ctx.call("detect_damage", {})
     out = ctx.call("score_buildings", {"threshold": 0.5, "uncertainty_tau": 0.2})
     assert out["n_damaged"] == 3 and out["n_needs_verification"] == 1
-    assert out["simulated"] is True and sum(out["verification_reasons"].values()) == 1
+    assert out["SIMULATED_DETECTOR"] is True and sum(out["verification_reasons"].values()) == 1
     with pytest.raises(ToolError, match="no building table"):
         ToolContext().call("score_buildings", {})
 
@@ -142,7 +143,7 @@ def test_plan_routes_needs_priorities_then_plans(ctx):
     out = ctx.call("plan_routes", {"num_teams": 2})
     assert ctx.constraints.num_teams == 2  # override is remembered
     assert out["n_visited"] >= 1 and len(out["teams"]) == 2
-    assert out["simulated"] is True and out["n_closed_edges"] >= 0
+    assert out["SIMULATED_DETECTOR"] is True and out["n_closed_edges"] >= 0
     assert all(s["arrival_h"] <= 6 for t in out["teams"] for s in t["stops"])
 
 
@@ -154,9 +155,11 @@ def test_closed_area_cuts_road_and_plan_adapts(ctx):
     cut = _lonlat(600, 0)  # between node 1 and node 2: everything beyond is cut off
     ctx.call("update_constraints", {"closed_areas": [(cut[0], cut[1], 50.0)]})
     out = ctx.call("plan_routes", {})
-    assert base["n_unreachable"] == 0 and base["n_visited"] == 4
+    # building 12 (uncertainty 0.3) is held back for verification, never dispatched
+    assert base["n_excluded_verification"] == 1
+    assert base["n_unreachable"] == 0 and base["n_visited"] == 3
     assert out["n_closed_edges"] == base["n_closed_edges"] + 2  # both directions of one edge
-    assert out["n_unreachable"] == 4  # the four buildings beyond the cut
+    assert out["n_unreachable"] == 3  # the three dispatchable buildings beyond the cut
     assert out["n_visited"] == 1  # only the building before the cut is still served
 
 
@@ -190,11 +193,10 @@ def test_sitrep_is_grounded_cited_and_labelled_simulated(ctx):
     assert "SİMÜLE DEDEKTÖR" in tr and "Durum Raporu" in tr
 
 
-def test_sitrep_names_missing_steps_and_quality_warning(ctx):
+def test_sitrep_names_missing_steps(ctx):
     ctx.call("detect_damage", {})
-    ctx.quality_ok = False
     out = ctx.call("write_sitrep", {})
-    assert "plan_routes" in out["missing_steps"] and "Görüntü kalite" in out["markdown"]
+    assert "plan_routes" in out["missing_steps"] and out["status"] == "ok"
 
 
 # ------------------------------------------------------------------ 9
@@ -250,3 +252,77 @@ def test_check_image_quality_good_blank_and_missing(ctx, tmp_path):
     with pytest.raises(ToolError, match="not found"):
         ctx.call("check_image_quality", {"pre_path": tmp_path / "nope.tif",
                                          "post_path": tmp_path / "nope2.tif"})
+
+
+# ------------------------------------------------------------ guard enforced in tool code
+def _bad_quality(ctx):
+    ctx.quality_ok = False
+    ctx.quality_reasons = ["blank/no-data ratio 0.90 > 0.5"]
+
+
+def test_bad_image_quality_makes_decision_tools_return_verification_not_decisions(ctx):
+    ctx.call("detect_damage", {})
+    _bad_quality(ctx)
+    rank = ctx.call("prioritize_sites", {})
+    assert rank["status"] == "verification_required" and rank["top"] == []
+    assert "image quality check failed" in rank["warnings"][0]
+    assert "priority" not in ctx.buildings  # nothing was ranked behind the scenes either
+    plan = ctx.call("plan_routes", {})
+    assert plan["status"] == "verification_required" and plan["teams"] == [] and ctx.plan is None
+    rep = ctx.call("write_sitrep", {"language": "en"})
+    assert rep["status"] == "verification_required" and "no damage decision" in rep["markdown"]
+    assert "Priority buildings" not in rep["markdown"]
+    assert not {"prioritize_sites", "plan_routes", "write_sitrep"} & ctx.done  # not counted as run
+
+
+def test_high_uncertainty_buildings_are_held_back_not_ranked_or_dispatched(ctx):
+    ctx.call("detect_damage", {})  # no score_buildings call: the tools must apply the rule anyway
+    rank = ctx.call("prioritize_sites", {"top_k": 10})
+    assert rank["n_verification_queue"] == 1 and rank["warnings"]
+    assert all(not r["needs_verification"] for r in rank["top"])
+    assert [r["id"] for r in rank["verification_queue"]] == [12]  # uncertainty 0.30 > tau
+    plan = ctx.call("plan_routes", {})
+    assert plan["n_excluded_verification"] == 1
+    dispatched = {s["row"] for t in plan["teams"] for s in t["stops"]}
+    assert 1 not in dispatched  # row 1 is building 12
+    md = ctx.call("write_sitrep", {"language": "en"})["markdown"]
+    assert "excluded from the priority list" in md
+
+
+def test_every_tool_output_carries_simulated_flag_and_uncertainty(ctx, tmp_path):
+    calls = [("detect_damage", {}), ("score_buildings", {}), ("estimate_occupancy", {}),
+             ("prioritize_sites", {}), ("plan_routes", {}),
+             ("update_constraints", {"num_teams": 1}), ("write_sitrep", {})]
+    for name, args in calls:
+        out = ctx.call(name, args)
+        assert out["SIMULATED_DETECTOR"] is True, name
+        assert out["uncertainty"]["scope"] == "buildings" and out["uncertainty"]["tau"], name
+        assert out["uncertainty"]["n_above_tau"] == 1, name
+    ctx.rag_index = RagIndex([{"doc": "d", "section": "", "page_start": 1, "page_end": 1,
+                               "text": "abc def"}], np.eye(1, dtype="float32"))
+    ctx.embed_query = lambda t: np.ones((len(t), 1), dtype="float32")
+    out = ctx.call("lookup_protocol", {"query": "abc def"})
+    assert out["SIMULATED_DETECTOR"] is True and out["uncertainty"] is not None
+    # before any damage data exists the keys are still present (explicitly empty)
+    fresh = ToolContext().call("update_constraints", {"num_teams": 2})
+    assert fresh["SIMULATED_DETECTOR"] is False and fresh["uncertainty"] is None
+
+
+def test_detect_damage_states_which_detector(ctx):
+    sim = ctx.call("detect_damage", {})
+    assert "SIMULATED" in sim["detector_note"] and "not model output" in sim["detector_note"]
+    ctx.siamese_runner = lambda a, b: {"mean_prob": 0.2, "mean_uncertainty": 0.07,
+                                       "p90_uncertainty": 0.1, "max_uncertainty": 0.2}
+    ctx.buildings = None
+    real = ctx.call("detect_damage", {"source": "siamese", "pre_path": "a", "post_path": "b"})
+    assert real["SIMULATED_DETECTOR"] is False and "Siamese" in real["detector_note"]
+    assert real["uncertainty"]["mean"] == 0.07 and "TTA" in real["uncertainty"]["scope"]
+
+
+def test_what_if_marks_steps_stale_and_not_done(ctx):
+    _pipeline(ctx)
+    ctx.call("write_sitrep", {})
+    assert {"plan_routes", "write_sitrep"} <= ctx.done
+    ctx.call("update_constraints", {"num_teams": 3})
+    assert "plan_routes" not in ctx.done and "write_sitrep" not in ctx.done
+    assert "prioritize_sites" in ctx.done

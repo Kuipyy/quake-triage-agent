@@ -41,6 +41,22 @@ Planned design; components are added week by week (see `PLAN.md`).
 
 Work in progress — 8-week development plan (Nov–Dec 2026).
 
+## Planning comparison (SIMULATED detector)
+
+Antakya demo set, 400 candidate buildings, 4 teams, 6 h, 30 min per building, closed roads with a walking leg
+(`reports/metrics_planning.json`; damage probabilities come from a simulated detector, the depot is a scenario
+assumption):
+
+| Method | Priority collected | Persons reached | Visits |
+|---|---|---|---|
+| OR-Tools prize-collecting VRP | 27.80 | 3,969 | 44 |
+| Highest priority first | 23.29 | 3,273 | 36 |
+| Nearest first (greedy) | 18.54 | 1,453 | 44 |
+| Random (30 seeds, mean) | 15.43 | 1,455 | 35.9 |
+
+The VRP collects **19 % more priority than the highest-priority-first rule**, 1.5x the nearest-first rule and
+1.8x the random rule. These numbers describe planning behaviour on simulated detections, not rescue outcomes.
+
 ## Results
 
 Generated from `reports/*.json` by `make report`; do not edit by hand.
