@@ -30,7 +30,7 @@ def build_preview_map(buildings: gpd.GeoDataFrame, simplify_m: float = 0.5) -> f
             ll[c] = ll[c].round(2)
     minx, miny, maxx, maxy = ll.total_bounds
     m = folium.Map(location=[(miny + maxy) / 2, (minx + maxx) / 2], zoom_start=15,
-                   tiles="CartoDB positron", control_scale=True)
+                   tiles="OpenStreetMap", control_scale=True)
 
     def style(feat):
         pr = feat["properties"]
