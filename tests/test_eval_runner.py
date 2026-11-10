@@ -61,7 +61,7 @@ def test_summarize_smoke():
     turn = {"checks": {"tools_exact": True}, "passed": True, "latency_s": 2.0, "llm_calls": 1,
             "cache_hits": 0, "expect_cited": False, "citation_support": {"checked": 0,
                                                                           "supported": 0},
-            "router_fallback": False, "tool_set_ok": True, "expected_language": "en",
+            "router_fallback": False, "providers": ["gemini"], "tool_set_ok": True, "expected_language": "en",
             "answer": "The damage in the city is high and we need teams now"}
     rec = {"id": "A", "type": "normal", "turns": [turn], "violations": [], "passed": True,
            "providers": ["gemini"]}
