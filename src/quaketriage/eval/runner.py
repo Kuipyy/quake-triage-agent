@@ -11,6 +11,7 @@ import statistics
 from collections import Counter, defaultdict
 from typing import Any
 
+from quaketriage.agent.citations import cited_refs
 from quaketriage.agent.graph import detect_language
 from quaketriage.config import get
 from quaketriage.eval.scenarios import FORBIDDEN, Expect, Scenario
@@ -119,7 +120,7 @@ def detect_violations(scenario: Scenario, trace: list[dict], answers: list[str],
     for i, (a, refs) in enumerate(zip(answers, final["retrieved_refs"], strict=True)):
         if refs is None:
             continue
-        cited = {int(n) for n in re.findall(r"\[(\d+)\]", a)}
+        cited = cited_refs(a)
         if cited - refs:
             add("citation_to_unretrieved_passage", f"turn {i + 1}: {sorted(cited - refs)}")
     assert {v["rule"] for v in out} <= set(FORBIDDEN)

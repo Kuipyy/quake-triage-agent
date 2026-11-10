@@ -75,6 +75,10 @@ class TopsisInput(BaseModel):
     ahp_pairwise: list[list[float]] | None = Field(
         default=None, description="AHP matrix in the order of topsis.weights keys; "
         "if given, replaces the weights.")
+    damage_gate: float | None = Field(
+        default_factory=lambda: get("thresholds.damage_prob"), ge=0, le=1,
+        description="Only buildings with damage_prob above this value are candidates (TOPSIS is "
+        "computed among them; the rest get priority 0). None disables the gate.")
 
     @field_validator("depots")
     @classmethod
@@ -96,7 +100,12 @@ def distance_to_depot(buildings: gpd.GeoDataFrame, depots: list[tuple[float, flo
 
 
 def prioritise(buildings: gpd.GeoDataFrame, params: TopsisInput) -> gpd.GeoDataFrame:
-    """Add ``distance_to_depot_m`` and ``priority`` (TOPSIS closeness, higher = more urgent)."""
+    """Add ``distance_to_depot_m``, ``candidate`` and ``priority``.
+
+    ``priority`` is the TOPSIS closeness (higher = more urgent), computed only among buildings
+    whose ``damage_prob`` exceeds ``params.damage_gate``: a building that is almost certainly
+    intact is not a rescue site, however many people live in it. Non-candidates get priority 0.
+    """
     cfg_w = dict(get("topsis.weights"))
     types = dict(get("topsis.criteria_types"))
     names = list(cfg_w)
@@ -122,7 +131,15 @@ def prioritise(buildings: gpd.GeoDataFrame, params: TopsisInput) -> gpd.GeoDataF
     matrix = out[[cols[n] for n in names]].to_numpy(float)
     benefit = np.array([types[n] == "benefit" for n in names])
     w = np.array([weights[n] for n in names], float)
-    out["priority"] = topsis_scores(matrix, w, benefit)
+    if params.damage_gate is None:
+        candidate = np.ones(len(out), bool)
+    else:  # NaN damage_prob (no valid pixels) compares False, so it is never a candidate
+        candidate = out["damage_prob"].to_numpy(float) > params.damage_gate
+    priority = np.zeros(len(out))
+    if candidate.any():
+        priority[candidate] = topsis_scores(matrix[candidate], w, benefit)
+    out["candidate"] = candidate
+    out["priority"] = priority
     out.attrs["topsis_weights"] = {n: round(float(x), 4) for n, x in zip(names, w / w.sum(),
                                                                          strict=True)}
     return out

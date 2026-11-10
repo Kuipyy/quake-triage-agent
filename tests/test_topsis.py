@@ -85,3 +85,32 @@ def test_prioritise_weights_override_and_ahp():
 def test_depot_validation():
     with pytest.raises(ValueError):
         TopsisInput(depots=[(95.0, 200.0)])
+
+
+def _crowded_intact_building():
+    pts = [Point(36.160, 36.200), Point(36.161, 36.200), Point(36.162, 36.200)]
+    return gpd.GeoDataFrame(
+        {"id": [1, 2, 3], "damage_prob": [0.9, 0.7, 0.05],
+         "estimated_persons": [10, 10, 500], "floors": [4, 4, 4]}, geometry=pts, crs=4326)
+
+
+def test_damage_gate_keeps_intact_crowded_building_out_of_the_ranking():
+    out = prioritise(_crowded_intact_building(), TopsisInput(depots=[(36.160, 36.200)]))
+    assert out["candidate"].tolist() == [True, True, False]
+    assert out.loc[2, "priority"] == 0.0
+    # TOPSIS runs among the two candidates only: the dominant one gets 1.0, the other 0.0
+    assert out.loc[0, "priority"] == 1.0 and out.loc[1, "priority"] == 0.0
+
+
+def test_gate_can_be_disabled_and_then_crowd_wins():
+    out = prioritise(_crowded_intact_building(),
+                     TopsisInput(depots=[(36.160, 36.200)], damage_gate=None))
+    assert out["candidate"].all()
+    assert out["priority"].idxmax() == 2  # the crowded intact building tops the list again
+
+
+def test_gate_with_no_candidates_gives_all_zero_priorities():
+    b = _crowded_intact_building()
+    b["damage_prob"] = [0.01, float("nan"), 0.05]
+    out = prioritise(b, TopsisInput(depots=[(36.160, 36.200)]))
+    assert not out["candidate"].any() and (out["priority"] == 0.0).all()

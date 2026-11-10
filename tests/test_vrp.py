@@ -58,6 +58,13 @@ def test_candidates_are_top_n_and_nested():
     assert set(select_candidates(b, 2)["id"]) <= set(select_candidates(b, 3)["id"])
 
 
+def test_candidates_skip_buildings_below_the_damage_gate():
+    b = _buildings([0, 1, 2, 3], [0.1, 0.9, 0.5, 0.7])
+    b["candidate"] = [True, False, True, True]  # building 101 (priority 0.9) is below the gate
+    assert list(select_candidates(b, 2)["id"]) == [103, 102]
+    assert len(select_candidates(b, 10)) == 3
+
+
 def test_time_limit_forces_choice_of_higher_priority(tmp_path, monkeypatch):
     monkeypatch.setattr("quaketriage.planning.distances.ROOT", tmp_path)
     # depot at x=0; near low-priority at 1000 m (100 s), far high-priority at 3000 m (300 s).

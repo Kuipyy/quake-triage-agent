@@ -5,6 +5,11 @@ One section per project week until the first tagged release.
 
 ## [Unreleased]
 
+### Week 7 follow-up — candidate gate and citation markers
+- TOPSIS runs only among buildings above the damage gate; intact crowded buildings no longer rank at the top
+  (`planning/topsis.py`, `planning/vrp.py`, `agent/tools.py`). Planning results must be regenerated.
+- `agent/citations.py` normalises full-width citation markers (【1】) before the citation checks.
+
 ### Week 6 — Agent
 - `agent/`: LLM adapter (Gemini, Groq fallback, retry, cache), nine tools with pydantic schemas, LangGraph agent
   (router, code-level quality gate, partial what-if re-runs, per-turn metrics log), CLI (`python -m quaketriage.agent`).

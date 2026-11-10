@@ -124,7 +124,9 @@ def test_occupancy_scenarios_and_idempotence(ctx):
 def test_prioritize_sites_orders_and_reports_weights(ctx):
     ctx.call("detect_damage", {})
     out = ctx.call("prioritize_sites", {"top_k": 3})
-    assert len(out["top"]) == 3 and abs(sum(out["weights"].values()) - 1) < 1e-3
+    # building 12 is queued for verification; 13 (0.2) and 15 (0.05) are below the damage gate
+    assert {r["id"] for r in out["top"]} == {11, 14}
+    assert abs(sum(out["weights"].values()) - 1) < 1e-3
     pr = [r["priority"] for r in out["top"]]
     assert pr == sorted(pr, reverse=True)
     only_people = {"damage_prob": 0, "estimated_persons": 1, "floor_count": 0,
@@ -157,10 +159,11 @@ def test_closed_area_cuts_road_and_plan_adapts(ctx):
     out = ctx.call("plan_routes", {})
     # building 12 (uncertainty 0.3) is held back for verification, never dispatched
     assert base["n_excluded_verification"] == 1
-    assert base["n_unreachable"] == 0 and base["n_visited"] == 3
+    # dispatchable = damaged above the gate and not queued: buildings 11 and 14
+    assert base["n_unreachable"] == 0 and base["n_visited"] == 2
     assert out["n_closed_edges"] == base["n_closed_edges"] + 2  # both directions of one edge
-    assert out["n_unreachable"] == 3  # the three dispatchable buildings beyond the cut
-    assert out["n_visited"] == 1  # only the building before the cut is still served
+    assert out["n_unreachable"] == 1  # building 14 lies beyond the cut
+    assert out["n_visited"] == 1  # only building 11, before the cut, is still served
 
 
 # ------------------------------------------------------------------ 7

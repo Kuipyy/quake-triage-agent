@@ -38,8 +38,12 @@ class VrpInput(BaseModel):
 
 
 def select_candidates(buildings: gpd.GeoDataFrame, n: int) -> gpd.GeoDataFrame:
-    """Top-n buildings by TOPSIS ``priority`` (nested: top-200 is a subset of top-500)."""
-    return buildings.sort_values("priority", ascending=False, kind="stable").head(n)
+    """Top-n candidate buildings by TOPSIS ``priority`` (nested: top-200 is a subset of top-500).
+
+    Buildings below the damage gate (``candidate`` is False) are never selected.
+    """
+    pool = buildings[buildings["candidate"]] if "candidate" in buildings else buildings
+    return pool.sort_values("priority", ascending=False, kind="stable").head(n)
 
 
 def building_nodes(g: nx.MultiDiGraph, buildings: gpd.GeoDataFrame) -> np.ndarray:

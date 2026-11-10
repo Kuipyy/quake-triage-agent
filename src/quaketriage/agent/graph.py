@@ -21,6 +21,7 @@ from langgraph.graph import END, START, StateGraph
 from pydantic import BaseModel, ValidationError
 
 from quaketriage.agent import prompts
+from quaketriage.agent.citations import cited_refs, normalize_citations
 from quaketriage.agent.llm import LLMError
 from quaketriage.agent.tools import (
     PIPELINE,
@@ -442,7 +443,8 @@ class Agent:
                                      system=prompts.protocol_system(lang)).strip()
         except LLMError:
             text = " ".join(h["text"][:200] for h in hits[:2])
-        refs = {int(r) for r in re.findall(r"\[(\d+)\]", text)}
+        text = normalize_citations(text)
+        refs = cited_refs(text)
         valid = {h["ref"] for h in hits}
         for bad in refs - valid:  # a citation to a passage that was never retrieved is removed
             text = text.replace(f"[{bad}]", "")

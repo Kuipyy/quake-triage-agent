@@ -5,7 +5,7 @@
 ## Durum özeti
 - **Aktif hafta:** Hafta 7 — Değerlendirme (senaryo seti hazır)
 - **Sıradaki adım:** Hafta 7 madde 2: `eval/run_agent_eval.py` (senaryoları gerçek LLM ile koşturur; paylaşılan yol grafı/RAG, çözücü süresi kısa; metrikler → `reports/agent_eval.json`: görev başarısı, araç doğruluğu, yasak davranış, atıf geçerliliği/destek, gecikme, LLM çağrısı). Tahmini ~45-60 LLM çağrısı: koşmadan önce the project owner'a söyle
-- **Bekleyen manuel işler (the project owner):** yok (transkriptler okundu; düzeltmeler yapıldı)
+- **Bekleyen manuel işler (the project owner):** TOPSIS aday kapısı (`damage_gate`) ve atıf normalleştirme koda eklendi (testli, 2026-11-10; bulut ortamında yazıldı, `data/` ve LLM anahtarı olmadığı için yeniden üretim yapılamadı). Kapıdan önce üretilen planlama sayıları ESKİ: `reports/metrics_planning.json`, `plan_demo.json`, `depot_sensitivity.json`, `route_map.html`, `error_analysis.json`, uçurum/ablasyon ve agent_eval. Mac'te yeniden üretilecek (Claude'a yaptır): `scripts/plan_routes.py`, `depot_sensitivity.py`, `make_route_map.py`, `ablation_uncertainty_filter.py`, `error_analysis.py`, sonra `run_agent_eval.py` (38 senaryo, soğuk önbellek, ~24 dk), en sonda `make_report.py`. Ayrıntı: `docs/decisions.md` (2026-11-10, "Damage gate")
 
 ## Önemli metrikler
 

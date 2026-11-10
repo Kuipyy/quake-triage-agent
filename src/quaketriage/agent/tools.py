@@ -19,6 +19,7 @@ import geopandas as gpd
 import numpy as np
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
+from quaketriage.agent.citations import cited_refs, normalize_citations
 from quaketriage.buildings.queue import flag_verification
 from quaketriage.config import get
 from quaketriage.planning.debris import DebrisInput, apply_debris_risk, close_edges_near
@@ -535,7 +536,7 @@ def prioritize_sites(inp: PrioritizeSitesInput, ctx: ToolContext) -> PrioritizeS
     try:
         out = prioritise(ctx.need_buildings(), TopsisInput(
             depots=[ctx.constraints.depot_lonlat], weights=ctx.constraints.weights,
-            ahp_pairwise=inp.ahp_pairwise))
+            ahp_pairwise=inp.ahp_pairwise, damage_gate=ctx.constraints.damage_threshold))
     except ValueError as exc:
         raise ToolError(str(exc)) from exc
     ctx.buildings = out
@@ -545,7 +546,8 @@ def prioritize_sites(inp: PrioritizeSitesInput, ctx: ToolContext) -> PrioritizeS
         warn.append(msg(ctx.lang, "queue", n=int(queued.sum()), p=_queue_persons(out)))
     return PrioritizeSitesOutput(
         weights=out.attrs["topsis_weights"], warnings=warn,
-        top=_site_rows(out[~queued].nlargest(inp.top_k, "priority")),
+        top=_site_rows(out[~queued & out["candidate"].to_numpy(bool)].nlargest(
+            inp.top_k, "priority")),
         n_verification_queue=int(queued.sum()),
         persons_in_verification_queue=_queue_persons(out),
         verification_queue=_site_rows(out[queued].nlargest(inp.top_k, "priority")))
@@ -768,6 +770,8 @@ def write_sitrep(inp: WriteSitrepInput, ctx: ToolContext) -> WriteSitrepOutput:
         L.append(t["head"])
         L.append("---|---|---|---|---")
         shown = b[~b["needs_verification"]] if "needs_verification" in b else b
+        if "candidate" in shown:
+            shown = shown[shown["candidate"]]
         for rank, (i, r) in enumerate(shown.nlargest(inp.top_k, "priority").iterrows(), 1):
             bid = int(r["id"]) if "id" in b and np.isfinite(r["id"]) else f"#{i}"
             L.append(f"{rank} | {bid} | {r['priority']:.3f} | {r['damage_prob']:.2f} | "
@@ -900,14 +904,14 @@ def tool_schemas() -> list[dict]:
              "parameters": s.input_model.model_json_schema()} for s in TOOLS.values()]
 
 
-_CITE = __import__("re").compile(r"\[(\d+)\]")
+_CITE = __import__("re").compile(r"\[(\d+)\]")  # sentence-level check below runs on normalised text
 
 
 def validate_citations(markdown: str, hits: list[dict], chunks: list[dict]) -> dict:
     """Check that every ``[n]`` in ``markdown`` points to a retrieved passage and that each
     retrieved passage really exists in the index (same document, page range and text prefix).
     Whether a passage *supports* a claim is not decidable here (manual check in Week 7)."""
-    refs = sorted({int(m) for m in _CITE.findall(markdown)})
+    refs = sorted(cited_refs(markdown))
     known = {h["ref"] for h in hits}
     index = {(c["doc"], f"{c['page_start']}-{c['page_end']}"): c["text"] for c in chunks}
     missing_in_index = []
@@ -938,6 +942,7 @@ def check_support(answer: str, hits: list[dict]) -> list[dict]:
     'register' ~ 'registration'). This catches invented terms and wrong passages, but it cannot
     judge meaning, negation or omissions; it is a smoke test, not a fact check.
     """
+    answer = normalize_citations(answer)
     by_ref = {h["ref"]: " ".join(h["text"].split()) for h in hits}
     out = []
     for sent in re.split(r"(?<=[.!?])\s+", answer):

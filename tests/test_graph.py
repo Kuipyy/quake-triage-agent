@@ -232,6 +232,19 @@ def test_protocol_answer_records_rough_citation_support(agent_factory):
     assert cs == {"checked": 2, "supported": 1}  # the invented helicopter claim is flagged
 
 
+def test_fullwidth_citation_markers_are_normalised_and_checked(agent_factory):
+    llm = FakeLLM(_route("protocol_question"),
+                  answer="USAR teams register at the RDC 【1】. Another claim 【9】.")
+    a = agent_factory(llm)
+    a.ctx.rag_index = RagIndex([{"doc": "INSARAG_Vol2", "section": "", "page_start": 10,
+                                 "page_end": 11, "text": "USAR teams register at the RDC"}],
+                               np.eye(1, dtype="float32"))
+    r = a.ask("How do USAR teams register?")
+    assert "【" not in r.answer and "[1]" in r.answer  # normalised to [n]
+    assert "[9]" not in r.answer  # the invented citation is still removed
+    assert a.history[-1]["citation_support"] == {"checked": 1, "supported": 1}
+
+
 def test_follow_up_with_fresh_steps_still_answers_from_stored_results(agent_factory):
     a = agent_factory(FakeLLM(lambda m: _route("full_assessment") if "assess" in m
                               else _route("status_report")))
