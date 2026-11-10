@@ -1,9 +1,9 @@
-"""Plan rescue routes for the Antakya demo set and test sensitivity to the candidate count N.
+"""Plan rescue routes for the Antakya demo set; compare debris/walking variants and candidate N.
 
-Writes reports/plan_demo.json (plan for routing.candidate_n) and reports/metrics_planning.json.
-Detector output is SIMULATED (see metrics_building.json).
+Writes reports/plan_demo.json (plan for routing.candidate_n, closures + walking) and
+reports/metrics_planning.json. Detector output is SIMULATED (see metrics_building.json).
 Usage: uv run python scripts/plan_routes.py
-Estimated runtime ~4 min (graph + debris ~20 s, distance matrix ~30 s, 4 solves x time limit).
+Estimated runtime ~4 min (graph + debris ~10 s, matrices ~5 s, 6 solves x limit, baselines <10 s).
 """
 import json
 import time
@@ -13,14 +13,34 @@ import geopandas as gpd
 import numpy as np
 
 from quaketriage.config import get
+from quaketriage.planning.baselines import greedy_nearest, random_dispatch
 from quaketriage.planning.debris import DebrisInput, apply_debris_risk
-from quaketriage.planning.distances import travel_time_matrix
+from quaketriage.planning.distances import travel_time_matrix, walking_access
 from quaketriage.planning.roads import load_road_graph, snap_to_nodes
 from quaketriage.planning.topsis import TopsisInput, prioritise
-from quaketriage.planning.vrp import VrpInput, building_nodes, plan_routes, select_candidates
+from quaketriage.planning.vrp import (
+    VrpInput,
+    building_nodes,
+    plan_routes,
+    prepare_problem,
+    select_candidates,
+)
 
 ROOT = Path(__file__).parents[1]
 SWEEP = (200, 500, 1000)
+RANDOM_SEEDS = 30
+KEYS = ("n_candidates", "n_unreachable", "n_need_walking", "n_visited", "priority_collected",
+        "persons_reached", "persons_in_candidates")
+
+
+def summary(plan: dict, seconds: float) -> dict:
+    return {k: plan[k] for k in KEYS} | {"solve_s": round(seconds, 1)}
+
+
+def stop_nodes(g, depot_node, cand, max_walk: float) -> list:
+    """Graph nodes the teams stop at for these candidates (access nodes within the walk limit)."""
+    access, walk_m = walking_access(g, depot_node, building_nodes(g, cand).tolist())
+    return [a for a, w in zip(access, walk_m, strict=True) if a is not None and w <= max_walk]
 
 
 def main() -> None:
@@ -28,62 +48,104 @@ def main() -> None:
     b = gpd.read_file(ROOT / get("paths.data_processed") / "buildings.gpkg")
     depot = tuple(get("routing.depots")[0])
     b = prioritise(b, TopsisInput(depots=[depot]))
-    g = apply_debris_risk(load_road_graph(), b, DebrisInput())
-    print(f"graph + debris ready ({time.time() - t0:.0f}s)")
-
-    # reachability of every building (one matrix row/column from the depot)
-    depot_node = int(snap_to_nodes(g, [depot])[0][0])
-    all_nodes = building_nodes(g, b)
-    row = travel_time_matrix(g, [depot_node, *all_nodes.tolist()], use_cache=False)
-    reach = np.isfinite(row[0, 1:]) & np.isfinite(row[1:, 0])
-    n_unreach_all = int((~reach).sum())
-    print(f"unreachable from/to depot: {n_unreach_all}/{len(b)} buildings")
-
-    # one cached matrix for the largest candidate set; smaller N reuse a sub-matrix
-    n_max = max(SWEEP + (get("routing.candidate_n"),))
-    cand = select_candidates(b, n_max)
-    nodes = [depot_node, *building_nodes(g, cand).tolist()]
-    t1 = time.time()
-    matrix = travel_time_matrix(g, nodes)
-    print(f"matrix {matrix.shape} ready ({time.time() - t1:.0f}s)")
-
+    base = load_road_graph()
+    graphs = {"no_closures": apply_debris_risk(base, b, DebrisInput(block_count=10**9)),
+              "closures": apply_debris_risk(base, b, DebrisInput())}
+    depot_node = int(snap_to_nodes(base, [depot])[0][0])
+    max_walk = get("routing.max_walk_m")
     n_cfg = get("routing.candidate_n")
+    print(f"graphs ready ({time.time() - t0:.0f}s)")
+
+    # buildings unreachable from the depot, over the whole table
+    all_nodes = building_nodes(base, b).tolist()
+    unreach_all = {}
+    for name, g, walk in (("no_closures", graphs["no_closures"], True),
+                          ("closures_no_walking", graphs["closures"], False),
+                          ("closures_with_walking", graphs["closures"], True)):
+        access, wm = walking_access(g, depot_node, all_nodes)
+        lim = max_walk if walk else 0.0
+        unreach_all[name] = int(sum(a is None or w > lim for a, w in zip(access, wm, strict=True)))
+    print("unreachable over all buildings:", unreach_all)
+
+    # one cached matrix per graph for the largest candidate set; smaller N use sub-matrices
+    n_max = max((*SWEEP, n_cfg))
+    cand_max = select_candidates(b, n_max)
+    mats = {}
+    for key, g in graphs.items():
+        nodes = [depot_node, *stop_nodes(g, depot_node, cand_max, max_walk)]
+        mats[key] = (travel_time_matrix(g, nodes), nodes)
+
+    def run(graph_key: str, n: int, walking: bool) -> dict:
+        t = time.time()
+        m, nodes = mats[graph_key]
+        plan = plan_routes(graphs[graph_key], b, depot, VrpInput(candidate_n=n, walking=walking),
+                           m, nodes)
+        return plan | {"_s": time.time() - t}
+
+    variants, plans = {}, {}
+    for name, key, walking in (("no_closures", "no_closures", True),
+                               ("closures_no_walking", "closures", False),
+                               ("closures_with_walking", "closures", True)):
+        plan = run(key, n_cfg, walking)
+        plans[name] = plan
+        variants[name] = summary(plan, plan["_s"]) | {"n_unreachable_all_buildings":
+                                                      unreach_all[name]}
+        print(f"{name}: priority {plan['priority_collected']}, persons {plan['persons_reached']}, "
+              f"unreachable {plan['n_unreachable']} (walking {plan['n_need_walking']})")
+
     sweep = {}
-    for n in sorted(set(SWEEP) | {get("routing.candidate_n")}):
-        t2 = time.time()
-        plan = plan_routes(g, b, depot, VrpInput(candidate_n=n), matrix, nodes)
-        sweep[str(n)] = {k: v for k, v in plan.items() if k != "routes"} | {
-            "solve_s": round(time.time() - t2, 1)}
+    for n in sorted(set(SWEEP) | {n_cfg}):
+        plan = plans["closures_with_walking"] if n == n_cfg else run("closures", n, True)
+        sweep[str(n)] = summary(plan, plan["_s"])
         print(f"N={n}: visited {plan['n_visited']}, priority {plan['priority_collected']}, "
-              f"persons {plan['persons_reached']}, unreachable {plan['n_unreachable']}")
-        if n == get("routing.candidate_n"):
-            demo = plan
-    # same N, but debris only slows roads (no closures): isolates the effect of the closure rule
-    g_soft = apply_debris_risk(load_road_graph(), b, DebrisInput(block_count=10**9))
-    soft_nodes = [depot_node, *building_nodes(g_soft, select_candidates(b, n_cfg)).tolist()]
-    soft = plan_routes(g_soft, b, depot, VrpInput(candidate_n=n_cfg),
-                       travel_time_matrix(g_soft, soft_nodes), soft_nodes)
-    penalty_only = {k: v for k, v in soft.items() if k != "routes"}
-    print(f"penalty-only N={n_cfg}: visited {soft['n_visited']}, "
-          f"priority {soft['priority_collected']}, unreachable {soft['n_unreachable']}")
-    demo.update({"depot_lonlat": depot, "disclaimer": "SIMULATED detector; scenario depot"})
+              f"unreachable {plan['n_unreachable']}")
+
+    # baselines on the same problem (closures + walking, N = candidate_n)
+    prob = prepare_problem(graphs["closures"], b, depot, VrpInput(candidate_n=n_cfg),
+                           *mats["closures"])
+    greedy = greedy_nearest(prob)
+    rand = [random_dispatch(prob, seed) for seed in range(RANDOM_SEEDS)]
+
+    def mean_std(key: str) -> dict:
+        v = np.array([r[key] for r in rand])
+        return {"mean": round(float(v.mean()), 3), "std": round(float(v.std()), 3)}
+
+    vrp = plans["closures_with_walking"]
+    baselines = {
+        "vrp": summary(vrp, vrp["_s"]),
+        "greedy_nearest": summary(greedy, 0.0),
+        f"random_{RANDOM_SEEDS}_seeds": {
+            "n_visited": mean_std("n_visited"),
+            "priority_collected": mean_std("priority_collected"),
+            "persons_reached": mean_std("persons_reached")}}
+    for name, res in (("vrp", vrp), ("greedy_nearest", greedy)):
+        baselines[name]["priority_vs_random_mean_x"] = round(
+            res["priority_collected"] / baselines[f"random_{RANDOM_SEEDS}_seeds"][
+                "priority_collected"]["mean"], 2)
+    for name, v in baselines.items():
+        print(f"{name}: {json.dumps(v)}")
+
+    demo = {k: v for k, v in plans["closures_with_walking"].items() if k != "_s"}
+    demo |= {"depot_lonlat": depot, "SIMULATED_DETECTOR": True,
+             "disclaimer": "SIMULATED detector; scenario depot; not an operational plan"}
     (ROOT / "reports" / "plan_demo.json").write_text(json.dumps(demo, indent=1))
 
     out = {"SIMULATED_DETECTOR": True,
            "disclaimer": "Damage probabilities come from a simulated detector (HOTOSM labels + "
-                         "noise); depot is a scenario assumption; numbers show planning "
-                         "behaviour, not real-world rescue outcomes.",
-           "n_buildings": len(b), "n_unreachable_all": n_unreach_all,
+                         "noise); depot, debris and walking rules are scenario assumptions; "
+                         "numbers show planning behaviour, not real-world rescue outcomes.",
+           "n_buildings": len(b),
            "params": {k: get(f"routing.{k}") for k in (
                "num_teams", "mission_duration_hours", "intervention_time_minutes",
                "solver_time_limit_s", "candidate_n", "debris_risk_buffer_meters",
                "debris_damage_prob_min", "debris_min_floors", "debris_penalty_factor",
-               "debris_block_count")},
-           "depot_lonlat": depot, "candidate_n_sensitivity": sweep,
-           "closure_rule_effect": {"n": n_cfg, "with_closures": sweep[str(n_cfg)],
-                                   "penalty_only": penalty_only},
+               "debris_block_count", "walking_speed_kmh", "max_walk_m")},
+           "depot_lonlat": depot,
+           "variants_at_candidate_n": {"n": n_cfg, **variants},
+           "candidate_n_sensitivity_closures_with_walking": sweep,
+           "baselines_closures_with_walking": {"n": n_cfg, **baselines},
            "note": "OR-Tools guided local search is time-limited, hence not exactly "
-                   "reproducible; differences of a few percent between N values are noise."}
+                   "reproducible; differences of a few percent are noise."}
     (ROOT / "reports" / "metrics_planning.json").write_text(json.dumps(out, indent=1))
     print(f"done ({time.time() - t0:.0f}s)")
 

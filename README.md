@@ -464,6 +464,8 @@ python3 -m http.server 8000 --directory reports
 # open http://localhost:8000/map_preview.html
 ```
 
+The same applies to `reports/route_map.html` (`uv run python scripts/make_route_map.py`, after `scripts/plan_routes.py`).
+
 OpenStreetMap tile servers return 403 for requests without a `Referer` header, which is what browsers send for `file://` pages, so the basemap stays blank.
 
 ## Limitations

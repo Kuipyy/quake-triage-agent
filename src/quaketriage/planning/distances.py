@@ -47,3 +47,25 @@ def travel_time_matrix(g: nx.MultiDiGraph, nodes: list, weight: str = "travel_ti
         path.parent.mkdir(parents=True, exist_ok=True)
         np.save(path, mat)
     return mat
+
+
+def walking_access(g: nx.MultiDiGraph, depot_node, nodes: list, weight: str = "travel_time_adj"
+                   ) -> tuple[list, np.ndarray]:
+    """For each node: the drivable node a team would park at, and the walking distance (m) from it.
+
+    A node is *drivable* if it can be reached from the depot and the depot from it without using
+    closed edges. Others are reached on foot along the street network (closed streets included,
+    both directions) from the nearest drivable node. Unreachable on foot -> (None, inf).
+    """
+    drive, idx = _csr(g, weight)
+    d0 = idx[depot_node]
+    ok = np.isfinite(dijkstra(drive, directed=True, indices=d0)) & np.isfinite(
+        dijkstra(drive.T.tocsr(), directed=True, indices=d0))
+    length, _ = _csr(g, "length")
+    walk = length.maximum(length.T)  # walk both ways along any street
+    dist, _, origin = dijkstra(walk, directed=True, indices=np.flatnonzero(ok), min_only=True,
+                               return_predecessors=True)
+    names = list(g.nodes)
+    ids = [idx[n] for n in nodes]
+    access = [names[origin[i]] if origin[i] >= 0 else None for i in ids]
+    return access, np.asarray([dist[i] for i in ids], float)

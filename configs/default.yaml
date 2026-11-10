@@ -83,6 +83,10 @@ routing:
   candidate_n: 400               # VRP considers only the top-N buildings by TOPSIS priority
   solver_time_limit_s: 30        # OR-Tools wall-clock limit per solve
   distance_cache_dir: outputs/cache
+  # Buildings cut off by closed roads: the team drives to the nearest reachable node and walks the
+  # rest along the (closed) streets, out and back. Both values are assumptions.
+  walking_speed_kmh: 3.0         # loaded, over rubble
+  max_walk_m: 500                # farther than this -> building stays unreachable
   debris_risk_buffer_meters: 50
   debris_damage_prob_min: 0.5   # building counts as a debris source above this damage probability
   debris_min_floors: 3          # ... and at least this many floors (taller -> more debris)
