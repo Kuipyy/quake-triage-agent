@@ -23,5 +23,6 @@ def test_route_map_has_teams_depot_and_simulated_label():
                                                                        "return_s": 0}],
             "n_visited": 1, "priority_collected": 0.8, "persons_reached": 12.0}
     html = build_route_map(g, plan, b, 0, (36.17, 36.2)).get_root().render()
+    assert "team 1: 1 visits, 0.5 h, priority 0.80" in html and "team 2: 0 visits" in html
     assert "SIMULATED detector" in html and "team 1 (1 stops)" in html
     assert "closed roads" in html and "dash" in html.lower()

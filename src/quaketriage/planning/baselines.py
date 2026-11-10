@@ -1,9 +1,10 @@
-"""Simple dispatch rules to compare against the VRP: nearest-first greedy and random.
+"""Simple dispatch rules to compare against the VRP: nearest-first, priority-first and random.
 
 Same candidates, travel times, service times, teams and mission limit as the VRP
 (``prepare_problem``). Teams move in event order: the team that is free earliest picks its next
 building among those it can still reach and return from within the mission time; when none fits,
-that team goes home. The rules ignore priority, so they show what the optimiser buys.
+that team goes home. Nearest-first and random ignore priority, priority-first ignores distance;
+together they show what the optimiser buys.
 """
 from __future__ import annotations
 
@@ -40,6 +41,12 @@ def _simulate(prob: Problem, choose) -> dict:
 def greedy_nearest(prob: Problem) -> dict:
     """Always go to the closest (by travel + service time) feasible building."""
     return _simulate(prob, lambda a, c: min(c, key=lambda b: (prob.trans[a, b], b)))
+
+
+def priority_first(prob: Problem) -> dict:
+    """Always go to the highest-priority feasible building, ignoring distance (ties: lower row)."""
+    prio = prob.cand["priority"].to_numpy(float)
+    return _simulate(prob, lambda a, c: min(c, key=lambda b: (-prio[b - 1], b)))
 
 
 def random_dispatch(prob: Problem, seed: int) -> dict:

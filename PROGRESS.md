@@ -5,7 +5,7 @@
 ## Durum özeti
 - **Aktif hafta:** Hafta 6 — Ajan (Hafta 5 tamamlandı)
 - **Sıradaki adım:** `PLAN.md` Hafta 6 bölümünü oku; planlama araçları hazır: `planning/topsis.py` (`prioritise`), `debris.py` (`apply_debris_risk`), `vrp.py` (`plan_routes`), `baselines.py`; hepsi pydantic girdili, ajan araçlarına sarılacak
-- **Bekleyen manuel işler (the project owner):** `reports/route_map.html` dosyasını HTTP üzerinden aç ve bak (rotalar yola oturuyor mu, açıklama kutusu çakışıyor mu)
+- **Bekleyen manuel işler (the project owner):** yok
 
 ## Önemli metrikler
 
@@ -21,7 +21,7 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 - **Metrikler** (`reports/metrics_planning.json`, SIMULATED): VRP öncelik 27,80 / 3.969 kişi; greedy 18,54 / 1.453; rastgele 15,43 / 1.455. Varyantlar: kapanma yok 27,82, kapanma var/yürüme yok 26,80, kapanma var/yürüme var 27,80. N=200/400/500/1000 → 27,75/27,80/27,75/27,26.
 - **Çıktılar:** `reports/plan_demo.json`, `reports/route_map.html`. Notlar: `docs/notes/week-05.md`. 104 test.
 - Karar kayıtları: `docs/decisions.md` (depo, enkaz, VRP/N, yürüme + baselines).
-- **Bekleyen manuel iş (the project owner):** `python3 -m http.server 8000 --directory reports` ile `http://localhost:8000/route_map.html` aç, rotalar yola oturuyor mu bak.
+- Rota haritası proje sahibi tarafından doğrulandı (rotalar sokakları takip ediyor). Eklendi: ekip renk anahtarı, araç bacaklarında kapalı kenar olmadığını doğrulayan test, "en yüksek öncelik önce" baseline'ı (23,29 / 3.273 kişi, 36 ziyaret).
 
 ### 2026-11-02 — Hafta 4 tamamlandı
 - **Veri hatası:** OSM indirme `bbox` sırası yanlıştı (osmnx 2.x) → Hafta 1 verisi yanlış bölgeydi. Düzeltildi: 53.028 bina, 30.718 yol kenarı; `check_data.py` sınır doğrulaması eklendi; indirme scripti retry/backoff ile (Overpass kapasite sorunu yaşandı).

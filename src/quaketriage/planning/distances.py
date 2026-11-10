@@ -69,3 +69,23 @@ def walking_access(g: nx.MultiDiGraph, depot_node, nodes: list, weight: str = "t
     ids = [idx[n] for n in nodes]
     access = [names[origin[i]] if origin[i] >= 0 else None for i in ids]
     return access, np.asarray([dist[i] for i in ids], float)
+
+
+def drive_edges(g: nx.MultiDiGraph, u, v, weight: str = "travel_time_adj") -> list[tuple]:
+    """Edges ``(a, b, key, data)`` of the fastest vehicle path u -> v.
+
+    Closed edges (non-finite ``weight``) are invisible to the search, so a driving leg can never
+    cross one; ``networkx.NetworkXNoPath`` is raised if no open path exists. Only walking legs
+    (not graph paths) may go through closed streets.
+    """
+    def cost(a, b, parallel):
+        finite = [d[weight] for d in parallel.values() if np.isfinite(d.get(weight, np.inf))]
+        return min(finite) if finite else None  # None = edge ignored
+
+    path = nx.shortest_path(g, u, v, weight=cost)
+    out = []
+    for a, b in zip(path, path[1:], strict=False):
+        key, data = min(((k, d) for k, d in g[a][b].items()),
+                        key=lambda kd: kd[1].get(weight, np.inf))
+        out.append((a, b, key, data))
+    return out

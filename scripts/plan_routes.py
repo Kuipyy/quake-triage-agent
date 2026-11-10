@@ -5,6 +5,7 @@ reports/metrics_planning.json. Detector output is SIMULATED (see metrics_buildin
 Usage: uv run python scripts/plan_routes.py
 Estimated runtime ~4 min (graph + debris ~10 s, matrices ~5 s, 6 solves x limit, baselines <10 s).
 """
+import argparse
 import json
 import time
 from pathlib import Path
@@ -13,7 +14,7 @@ import geopandas as gpd
 import numpy as np
 
 from quaketriage.config import get
-from quaketriage.planning.baselines import greedy_nearest, random_dispatch
+from quaketriage.planning.baselines import greedy_nearest, priority_first, random_dispatch
 from quaketriage.planning.debris import DebrisInput, apply_debris_risk
 from quaketriage.planning.distances import travel_time_matrix, walking_access
 from quaketriage.planning.roads import load_road_graph, snap_to_nodes
@@ -41,6 +42,49 @@ def stop_nodes(g, depot_node, cand, max_walk: float) -> list:
     """Graph nodes the teams stop at for these candidates (access nodes within the walk limit)."""
     access, walk_m = walking_access(g, depot_node, building_nodes(g, cand).tolist())
     return [a for a, w in zip(access, walk_m, strict=True) if a is not None and w <= max_walk]
+
+
+def compute_baselines(prob, vrp_summary: dict) -> dict:
+    """Dispatch-rule baselines on the same problem as the VRP, with priority ratios vs random."""
+    rand = [random_dispatch(prob, seed) for seed in range(RANDOM_SEEDS)]
+
+    def mean_std(key: str) -> dict:
+        v = np.array([r[key] for r in rand])
+        return {"mean": round(float(v.mean()), 3), "std": round(float(v.std()), 3)}
+
+    rkey = f"random_{RANDOM_SEEDS}_seeds"
+    out = {"vrp": dict(vrp_summary),
+           "greedy_nearest": summary(greedy_nearest(prob), 0.0),
+           "priority_first": summary(priority_first(prob), 0.0),
+           rkey: {"n_visited": mean_std("n_visited"),
+                  "priority_collected": mean_std("priority_collected"),
+                  "persons_reached": mean_std("persons_reached")}}
+    rand_mean = out[rkey]["priority_collected"]["mean"]
+    for name in ("vrp", "greedy_nearest", "priority_first"):
+        ratio = out[name]["priority_collected"] / rand_mean
+        out[name]["priority_vs_random_mean_x"] = round(ratio, 2)
+    for name, v in out.items():
+        print(f"{name}: {json.dumps(v)}")
+    return out
+
+
+def baselines_only() -> None:
+    """Recompute only the baselines (deterministic) and keep the stored VRP numbers/plan."""
+    path = ROOT / "reports" / "metrics_planning.json"
+    stored = json.loads(path.read_text())
+    b = gpd.read_file(ROOT / get("paths.data_processed") / "buildings.gpkg")
+    depot = tuple(get("routing.depots")[0])
+    b = prioritise(b, TopsisInput(depots=[depot]))
+    g = apply_debris_risk(load_road_graph(), b, DebrisInput())
+    depot_node = int(snap_to_nodes(g, [depot])[0][0])
+    n_cfg = get("routing.candidate_n")
+    nodes = [depot_node, *stop_nodes(g, depot_node, select_candidates(b, n_cfg),
+                                     get("routing.max_walk_m"))]
+    prob = prepare_problem(g, b, depot, VrpInput(candidate_n=n_cfg),
+                           travel_time_matrix(g, nodes), nodes)
+    vrp_sum = stored["variants_at_candidate_n"]["closures_with_walking"]
+    stored["baselines_closures_with_walking"] = {"n": n_cfg, **compute_baselines(prob, vrp_sum)}
+    path.write_text(json.dumps(stored, indent=1))
 
 
 def main() -> None:
@@ -100,30 +144,10 @@ def main() -> None:
         print(f"N={n}: visited {plan['n_visited']}, priority {plan['priority_collected']}, "
               f"unreachable {plan['n_unreachable']}")
 
-    # baselines on the same problem (closures + walking, N = candidate_n)
     prob = prepare_problem(graphs["closures"], b, depot, VrpInput(candidate_n=n_cfg),
                            *mats["closures"])
-    greedy = greedy_nearest(prob)
-    rand = [random_dispatch(prob, seed) for seed in range(RANDOM_SEEDS)]
-
-    def mean_std(key: str) -> dict:
-        v = np.array([r[key] for r in rand])
-        return {"mean": round(float(v.mean()), 3), "std": round(float(v.std()), 3)}
-
     vrp = plans["closures_with_walking"]
-    baselines = {
-        "vrp": summary(vrp, vrp["_s"]),
-        "greedy_nearest": summary(greedy, 0.0),
-        f"random_{RANDOM_SEEDS}_seeds": {
-            "n_visited": mean_std("n_visited"),
-            "priority_collected": mean_std("priority_collected"),
-            "persons_reached": mean_std("persons_reached")}}
-    for name, res in (("vrp", vrp), ("greedy_nearest", greedy)):
-        baselines[name]["priority_vs_random_mean_x"] = round(
-            res["priority_collected"] / baselines[f"random_{RANDOM_SEEDS}_seeds"][
-                "priority_collected"]["mean"], 2)
-    for name, v in baselines.items():
-        print(f"{name}: {json.dumps(v)}")
+    baselines = compute_baselines(prob, summary(vrp, vrp["_s"]))
 
     demo = {k: v for k, v in plans["closures_with_walking"].items() if k != "_s"}
     demo |= {"depot_lonlat": depot, "SIMULATED_DETECTOR": True,
@@ -151,4 +175,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--baselines-only", action="store_true",
+                    help="recompute only the baselines, keep stored VRP results (~10 s)")
+    baselines_only() if ap.parse_args().baselines_only else main()

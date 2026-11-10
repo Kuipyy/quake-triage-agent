@@ -7,6 +7,7 @@ import networkx as nx
 import pyproj
 
 from quaketriage.data.geo import get_project_crs
+from quaketriage.planning.distances import drive_edges
 
 TEAM_COLOURS = ("#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02")
 
@@ -17,11 +18,9 @@ def _to_lonlat():
 
 
 def _leg(g: nx.MultiDiGraph, u, v, to_ll) -> list[tuple[float, float]]:
-    """Road geometry of the fastest open path u -> v as (lat, lon) points."""
-    path = nx.shortest_path(g, u, v, weight="travel_time_adj")
+    """Road geometry of the fastest open (vehicle) path u -> v as (lat, lon) points."""
     pts: list[tuple[float, float]] = []
-    for a, b in zip(path, path[1:], strict=False):
-        data = min(g[a][b].values(), key=lambda d: d.get("travel_time_adj", float("inf")))
+    for a, b, _, data in drive_edges(g, u, v):
         geom = data.get("geometry")
         xy = list(geom.coords) if geom is not None else [(g.nodes[a]["x"], g.nodes[a]["y"]),
                                                           (g.nodes[b]["x"], g.nodes[b]["y"])]
@@ -73,11 +72,16 @@ def build_route_map(g: nx.MultiDiGraph, plan: dict, buildings: gpd.GeoDataFrame,
                   "'AFAD' building, not a real operations centre)",
                   icon=folium.Icon(color="black", icon="home")).add_to(m)
     folium.LayerControl().add_to(m)
+    rows = "".join(
+        f"<br><span style='color:{TEAM_COLOURS[r['team'] % len(TEAM_COLOURS)]}'>"
+        "&#9644;&#9644;</span>"
+        f" team {r['team'] + 1}: {len(r['stops'])} visits, {r['return_s'] / 3600:.1f} h, "
+        f"priority {sum(s['priority'] for s in r['stops']):.2f}" for r in plan["routes"])
     legend = ("<div style='position:fixed;bottom:30px;right:10px;max-width:340px;z-index:9999;"
               "background:white;padding:8px 10px;border:1px solid #999;font:12px sans-serif'>"
               "<b>SIMULATED detector &mdash; demo plan, not an operational plan</b><br>"
               f"{plan['n_visited']} buildings, priority {plan['priority_collected']:.1f}, "
-              f"~{plan['persons_reached']:.0f} persons<br>"
+              f"~{plan['persons_reached']:.0f} persons" + rows + "<br>"
               "<span style='color:#b30000'>&#9644;</span> closed road &nbsp; dashed = on foot<br>"
               "Data: &copy; OpenStreetMap contributors, HOTOSM (ODbL); WorldPop (CC BY 4.0)</div>")
     m.get_root().html.add_child(folium.Element(legend))

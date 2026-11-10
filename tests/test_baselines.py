@@ -1,7 +1,7 @@
 import geopandas as gpd
 import numpy as np
 
-from quaketriage.planning.baselines import greedy_nearest, random_dispatch
+from quaketriage.planning.baselines import greedy_nearest, priority_first, random_dispatch
 from quaketriage.planning.vrp import Problem
 
 
@@ -34,3 +34,14 @@ def test_more_teams_never_visit_a_building_twice():
     out = greedy_nearest(_prob(T, 5000, teams=2))
     rows = [s["row"] for r in out["routes"] for s in r["stops"]]
     assert len(rows) == len(set(rows)) == 2
+
+
+def test_priority_first_goes_to_highest_priority_even_if_far():
+    out = priority_first(_prob(T, horizon=2000))
+    # priorities are 0.9 (row 0, near) and 0.1 (row 1, far): near one is also highest here,
+    # so flip them to check that distance is ignored
+    prob = _prob(T, horizon=2000)
+    prob.cand["priority"] = [0.1, 0.9]
+    far_first = priority_first(prob)
+    assert [s["row"] for s in far_first["routes"][0]["stops"]][0] == 1
+    assert [s["row"] for s in out["routes"][0]["stops"]][0] == 0

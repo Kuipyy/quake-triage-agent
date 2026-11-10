@@ -109,6 +109,7 @@
    "persons_reached": 3969.4,
    "persons_in_candidates": 16372.1,
    "solve_s": 30.2,
+   "n_unreachable_all_buildings": 0,
    "priority_vs_random_mean_x": 1.8
   },
   "greedy_nearest": {
@@ -121,6 +122,17 @@
    "persons_in_candidates": 16372.1,
    "solve_s": 0.0,
    "priority_vs_random_mean_x": 1.2
+  },
+  "priority_first": {
+   "n_candidates": 400,
+   "n_unreachable": 0,
+   "n_need_walking": 96,
+   "n_visited": 36,
+   "priority_collected": 23.29,
+   "persons_reached": 3273.2,
+   "persons_in_candidates": 16372.1,
+   "solve_s": 0.0,
+   "priority_vs_random_mean_x": 1.51
   },
   "random_30_seeds": {
    "n_visited": {
