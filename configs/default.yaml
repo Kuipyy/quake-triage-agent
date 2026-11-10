@@ -80,6 +80,10 @@ routing:
   mission_duration_hours: 6
   intervention_time_minutes: 30  # per building
   debris_risk_buffer_meters: 50
+  debris_damage_prob_min: 0.5   # building counts as a debris source above this damage probability
+  debris_min_floors: 3          # ... and at least this many floors (taller -> more debris)
+  debris_penalty_factor: 3.0    # travel time of an at-risk road segment is multiplied by this
+  debris_block_count: 5         # segment is closed if >= this many debris sources are in the buffer
   # Demo depots as [lon, lat] (WGS84); code converts to the project CRS and snaps to the road graph.
   # SCENARIO ASSUMPTION, not a real operations centre: centroid of the OSM building tagged
   # name=AFAD, office=government (way 1139261935, Antakya), read from Overpass on 2026-11-10.
