@@ -227,8 +227,8 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 ### Hafta 6 (7–13 Aralık) — Ajan
 - [x] `llm.py`: Gemini/Groq adaptörü, yeniden deneme (retry), basit önbellek
 - [x] `tools.py`: 9 araç (mimari bölümündeki liste), her biri saf Python fonksiyonu ve pydantic şeması ile
-- [ ] `graph.py`: LangGraph StateGraph. Durum: bölge, sonuçlar, kısıtlar, araç izi.
-- [ ] What-if: `update_constraints` aracı yalnızca değişen adımları yeniden çalıştırır (ör. ekip sayısı değiştiyse sadece rota)
+- [x] `graph.py`: LangGraph StateGraph. Durum: bölge, sonuçlar, kısıtlar, araç izi.
+- [x] What-if: `update_constraints` aracı yalnızca değişen adımları yeniden çalıştırır (ör. ekip sayısı değiştiyse sadece rota)
 - [ ] CLI: `uv run python -m quaketriage.agent "..."`. 5 örnek konuşma uçtan uca çalışır.
 - **DoD:** 5 senaryo çalışıyor, durum raporu (sitrep) atıflı üretiliyor.
 
