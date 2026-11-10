@@ -1,0 +1,393 @@
+{
+ "SIMULATED_DETECTOR": true,
+ "n_candidates": 304,
+ "n_unreachable": 96,
+ "n_visited": 44,
+ "priority_collected": 26.8017,
+ "persons_reached": 3891.1,
+ "persons_in_candidates": 13541.5,
+ "solved": true,
+ "routes": [
+  {
+   "team": 0,
+   "stops": [
+    {
+     "building_id": null,
+     "row": 5549,
+     "arrival_s": 344,
+     "priority": 0.6796,
+     "estimated_persons": 83.6,
+     "node": 10628345861
+    },
+    {
+     "building_id": null,
+     "row": 5545,
+     "arrival_s": 2144,
+     "priority": 0.6843,
+     "estimated_persons": 75.8,
+     "node": 10628345861
+    },
+    {
+     "building_id": null,
+     "row": 5807,
+     "arrival_s": 3989,
+     "priority": 0.6428,
+     "estimated_persons": 88.4,
+     "node": 2232057883
+    },
+    {
+     "building_id": null,
+     "row": 5809,
+     "arrival_s": 5820,
+     "priority": 0.6835,
+     "estimated_persons": 82.8,
+     "node": 2232057879
+    },
+    {
+     "building_id": 1139762678,
+     "row": 747,
+     "arrival_s": 7746,
+     "priority": 0.5459,
+     "estimated_persons": 88.8,
+     "node": 670227136
+    },
+    {
+     "building_id": null,
+     "row": 5682,
+     "arrival_s": 9862,
+     "priority": 0.6418,
+     "estimated_persons": 73.2,
+     "node": 2232022179
+    },
+    {
+     "building_id": null,
+     "row": 5272,
+     "arrival_s": 11842,
+     "priority": 0.7725,
+     "estimated_persons": 96.1,
+     "node": 1186555059
+    },
+    {
+     "building_id": 1141517473,
+     "row": 2720,
+     "arrival_s": 13744,
+     "priority": 0.5784,
+     "estimated_persons": 100.4,
+     "node": 10633955136
+    },
+    {
+     "building_id": 1140722734,
+     "row": 1655,
+     "arrival_s": 15596,
+     "priority": 0.6131,
+     "estimated_persons": 111.1,
+     "node": 1982050548
+    },
+    {
+     "building_id": null,
+     "row": 5616,
+     "arrival_s": 17575,
+     "priority": 0.5833,
+     "estimated_persons": 61.1,
+     "node": 2906082887
+    },
+    {
+     "building_id": null,
+     "row": 5798,
+     "arrival_s": 19398,
+     "priority": 0.5949,
+     "estimated_persons": 68.8,
+     "node": 10656307442
+    }
+   ],
+   "return_s": 21329
+  },
+  {
+   "team": 1,
+   "stops": [
+    {
+     "building_id": 1140186118,
+     "row": 1067,
+     "arrival_s": 129,
+     "priority": 0.5419,
+     "estimated_persons": 84.6,
+     "node": 2234164074
+    },
+    {
+     "building_id": 1140186112,
+     "row": 1065,
+     "arrival_s": 1936,
+     "priority": 0.5557,
+     "estimated_persons": 89.4,
+     "node": 10624149781
+    },
+    {
+     "building_id": null,
+     "row": 5527,
+     "arrival_s": 3769,
+     "priority": 0.607,
+     "estimated_persons": 72.9,
+     "node": 10624149779
+    },
+    {
+     "building_id": null,
+     "row": 5889,
+     "arrival_s": 5620,
+     "priority": 0.5601,
+     "estimated_persons": 72.9,
+     "node": 2232075815
+    },
+    {
+     "building_id": null,
+     "row": 5533,
+     "arrival_s": 7516,
+     "priority": 0.6388,
+     "estimated_persons": 72.6,
+     "node": 8679070667
+    },
+    {
+     "building_id": null,
+     "row": 5893,
+     "arrival_s": 9346,
+     "priority": 0.6704,
+     "estimated_persons": 74.6,
+     "node": 670227345
+    },
+    {
+     "building_id": null,
+     "row": 5892,
+     "arrival_s": 11146,
+     "priority": 0.6007,
+     "estimated_persons": 76.5,
+     "node": 670227345
+    },
+    {
+     "building_id": null,
+     "row": 5211,
+     "arrival_s": 13463,
+     "priority": 0.5633,
+     "estimated_persons": 62.5,
+     "node": 2231945665
+    },
+    {
+     "building_id": null,
+     "row": 5811,
+     "arrival_s": 15796,
+     "priority": 0.6562,
+     "estimated_persons": 75.3,
+     "node": 1982050982
+    },
+    {
+     "building_id": null,
+     "row": 5544,
+     "arrival_s": 17608,
+     "priority": 0.5812,
+     "estimated_persons": 79.4,
+     "node": 1982050977
+    },
+    {
+     "building_id": 1461883287,
+     "row": 5148,
+     "arrival_s": 19573,
+     "priority": 0.5499,
+     "estimated_persons": 87.7,
+     "node": 364616472
+    }
+   ],
+   "return_s": 21556
+  },
+  {
+   "team": 2,
+   "stops": [
+    {
+     "building_id": 102165082,
+     "row": 5,
+     "arrival_s": 278,
+     "priority": 0.572,
+     "estimated_persons": 95.1,
+     "node": 1770083970
+    },
+    {
+     "building_id": 1139540287,
+     "row": 331,
+     "arrival_s": 2188,
+     "priority": 0.5667,
+     "estimated_persons": 94.6,
+     "node": 2234850455
+    },
+    {
+     "building_id": 1140185194,
+     "row": 1047,
+     "arrival_s": 4080,
+     "priority": 0.5793,
+     "estimated_persons": 98.0,
+     "node": 1186266085
+    },
+    {
+     "building_id": 1140693716,
+     "row": 1592,
+     "arrival_s": 5930,
+     "priority": 0.5823,
+     "estimated_persons": 100.7,
+     "node": 8817850417
+    },
+    {
+     "building_id": 1140688438,
+     "row": 1554,
+     "arrival_s": 7764,
+     "priority": 0.5931,
+     "estimated_persons": 102.4,
+     "node": 10629771882
+    },
+    {
+     "building_id": null,
+     "row": 5221,
+     "arrival_s": 9611,
+     "priority": 0.8116,
+     "estimated_persons": 110.6,
+     "node": 1186571020
+    },
+    {
+     "building_id": 1139527311,
+     "row": 295,
+     "arrival_s": 11455,
+     "priority": 0.6196,
+     "estimated_persons": 110.2,
+     "node": 1186265846
+    },
+    {
+     "building_id": null,
+     "row": 5442,
+     "arrival_s": 13341,
+     "priority": 0.5666,
+     "estimated_persons": 64.7,
+     "node": 2234294021
+    },
+    {
+     "building_id": 462397572,
+     "row": 68,
+     "arrival_s": 15156,
+     "priority": 0.5651,
+     "estimated_persons": 94.8,
+     "node": 670227114
+    },
+    {
+     "building_id": 311391399,
+     "row": 12,
+     "arrival_s": 17021,
+     "priority": 0.6167,
+     "estimated_persons": 109.9,
+     "node": 364616491
+    },
+    {
+     "building_id": 1461883302,
+     "row": 5160,
+     "arrival_s": 18962,
+     "priority": 0.5902,
+     "estimated_persons": 101.1,
+     "node": 2234163882
+    }
+   ],
+   "return_s": 20857
+  },
+  {
+   "team": 3,
+   "stops": [
+    {
+     "building_id": 1141999844,
+     "row": 4553,
+     "arrival_s": 204,
+     "priority": 0.5697,
+     "estimated_persons": 94.4,
+     "node": 2234766004
+    },
+    {
+     "building_id": 1141461576,
+     "row": 2649,
+     "arrival_s": 2099,
+     "priority": 0.5507,
+     "estimated_persons": 88.8,
+     "node": 1770083922
+    },
+    {
+     "building_id": 1140190176,
+     "row": 1094,
+     "arrival_s": 4037,
+     "priority": 0.5526,
+     "estimated_persons": 93.2,
+     "node": 1633195283
+    },
+    {
+     "building_id": 1140197975,
+     "row": 1122,
+     "arrival_s": 5872,
+     "priority": 0.5551,
+     "estimated_persons": 91.9,
+     "node": 2234293776
+    },
+    {
+     "building_id": null,
+     "row": 5519,
+     "arrival_s": 7835,
+     "priority": 0.5773,
+     "estimated_persons": 55.6,
+     "node": 1186555443
+    },
+    {
+     "building_id": null,
+     "row": 5582,
+     "arrival_s": 9707,
+     "priority": 0.6293,
+     "estimated_persons": 117.6,
+     "node": 1186554885
+    },
+    {
+     "building_id": 1139723666,
+     "row": 529,
+     "arrival_s": 11556,
+     "priority": 0.6247,
+     "estimated_persons": 109.8,
+     "node": 1186555428
+    },
+    {
+     "building_id": null,
+     "row": 5777,
+     "arrival_s": 13415,
+     "priority": 0.8078,
+     "estimated_persons": 117.9,
+     "node": 1186570983
+    },
+    {
+     "building_id": null,
+     "row": 5298,
+     "arrival_s": 15285,
+     "priority": 0.5524,
+     "estimated_persons": 58.8,
+     "node": 1186571040
+    },
+    {
+     "building_id": 543180918,
+     "row": 69,
+     "arrival_s": 17155,
+     "priority": 0.6119,
+     "estimated_persons": 109.4,
+     "node": 1186265332
+    },
+    {
+     "building_id": 1139258522,
+     "row": 175,
+     "arrival_s": 19108,
+     "priority": 0.5618,
+     "estimated_persons": 93.0,
+     "node": 2234163803
+    }
+   ],
+   "return_s": 21000
+  }
+ ],
+ "depot_lonlat": [
+  36.17179,
+  36.20657
+ ],
+ "disclaimer": "SIMULATED detector; scenario depot"
+}

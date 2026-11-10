@@ -220,7 +220,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 ### Hafta 5 (30 Kasım – 6 Aralık) — Önceliklendirme ve rota
 - [x] **TOPSIS** kriterleri: hasar olasılığı (fayda), tahmini kişi (fayda), kat sayısı (fayda), depoya mesafe (maliyet). Ağırlıklar `configs/default.yaml`'dan gelir. AHP ikili karşılaştırma ile ağırlık üretme opsiyonu eklenir.
 - [x] Yol ağı: OSMnx sürüş grafı. Yüksek hasarlı ve çok katlı binalara X metreden yakın yol parçaları "enkaz riski" ile kapalı veya cezalı sayılır.
-- [ ] **OR-Tools prize-collecting VRP:** K ekip, depo noktaları, süre limiti T (ör. 6 saat), bina başına müdahale süresi. Ziyaret edilmeyen binanın cezası = öncelik skoru. Yani amaç, süre içinde toplanan öncelik skorunu en büyük yapmak.
+- [x] **OR-Tools prize-collecting VRP:** K ekip, depo noktaları, süre limiti T (ör. 6 saat), bina başına müdahale süresi. Ziyaret edilmeyen binanın cezası = öncelik skoru. Yani amaç, süre içinde toplanan öncelik skorunu en büyük yapmak.
 - [ ] Karşılaştırma için basit kurallar: "en yakına git" (greedy) ve rastgele. Metrik: T saatte ulaşılan tahmini kişi sayısı ve toplanan öncelik.
 - **DoD:** Plan JSON'ı + rota haritası, kıyaslama tablosu `reports/metrics_planning.json`, testler yeşil.
 

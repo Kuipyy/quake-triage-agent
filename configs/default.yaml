@@ -79,6 +79,10 @@ topsis:
 routing:
   mission_duration_hours: 6
   intervention_time_minutes: 30  # per building
+  num_teams: 4                   # K search-and-rescue teams, all start/end at the depot
+  candidate_n: 400               # VRP considers only the top-N buildings by TOPSIS priority
+  solver_time_limit_s: 30        # OR-Tools wall-clock limit per solve
+  distance_cache_dir: outputs/cache
   debris_risk_buffer_meters: 50
   debris_damage_prob_min: 0.5   # building counts as a debris source above this damage probability
   debris_min_floors: 3          # ... and at least this many floors (taller -> more debris)

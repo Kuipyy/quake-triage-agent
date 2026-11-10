@@ -1,0 +1,93 @@
+{
+ "SIMULATED_DETECTOR": true,
+ "disclaimer": "Damage probabilities come from a simulated detector (HOTOSM labels + noise); depot is a scenario assumption; numbers show planning behaviour, not real-world rescue outcomes.",
+ "n_buildings": 5895,
+ "n_unreachable_all": 1139,
+ "params": {
+  "num_teams": 4,
+  "mission_duration_hours": 6,
+  "intervention_time_minutes": 30,
+  "solver_time_limit_s": 30,
+  "candidate_n": 400,
+  "debris_risk_buffer_meters": 50,
+  "debris_damage_prob_min": 0.5,
+  "debris_min_floors": 3,
+  "debris_penalty_factor": 3.0,
+  "debris_block_count": 5
+ },
+ "depot_lonlat": [
+  36.17179,
+  36.20657
+ ],
+ "candidate_n_sensitivity": {
+  "200": {
+   "SIMULATED_DETECTOR": true,
+   "n_candidates": 163,
+   "n_unreachable": 37,
+   "n_visited": 44,
+   "priority_collected": 26.7757,
+   "persons_reached": 3914.4,
+   "persons_in_candidates": 9760.1,
+   "solved": true,
+   "solve_s": 30.2
+  },
+  "400": {
+   "SIMULATED_DETECTOR": true,
+   "n_candidates": 304,
+   "n_unreachable": 96,
+   "n_visited": 44,
+   "priority_collected": 26.8017,
+   "persons_reached": 3891.1,
+   "persons_in_candidates": 13541.5,
+   "solved": true,
+   "solve_s": 30.0
+  },
+  "500": {
+   "SIMULATED_DETECTOR": true,
+   "n_candidates": 374,
+   "n_unreachable": 126,
+   "n_visited": 44,
+   "priority_collected": 26.8017,
+   "persons_reached": 3891.1,
+   "persons_in_candidates": 14860.6,
+   "solved": true,
+   "solve_s": 30.1
+  },
+  "1000": {
+   "SIMULATED_DETECTOR": true,
+   "n_candidates": 787,
+   "n_unreachable": 213,
+   "n_visited": 44,
+   "priority_collected": 26.8017,
+   "persons_reached": 3891.1,
+   "persons_in_candidates": 24221.6,
+   "solved": true,
+   "solve_s": 30.1
+  }
+ },
+ "closure_rule_effect": {
+  "n": 400,
+  "with_closures": {
+   "SIMULATED_DETECTOR": true,
+   "n_candidates": 304,
+   "n_unreachable": 96,
+   "n_visited": 44,
+   "priority_collected": 26.8017,
+   "persons_reached": 3891.1,
+   "persons_in_candidates": 13541.5,
+   "solved": true,
+   "solve_s": 30.0
+  },
+  "penalty_only": {
+   "SIMULATED_DETECTOR": true,
+   "n_candidates": 400,
+   "n_unreachable": 0,
+   "n_visited": 44,
+   "priority_collected": 27.8226,
+   "persons_reached": 3969.1,
+   "persons_in_candidates": 16372.1,
+   "solved": true
+  }
+ },
+ "note": "OR-Tools guided local search is time-limited, hence not exactly reproducible; differences of a few percent between N values are noise."
+}
