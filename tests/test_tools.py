@@ -433,3 +433,13 @@ def test_validate_citations_flags_dangling_and_unindexed_passages():
     fake = dict(hit, text="invented text that is not in the index at all, really")
     assert validate_citations("see [1]", [fake], chunks)["refs_not_in_index"] == [1]
     assert not validate_citations("no hits", [], chunks)["valid"]
+
+
+def test_uncertainty_threshold_can_be_tightened_but_not_relaxed(ctx):
+    from quaketriage.config import get
+    limit = get("thresholds.uncertainty_high")
+    out = ctx.call("update_constraints", {"uncertainty_tau": limit / 2})
+    assert out["changed"] == {"uncertainty_tau": limit / 2}
+    with pytest.raises(ToolError, match="may not exceed"):
+        ctx.call("update_constraints", {"uncertainty_tau": 100.0})
+    assert ctx.constraints.uncertainty_tau == limit / 2  # unchanged by the rejected request

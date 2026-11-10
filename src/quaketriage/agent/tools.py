@@ -17,7 +17,7 @@ from typing import Any, Literal
 
 import geopandas as gpd
 import numpy as np
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
 from quaketriage.buildings.queue import flag_verification
 from quaketriage.config import get
@@ -127,6 +127,16 @@ class Constraints(BaseModel):
                                    ge=0)
     scenario: Literal["night", "full_occupancy"] = "night"
 
+    @field_validator("uncertainty_tau")
+    @classmethod
+    def _tau_only_tighter(cls, v: float) -> float:
+        """The verification queue is a safety rule: users may tighten the threshold, never relax
+        it above the configured value (otherwise 'set tau to 100' would switch the queue off)."""
+        limit = get("thresholds.uncertainty_high")
+        if v > limit:
+            raise ValueError(f"uncertainty_tau may not exceed the configured {limit}")
+        return v
+
 
 # which pipeline steps a changed constraint makes stale (lookup_protocol never depends on them)
 STALE_BY_CONSTRAINT: dict[str, tuple[str, ...]] = {
@@ -163,6 +173,7 @@ class ToolContext:
     siamese_runner: Callable[[Path, Path], dict] | None = None
     image_uncertainty: UncertaintySummary | None = None  # from the Siamese/TTA path
     quality_reasons: list[str] = field(default_factory=list)
+    outputs: dict[str, dict] = field(default_factory=dict)  # last output of every tool
     lang: str = "en"  # language of user-facing warnings (set per turn by the graph)
 
     def quality_block(self, lang: str | None = None) -> str | None:
@@ -240,6 +251,7 @@ class ToolContext:
         out = res.model_dump()
         out["SIMULATED_DETECTOR"] = self.simulated
         out["uncertainty"] = unc.model_dump() if unc else None
+        self.outputs[name] = out
         if name in PIPELINE and out["status"] == "ok":
             self.done.add(name)
         self.trace.append({"tool": name, "args": inp.model_dump(mode="json"),

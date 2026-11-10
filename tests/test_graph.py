@@ -228,3 +228,13 @@ def test_protocol_answer_records_rough_citation_support(agent_factory):
     a.ask("How do USAR teams register?")
     cs = a.history[-1]["citation_support"]
     assert cs == {"checked": 2, "supported": 1}  # the invented helicopter claim is flagged
+
+
+def test_follow_up_with_fresh_steps_still_answers_from_stored_results(agent_factory):
+    a = agent_factory(FakeLLM(lambda m: _route("full_assessment") if "assess" in m
+                              else _route("status_report")))
+    first = a.ask("assess")
+    second = a.ask("show the report again")
+    assert second.tools_called == []  # nothing stale, nothing recomputed
+    assert "Situation Report" in second.answer and "No step has run yet" not in second.answer
+    assert second.answer == first.answer

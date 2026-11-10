@@ -3,8 +3,8 @@
 > Her oturum sonunda Claude günceller. En yeni kayıt en üstte.
 
 ## Durum özeti
-- **Aktif hafta:** Hafta 7 — Değerlendirme (Hafta 6 tamamlandı)
-- **Sıradaki adım:** `PLAN.md` Hafta 7 bölümünü oku; ajan metrikleri için `outputs/logs/agent_runs.jsonl` (LLM çağrısı, cache_hits, gecikme, araçlar), senaryo seti `eval/agent_scenarios.yaml` yazılacak; atıf desteği örneklemle elle kontrol
+- **Aktif hafta:** Hafta 7 — Değerlendirme (senaryo seti hazır)
+- **Sıradaki adım:** Hafta 7 madde 2: `eval/run_agent_eval.py` (senaryoları gerçek LLM ile koşturur; paylaşılan yol grafı/RAG, çözücü süresi kısa; metrikler → `reports/agent_eval.json`: görev başarısı, araç doğruluğu, yasak davranış, atıf geçerliliği/destek, gecikme, LLM çağrısı). Tahmini ~45-60 LLM çağrısı: koşmadan önce the project owner'a söyle
 - **Bekleyen manuel işler (the project owner):** yok (transkriptler okundu; düzeltmeler yapıldı)
 
 ## Önemli metrikler

@@ -362,7 +362,10 @@ class Agent:
     def _compose(self, state: AgentState) -> dict:
         lang = state.get("language", "en")
         t = _MSG[lang]
-        ctx, results, intent = self.ctx, state.get("results", {}), state.get("intent")
+        ctx, intent = self.ctx, state.get("intent")
+        # steps that are still fresh were not re-run this turn; show their stored output
+        fresh = {k: v for k, v in ctx.outputs.items() if k in ctx.done}
+        results = {**fresh, **state.get("results", {})}
         parts: list[str] = []
         if intent == "off_topic":
             return {"answer": t["off_topic"]}
