@@ -79,3 +79,9 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 - SDK kararı: `google-generativeai` deprecated → `google-genai`'ya geçildi; model `gemini-2.5-flash`.
 - 3 smoke test yeşil (import, MPS/CPU, CRS). Gemini API çağrısı çalışıyor.
 - Sıradaki: Hafta 1 — KATE-CD indirme ve EDA.
+
+## Hafta 7 — ajan değerlendirme koşusu (2026-11-10)
+- Soğuk koşu, 38 senaryo, tek koşu: görev başarısı 30/38, araç seçimi 45/48 tur, yasak davranış ihlali 0, atıf (altın sayfa) 3/8, sarkan atıf 0.
+- Başarısız: W08, A03, A04, P03, P04, P06, P07, P08 (`reports/agent_eval.json` → `failed_scenarios`). Beklentiler sonuç görüldükten sonra değiştirilmedi.
+- Uyarı: senaryoları ajanı yazan taraf hazırladı; tek koşu; LLM deterministik değil. 236 LLM isteği / 52 başarılı cevap (429 yeniden denemeleri).
+- Sıradaki: ablasyonlar (baseline vs Siamese; belirsizlik filtresi açık/kapalı), hata analizi, README sınırlamalar/etik, week-07 notu.

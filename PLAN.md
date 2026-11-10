@@ -234,7 +234,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 
 ### Hafta 7 (14–20 Aralık) — Değerlendirme
 - [x] `eval/agent_scenarios.yaml`: 30–40 senaryo. Her biri için beklenen araçlar, kısıtlar ve "yasak davranış" (ör. guard uyarısına rağmen karar verme). Normal, what-if, kötü görüntü, protokol sorusu ve konu dışı soru tiplerini kapsar.
-- [ ] Ajan metrikleri: görev başarısı, araç seçim doğruluğu, atıf geçerliliği (atıf yapılan bölüm var mı ve iddiayı destekliyor mu), ortalama gecikme, LLM çağrı sayısı
+- [x] Ajan metrikleri: görev başarısı, araç seçim doğruluğu, atıf geçerliliği (atıf yapılan bölüm var mı ve iddiayı destekliyor mu), ortalama gecikme, LLM çağrı sayısı
 - [ ] Ablasyonlar: baseline vs Siamese; belirsizlik filtresi açık vs kapalı (yanlış pozitif bina sayısına etkisi)
 - [ ] Hata analizi: en kötü 10 bina ve görsel inceleme
 - [ ] README sonuç bölümü, sınırlamalar ve etik notu
