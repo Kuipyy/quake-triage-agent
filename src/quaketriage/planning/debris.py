@@ -63,3 +63,24 @@ def apply_debris_risk(g: nx.MultiDiGraph, buildings: gpd.GeoDataFrame,
     nx.set_edge_attributes(g, dict(zip(keys, blocked.tolist(), strict=True)), "blocked")
     nx.set_edge_attributes(g, dict(zip(keys, adj.tolist(), strict=True)), "travel_time_adj")
     return g
+
+
+def close_edges_near(g: nx.MultiDiGraph, points_lonlat: list[tuple[float, float]],
+                     radius_m: float) -> nx.MultiDiGraph:
+    """Copy of ``g`` with every edge within ``radius_m`` of a point closed (what-if closures).
+
+    Sets ``blocked`` and ``travel_time_adj = inf`` like the debris rule. Needs a projected graph.
+    """
+    import shapely
+
+    g = g.copy()
+    if not points_lonlat:
+        return g
+    pts = gpd.GeoSeries(gpd.points_from_xy(*zip(*points_lonlat, strict=True)), crs=4326)
+    zone = pts.to_crs(get_project_crs()).buffer(radius_m).union_all()
+    edges = ox.convert.graph_to_gdfs(g, nodes=False)
+    hit = shapely.intersects(edges.geometry.values, zone)
+    for key in edges.index[hit]:
+        g.edges[key]["blocked"] = True
+        g.edges[key]["travel_time_adj"] = float("inf")
+    return g

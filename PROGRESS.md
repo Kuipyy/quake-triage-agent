@@ -4,7 +4,7 @@
 
 ## Durum özeti
 - **Aktif hafta:** Hafta 6 — Ajan (Hafta 5 tamamlandı)
-- **Sıradaki adım:** `PLAN.md` Hafta 6 bölümünü oku; planlama araçları hazır: `planning/topsis.py` (`prioritise`), `debris.py` (`apply_debris_risk`), `vrp.py` (`plan_routes`), `baselines.py`; hepsi pydantic girdili, ajan araçlarına sarılacak
+- **Sıradaki adım:** Hafta 6 devam: `graph.py` (LangGraph StateGraph; araçlar `agent/tools.py`'de `ToolContext.call`, şemalar `tool_schemas()`, bayat adımlar `update_constraints` çıktısında), sonra what-if yeniden çalıştırma, CLI, 5 konuşma. `llm.py` hazır (Gemini + Groq yedeği doğrulandı)
 - **Bekleyen manuel işler (the project owner):** yok
 
 ## Önemli metrikler

@@ -58,3 +58,19 @@ def test_no_sources_changes_nothing_and_input_graph_untouched():
     g = apply_debris_risk(g0, _bld(1, 500, 0, prob=0.1))
     assert all(d["travel_time_adj"] == d["travel_time"] for *_, d in g.edges(data=True))
     assert "travel_time_adj" not in g0["A"]["B"][0]
+
+
+def test_close_edges_near_point_closes_only_nearby_edges():
+    import geopandas as gpd
+
+    from quaketriage.planning.debris import close_edges_near
+
+    g = apply_debris_risk(_graph(), _bld(1, 500, 0, prob=0.1))  # no debris closures
+    p = gpd.GeoSeries([Point(X0 + 500, Y0 + 10)], crs=CRS).to_crs(4326).iloc[0]
+    out = close_edges_near(g, [(p.x, p.y)], radius_m=100)
+    assert out["A"]["B"][0]["blocked"] and np.isinf(out["A"]["B"][0]["travel_time_adj"])
+    assert not out["B"]["C"][0]["blocked"]  # 500 m from the point
+    assert not out["A"]["D"][0]["blocked"]  # 1.5 km away
+    assert not g["A"]["B"][0]["blocked"]  # input untouched
+    untouched = close_edges_near(g, [], 100)
+    assert untouched["A"]["B"][0]["travel_time_adj"] == g["A"]["B"][0]["travel_time_adj"]

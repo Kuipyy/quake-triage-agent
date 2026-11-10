@@ -121,7 +121,10 @@ def prioritise(buildings: gpd.GeoDataFrame, params: TopsisInput) -> gpd.GeoDataF
         raise ValueError(f"building table lacks columns: {missing}")
     matrix = out[[cols[n] for n in names]].to_numpy(float)
     benefit = np.array([types[n] == "benefit" for n in names])
-    out["priority"] = topsis_scores(matrix, np.array([weights[n] for n in names]), benefit)
+    w = np.array([weights[n] for n in names], float)
+    out["priority"] = topsis_scores(matrix, w, benefit)
+    out.attrs["topsis_weights"] = {n: round(float(x), 4) for n, x in zip(names, w / w.sum(),
+                                                                         strict=True)}
     return out
 
 
