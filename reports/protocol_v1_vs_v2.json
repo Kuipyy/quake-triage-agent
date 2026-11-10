@@ -1,0 +1,81 @@
+{
+ "retrieval_query": {
+  "v1": "router-rewritten keyword query",
+  "v2": "original user message"
+ },
+ "v1": {
+  "strict_gold_page": "3/8",
+  "strict_passed": 3,
+  "hand_reviewed_passed": 4,
+  "total": 8,
+  "dangling_citations": 0,
+  "rough_support": "12/18",
+  "successful_llm_answers_by_provider": {
+   "groq": 16
+  },
+  "llm_requests_incl_retries": 80
+ },
+ "v2": {
+  "strict_gold_page": "7/8",
+  "strict_passed": 7,
+  "hand_reviewed_passed": 7,
+  "total": 8,
+  "dangling_citations": 0,
+  "rough_support": "14/17",
+  "successful_llm_answers_by_provider": {
+   "groq": 16
+  },
+  "llm_requests_incl_retries": 80
+ },
+ "per_scenario": {
+  "P01": {
+   "v1_strict": true,
+   "v2_strict": true,
+   "v1_hand": true,
+   "v2_hand": true
+  },
+  "P02": {
+   "v1_strict": true,
+   "v2_strict": true,
+   "v1_hand": true,
+   "v2_hand": false
+  },
+  "P03": {
+   "v1_strict": false,
+   "v2_strict": true,
+   "v1_hand": false,
+   "v2_hand": true
+  },
+  "P04": {
+   "v1_strict": false,
+   "v2_strict": false,
+   "v1_hand": true,
+   "v2_hand": true
+  },
+  "P05": {
+   "v1_strict": true,
+   "v2_strict": true,
+   "v1_hand": true,
+   "v2_hand": true
+  },
+  "P06": {
+   "v1_strict": false,
+   "v2_strict": true,
+   "v1_hand": false,
+   "v2_hand": true
+  },
+  "P07": {
+   "v1_strict": false,
+   "v2_strict": true,
+   "v1_hand": false,
+   "v2_hand": true
+  },
+  "P08": {
+   "v1_strict": false,
+   "v2_strict": true,
+   "v1_hand": false,
+   "v2_hand": true
+  }
+ },
+ "caveat": "Same 8 scenarios and gold pages (not changed); single run each; hand review by the developer; v1 = part of the 38-scenario run, v2 = 8-scenario re-run."
+}

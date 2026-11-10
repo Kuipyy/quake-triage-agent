@@ -91,3 +91,9 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 - `damage_threshold` yalnız düşürülebilir (test var).
 - Ablasyon: Siamese F1 0.60 vs 0.50 (KATE-CD, Hafta 3). Belirsizlik filtresi (SİMÜLE): FP 153→150; hata-duyarlı varsayım (k=5) ile 153→116. Plan düzeyinde fark ~1 bina.
 - Sıradaki: hata analizi (en kötü 10 bina + görsel inceleme), README sınırlamalar/etik, week-07 notu.
+
+## Hafta 7 — tamamlandı (2026-11-10)
+- Router sorgu düzeltmesi (sorgu = orijinal mesaj) + 8 protokol senaryosu yeniden: katı 3/8 → 7/8, elle 4/8 → 7/8 (hepsi Groq, 80 istek). v1 `reports/archive/agent_eval_v1.json`, yan yana `reports/protocol_v1_vs_v2.json`.
+- Belirsizlik filtresi ablasyonu README'de "etkisi ihmal edilebilir, gerçek etiket olmadan ölçülemez" olarak yazıldı; fayda iddiası yok.
+- Hata analizi: `reports/error_analysis.json`, `reports/figures/worst10_siamese.png`. README sınırlamalar + etik eklendi. `docs/notes/week-07.md` yazıldı.
+- Açık: 【1】 atıf biçimi, UCC açılımı hatası, hasarsız-kalabalık bina önceliği, tam eval yeniden koşusu. Sonraki: Hafta 8 (UI, plan önbelleği, README/LICENSE, release).

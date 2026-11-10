@@ -334,6 +334,10 @@ class Agent:
             return {"source": "siamese", "pre_path": str(ROOT / spec["pre"]),
                     "post_path": str(ROOT / spec["post"])}
         if step == "lookup_protocol":
+            # A protocol question is searched with the user's own words: the router's rewritten
+            # keyword query retrieved worse passages in the v1 eval (docs/decisions.md).
+            if state["intent"] == "protocol_question":
+                return {"query": state["message"]}
             return {"query": state.get("protocol_query") or get("agent.default_protocol_query")}
         if step == "write_sitrep":
             return {"language": state["language"]}

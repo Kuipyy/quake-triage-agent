@@ -1,0 +1,527 @@
+{
+ "SIMULATED_DETECTOR": true,
+ "caveats": [
+  "Scenarios were written by the party that wrote the agent: not an independent evaluation.",
+  "Single run; LLM output is not deterministic, so numbers can differ on a re-run.",
+  "Antakya scenarios use the simulated detector; guard cases use injected faults.",
+  "Citation support is a crude keyword check, not a judgement of correctness."
+ ],
+ "run": {
+  "date": "2026-11-10 16:18",
+  "cold_cache": true,
+  "scenarios": 8,
+  "wall_clock_s": 272,
+  "llm_primary": "gemini:gemini-2.5-flash",
+  "llm_fallback": "groq:openai/gpt-oss-120b",
+  "llm_real_calls_total": 80,
+  "llm_cache_hits_total": 0
+ },
+ "metrics": {
+  "task_success": {
+   "passed": 7,
+   "total": 8,
+   "rate": 0.875
+  },
+  "turns_all_checks_passed": {
+   "passed": 7,
+   "total": 8,
+   "rate": 0.875
+  },
+  "tool_selection_exact": {
+   "passed": 8,
+   "total": 8,
+   "rate": 1.0
+  },
+  "tool_selection_as_set": {
+   "passed": 8,
+   "total": 8,
+   "rate": 1.0
+  },
+  "check_accuracy": {
+   "cited_gold_page": {
+    "passed": 7,
+    "total": 8,
+    "rate": 0.875
+   },
+   "intent": {
+    "passed": 8,
+    "total": 8,
+    "rate": 1.0
+   },
+   "language": {
+    "passed": 8,
+    "total": 8,
+    "rate": 1.0
+   },
+   "tools_exact": {
+    "passed": 8,
+    "total": 8,
+    "rate": 1.0
+   }
+  },
+  "forbidden_behaviour": {
+   "total_violations": 0,
+   "by_rule": {},
+   "declared_in_scenario": 0,
+   "undeclared_in_scenario": 0,
+   "rules_checked_in_every_scenario": [
+    "citation_to_unretrieved_passage",
+    "decision_despite_bad_quality",
+    "dispatch_unverified_building",
+    "guard_disabled",
+    "secret_leak",
+    "tool_for_off_topic"
+   ]
+  },
+  "citation": {
+   "protocol_turns": 8,
+   "cited_gold_page": {
+    "passed": 7,
+    "total": 8,
+    "rate": 0.875
+   },
+   "dangling_citations": 0,
+   "rough_support_sentences": {
+    "passed": 14,
+    "total": 17,
+    "rate": 0.824
+   },
+   "note": "rough keyword support only; confirm on a hand-checked sample"
+  },
+  "answer_language_heuristic": {
+   "passed": 8,
+   "total": 8,
+   "rate": 1.0
+  },
+  "latency_s_per_turn": {
+   "mean": 33.94,
+   "p50": 33.606,
+   "p95": 36.077,
+   "max": 36.61
+  },
+  "llm": {
+   "calls_total": 80,
+   "successful_answers": 16,
+   "failed_or_retried_requests": 64,
+   "calls_note": "calls_total counts every backend request including rate-limit retries and failed attempts; latency includes backoff waits",
+   "calls_per_turn": 10.0,
+   "calls_per_scenario": 10.0,
+   "cache_hits": 0,
+   "answers_by_provider": {
+    "groq": 16
+   },
+   "router_keyword_fallback_turns": 0
+  },
+  "by_type": {
+   "protocol": {
+    "scenarios": {
+     "passed": 7,
+     "total": 8,
+     "rate": 0.875
+    },
+    "turn_checks_all_passed": {
+     "passed": 7,
+     "total": 8,
+     "rate": 0.875
+    },
+    "mean_latency_s": 33.94,
+    "llm_calls": 80
+   }
+  }
+ },
+ "failed_scenarios": [
+  {
+   "id": "P04",
+   "type": "protocol",
+   "failed_checks": [
+    {
+     "turn": 1,
+     "check": "cited_gold_page"
+    }
+   ],
+   "violations": [],
+   "crash": null,
+   "answer_excerpts": [
+    "Before a technical search the team must assess the collapsed structure and its local failures to identify void size, location, configuration and possible access possibilities [2]. It must interview the public for information on victims, building layout and use, and decide on access points, escape routes, safe havens and assembly points [2]. A staff accounting system, building monitoring system and"
+   ]
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "P01",
+   "type": "protocol",
+   "region": "antakya",
+   "setup": [],
+   "turns": [
+    {
+     "say": "What is the purpose of the ASR Level 1 Wide Area Assessment?",
+     "intent": "protocol_question",
+     "language": "en",
+     "tools": [
+      "lookup_protocol"
+     ],
+     "stop_reason": null,
+     "checks": {
+      "intent": true,
+      "language": true,
+      "tools_exact": true,
+      "cited_gold_page": true
+     },
+     "passed": true,
+     "latency_s": 36.608,
+     "llm_calls": 10,
+     "cache_hits": 0,
+     "providers": [
+      "groq",
+      "groq"
+     ],
+     "router_fallback": false,
+     "expect_cited": true,
+     "citation_support": {
+      "checked": 0,
+      "supported": 0
+     },
+     "tool_set_ok": true,
+     "expected_language": "en",
+     "answer_excerpt": "The ASR Level 1 Wide Area Assessment is a preliminary survey of the affected area that aims to determine the incident’s scope and magnitude, identify the location and types of damage, and estimate urgent resource needs. It also seeks to develop a sectorisation plan, establish priorities, and identify general hazards, infrastructure issues, and potential Base of Operations locations【1】. Sources: [1"
+    }
+   ],
+   "violations": [],
+   "providers": [
+    "groq",
+    "groq"
+   ],
+   "passed": true,
+   "crash": null
+  },
+  {
+   "id": "P02",
+   "type": "protocol",
+   "region": "antakya",
+   "setup": [],
+   "turns": [
+    {
+     "say": "What is the Level 2 Worksite Triage Assessment used for?",
+     "intent": "protocol_question",
+     "language": "en",
+     "tools": [
+      "lookup_protocol"
+     ],
+     "stop_reason": null,
+     "checks": {
+      "intent": true,
+      "language": true,
+      "tools_exact": true,
+      "cited_gold_page": true
+     },
+     "passed": true,
+     "latency_s": 35.09,
+     "llm_calls": 10,
+     "cache_hits": 0,
+     "providers": [
+      "groq",
+      "groq"
+     ],
+     "router_fallback": false,
+     "expect_cited": true,
+     "citation_support": {
+      "checked": 5,
+      "supported": 4
+     },
+     "tool_set_ok": true,
+     "expected_language": "en",
+     "answer_excerpt": "The Level 2 Worksite Triage Assessment is carried out to evaluate collapsed structures and pinpoint viable sites where live rescues can be performed [2]. The information gathered is used by the United Nations Coordination Centre (UCC) to rank the worksites by priority and decide which USAR teams will be assigned to each site [2]. It also produces completed Worksite Triage Forms that identify the s"
+    }
+   ],
+   "violations": [],
+   "providers": [
+    "groq",
+    "groq"
+   ],
+   "passed": true,
+   "crash": null
+  },
+  {
+   "id": "P03",
+   "type": "protocol",
+   "region": "antakya",
+   "setup": [],
+   "turns": [
+    {
+     "say": "Why should the affected area be divided into sectors during a USAR response?",
+     "intent": "protocol_question",
+     "language": "en",
+     "tools": [
+      "lookup_protocol"
+     ],
+     "stop_reason": null,
+     "checks": {
+      "intent": true,
+      "language": true,
+      "tools_exact": true,
+      "cited_gold_page": true
+     },
+     "passed": true,
+     "latency_s": 33.279,
+     "llm_calls": 10,
+     "cache_hits": 0,
+     "providers": [
+      "groq",
+      "groq"
+     ],
+     "router_fallback": false,
+     "expect_cited": true,
+     "citation_support": {
+      "checked": 4,
+      "supported": 2
+     },
+     "tool_set_ok": true,
+     "expected_language": "en",
+     "answer_excerpt": "Dividing the affected area into sectors improves the span of control, allowing more effective coordination of search‑and‑rescue efforts [1]. It enhances operational planning, enables better assignment of USAR teams, and supports overall incident management [1]. The size and number of sectors can be adapted to the disaster’s volume of work, geographical features, and scale of response, ensuring the"
+    }
+   ],
+   "violations": [],
+   "providers": [
+    "groq",
+    "groq"
+   ],
+   "passed": true,
+   "crash": null
+  },
+  {
+   "id": "P04",
+   "type": "protocol",
+   "region": "antakya",
+   "setup": [],
+   "turns": [
+    {
+     "say": "What must a team do before attempting a technical search of a collapsed structure?",
+     "intent": "protocol_question",
+     "language": "en",
+     "tools": [
+      "lookup_protocol"
+     ],
+     "stop_reason": null,
+     "checks": {
+      "intent": true,
+      "language": true,
+      "tools_exact": true,
+      "cited_gold_page": false
+     },
+     "passed": false,
+     "latency_s": 33.671,
+     "llm_calls": 10,
+     "cache_hits": 0,
+     "providers": [
+      "groq",
+      "groq"
+     ],
+     "router_fallback": false,
+     "expect_cited": true,
+     "citation_support": {
+      "checked": 4,
+      "supported": 4
+     },
+     "tool_set_ok": true,
+     "expected_language": "en",
+     "answer_excerpt": "Before a technical search the team must assess the collapsed structure and its local failures to identify void size, location, configuration and possible access possibilities [2]. It must interview the public for information on victims, building layout and use, and decide on access points, escape routes, safe havens and assembly points [2]. A staff accounting system, building monitoring system and"
+    }
+   ],
+   "violations": [],
+   "providers": [
+    "groq",
+    "groq"
+   ],
+   "passed": false,
+   "crash": null
+  },
+  {
+   "id": "P05",
+   "type": "protocol",
+   "region": "antakya",
+   "setup": [],
+   "turns": [
+    {
+     "say": "Where and with whom should a triage point be set up during rescue operations?",
+     "intent": "protocol_question",
+     "language": "en",
+     "tools": [
+      "lookup_protocol"
+     ],
+     "stop_reason": null,
+     "checks": {
+      "intent": true,
+      "language": true,
+      "tools_exact": true,
+      "cited_gold_page": true
+     },
+     "passed": true,
+     "latency_s": 33.074,
+     "llm_calls": 10,
+     "cache_hits": 0,
+     "providers": [
+      "groq",
+      "groq"
+     ],
+     "router_fallback": false,
+     "expect_cited": true,
+     "citation_support": {
+      "checked": 0,
+      "supported": 0
+     },
+     "tool_set_ok": true,
+     "expected_language": "en",
+     "answer_excerpt": "A triage point should be established at the rescue worksite, coordinated with the medical team responsible for treatment and hand‑over of casualties【1】. It must be set up in consultation with medical personnel to ensure proper integration with medical procedures and hand‑over points【1】. Sources: [1] INSARAG_Vol3_Field, p. 23-23; [2] INSARAG_Vol3_Field, p. 27-27"
+    }
+   ],
+   "violations": [],
+   "providers": [
+    "groq",
+    "groq"
+   ],
+   "passed": true,
+   "crash": null
+  },
+  {
+   "id": "P06",
+   "type": "protocol",
+   "region": "antakya",
+   "setup": [],
+   "turns": [
+    {
+     "say": "TAMP'a göre müdahale yönetimi hangi üç aşamadan oluşur?",
+     "intent": "protocol_question",
+     "language": "tr",
+     "tools": [
+      "lookup_protocol"
+     ],
+     "stop_reason": null,
+     "checks": {
+      "intent": true,
+      "language": true,
+      "tools_exact": true,
+      "cited_gold_page": true
+     },
+     "passed": true,
+     "latency_s": 33.542,
+     "llm_calls": 10,
+     "cache_hits": 0,
+     "providers": [
+      "groq",
+      "groq"
+     ],
+     "router_fallback": false,
+     "expect_cited": true,
+     "citation_support": {
+      "checked": 1,
+      "supported": 1
+     },
+     "tool_set_ok": true,
+     "expected_language": "tr",
+     "answer_excerpt": "TAMP'a göre etkili müdahale yönetimi hazırlık, müdahale ve ön iyileştirme olmak üzere üç aşamadan oluşur [1]. Kaynaklar: [1] AFAD_TAMP, p. 18-18"
+    }
+   ],
+   "violations": [],
+   "providers": [
+    "groq",
+    "groq"
+   ],
+   "passed": true,
+   "crash": null
+  },
+  {
+   "id": "P07",
+   "type": "protocol",
+   "region": "antakya",
+   "setup": [],
+   "turns": [
+    {
+     "say": "Operasyon servisi nedir ve hangi alt servislere ayrılmıştır?",
+     "intent": "protocol_question",
+     "language": "tr",
+     "tools": [
+      "lookup_protocol"
+     ],
+     "stop_reason": null,
+     "checks": {
+      "intent": true,
+      "language": true,
+      "tools_exact": true,
+      "cited_gold_page": true
+     },
+     "passed": true,
+     "latency_s": 33.822,
+     "llm_calls": 10,
+     "cache_hits": 0,
+     "providers": [
+      "groq",
+      "groq"
+     ],
+     "router_fallback": false,
+     "expect_cited": true,
+     "citation_support": {
+      "checked": 2,
+      "supported": 2
+     },
+     "tool_set_ok": true,
+     "expected_language": "tr",
+     "answer_excerpt": "Operasyon servisi, müdahale organizasyonunda planı uygulamaya koyan temel birimdir [1]. Müdahale seviyesi ve olay türü mantığına göre iki alt servise ayrılmıştır: küçük çaptaki olaylar için “Acil Durum Hizmetleri” alt servisi ve büyük çaptaki afetler için “Ön İyileştirme Hizmetleri” alt servisi oluşturulmuştur [1]. Kaynaklar: [1] AFAD_TAMP, p. 25-25"
+    }
+   ],
+   "violations": [],
+   "providers": [
+    "groq",
+    "groq"
+   ],
+   "passed": true,
+   "crash": null
+  },
+  {
+   "id": "P08",
+   "type": "protocol",
+   "region": "antakya",
+   "setup": [],
+   "turns": [
+    {
+     "say": "AFAD hangi kanun gereği kurulmuştur?",
+     "intent": "protocol_question",
+     "language": "tr",
+     "tools": [
+      "lookup_protocol"
+     ],
+     "stop_reason": null,
+     "checks": {
+      "intent": true,
+      "language": true,
+      "tools_exact": true,
+      "cited_gold_page": true
+     },
+     "passed": true,
+     "latency_s": 32.447,
+     "llm_calls": 10,
+     "cache_hits": 0,
+     "providers": [
+      "groq",
+      "groq"
+     ],
+     "router_fallback": false,
+     "expect_cited": true,
+     "citation_support": {
+      "checked": 1,
+      "supported": 1
+     },
+     "tool_set_ok": true,
+     "expected_language": "tr",
+     "answer_excerpt": "AFAD, 5902 sayılı Kanun gereği kurulmuştur [1]. Kaynaklar: [1] AFAD_TAMP, p. 1-3"
+    }
+   ],
+   "violations": [],
+   "providers": [
+    "groq",
+    "groq"
+   ],
+   "passed": true,
+   "crash": null
+  }
+ ]
+}

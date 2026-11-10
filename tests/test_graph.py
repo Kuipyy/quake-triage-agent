@@ -154,6 +154,8 @@ def test_protocol_question_cites_only_retrieved_passages(agent_factory):
     assert r.tools_called == ["lookup_protocol"] and a.llm.calls == 2  # router + answer
     assert "[1]" in r.answer and "[9]" not in r.answer  # invented citation removed
     assert "INSARAG_Vol2, p. 10-11" in r.answer
+    # retrieval uses the original message, not the router's rewritten keywords
+    assert a.ctx.trace[-1]["args"]["query"] == "How do USAR teams register?"
 
 
 def test_off_topic_calls_no_tools_and_refuses_in_the_users_language(agent_factory):

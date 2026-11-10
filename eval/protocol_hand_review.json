@@ -1,10 +1,67 @@
 {
   "_comment": "Hand review of the five protocol scenarios that failed the strict gold-page check (eval run 2026-11-10). The gold pages in agent_scenarios.yaml were NOT changed. The three strict passes (P01, P02, P05) were not re-read here. Root cause for P03/P07/P08 (and P06): the router LLM rewrites the question into a short keyword query (see lookup_protocol args), which retrieved worse passages than the original question.",
   "reviewed": {
-    "P03": {"verdict": "miss_honest", "acceptable": false, "note": "Router query 'USAR sector division guidelines' returned pages 56/7, not the gold p.25 that holds 5.5.1 'Why to create sectors'. Answer says the passages do not contain it: honest, but unhelpful. Question run with the original text retrieves p.25."},
-    "P04": {"verdict": "acceptable_alternative_source", "acceptable": true, "note": "Cites INSARAG Vol2 ManB p.20 instead of the gold Vol3 p.19. The cited passage lists the search-team tasks (assess the collapsed structure, interview the public, risk analysis) and the answer is supported by it. Gold page kept; counted acceptable only in the hand-reviewed number."},
-    "P06": {"verdict": "wrong_answer", "acceptable": false, "note": "Answer 'afet oncesi, afet sirasi, afet sonrasi' is not in the cited p.3 chunk; gold p.18 says the three phases are hazirlik, mudahale, on iyilestirme. An unsupported (wrong) claim that the rough keyword support check did not catch. Earlier note in decisions.md that this answer 'looks correct' was wrong."},
-    "P07": {"verdict": "miss_honest", "acceptable": false, "note": "Router query 'AFAD TAMP operation service subservices' missed gold p.25 (2.5.1 Operasyon Servisi); answer says the passages contain no information although the corpus does."},
-    "P08": {"verdict": "miss_honest", "acceptable": false, "note": "Router query 'AFAD establishment law Turkey' missed the preface (p.1-3: '5902 sayili Kanun gereği AFAD'in kurulmasi'); answer says no information, although the corpus has it."}
+    "P03": {
+      "verdict": "miss_honest",
+      "acceptable": false,
+      "note": "Router query 'USAR sector division guidelines' returned pages 56/7, not the gold p.25 that holds 5.5.1 'Why to create sectors'. Answer says the passages do not contain it: honest, but unhelpful. Question run with the original text retrieves p.25."
+    },
+    "P04": {
+      "verdict": "acceptable_alternative_source",
+      "acceptable": true,
+      "note": "Cites INSARAG Vol2 ManB p.20 instead of the gold Vol3 p.19. The cited passage lists the search-team tasks (assess the collapsed structure, interview the public, risk analysis) and the answer is supported by it. Gold page kept; counted acceptable only in the hand-reviewed number."
+    },
+    "P06": {
+      "verdict": "wrong_answer",
+      "acceptable": false,
+      "note": "Answer 'afet oncesi, afet sirasi, afet sonrasi' is not in the cited p.3 chunk; gold p.18 says the three phases are hazirlik, mudahale, on iyilestirme. An unsupported (wrong) claim that the rough keyword support check did not catch. Earlier note in decisions.md that this answer 'looks correct' was wrong."
+    },
+    "P07": {
+      "verdict": "miss_honest",
+      "acceptable": false,
+      "note": "Router query 'AFAD TAMP operation service subservices' missed gold p.25 (2.5.1 Operasyon Servisi); answer says the passages contain no information although the corpus does."
+    },
+    "P08": {
+      "verdict": "miss_honest",
+      "acceptable": false,
+      "note": "Router query 'AFAD establishment law Turkey' missed the preface (p.1-3: '5902 sayili Kanun gereği AFAD'in kurulmasi'); answer says no information, although the corpus has it."
+    }
+  },
+  "v2": {
+    "_comment": "Same five-scenario hand review after the retrieval fix (query = original user message), run 2026-11-10; all 8 answers served by Groq. P03/P04/P06/P07/P08 verified against the cited chunk text; P01/P05 read and plausible, not verified line by line. Gold set unchanged.",
+    "reviewed": {
+      "P01": {
+        "acceptable": true,
+        "note": "Read, plausible. Uses the non-standard citation bracket 【1】 instead of [1] (not caught by the citation regexes)."
+      },
+      "P02": {
+        "acceptable": false,
+        "note": "Correct core answer but expands UCC as 'United Nations Coordination Centre'; the corpus defines UCC = USAR Coordination Cell. Counted as not acceptable because of the wrong expansion."
+      },
+      "P03": {
+        "acceptable": true,
+        "note": "Matches p.25 (span of control, planning, assignment of teams). Verified."
+      },
+      "P04": {
+        "acceptable": true,
+        "note": "Still cites Vol2 ManB p.20 not the gold Vol3 p.19 (strict miss); the steps are in p.20, verified. Acceptable alternative source."
+      },
+      "P05": {
+        "acceptable": true,
+        "note": "Read, plausible. Uses 【1】 brackets."
+      },
+      "P06": {
+        "acceptable": true,
+        "note": "Now hazirlik / mudahale / on iyilestirme, matches gold p.18. Verified."
+      },
+      "P07": {
+        "acceptable": true,
+        "note": "Matches p.25 (two sub-services). Verified."
+      },
+      "P08": {
+        "acceptable": true,
+        "note": "5902 sayili Kanun, matches p.1-3. Verified."
+      }
+    }
   }
 }

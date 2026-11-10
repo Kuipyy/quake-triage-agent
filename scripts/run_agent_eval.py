@@ -4,7 +4,7 @@ COLD run: the LLM disk cache is emptied first (it only holds regenerable replies
 LLM call counts are real. Needs .env (Gemini key, Groq fallback). ~55 LLM calls, 10-15 min.
 Full answers go to outputs/logs/agent_eval_answers.jsonl (gitignored); the report keeps excerpts.
 No keys are printed: every written text is checked against environment secrets.
-Usage: uv run python scripts/run_agent_eval.py [--keep-cache] [--only ID,ID]
+Usage: uv run python scripts/run_agent_eval.py [--keep-cache] [--only ID,ID] [--out PATH]
 """
 import argparse
 import json
@@ -94,7 +94,11 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--keep-cache", action="store_true")
     ap.add_argument("--only", default="")
+    ap.add_argument("--out", default=str(OUT), help="report path (default reports/agent_eval.json)")
     args = ap.parse_args()
+    out_path = Path(args.out).resolve()
+    answers_path = ANSWERS if out_path == OUT else (
+        ROOT / "outputs" / "logs" / f"{out_path.stem}_answers.jsonl")
     scenarios = load_scenarios()
     if args.only:
         scenarios = [s for s in scenarios if s.id in args.only.split(",")]
@@ -109,7 +113,7 @@ def main() -> None:
     shared.graph()
     shared.rag()
     regions = get("regions")
-    ANSWERS.parent.mkdir(parents=True, exist_ok=True)
+    answers_path.parent.mkdir(parents=True, exist_ok=True)
     records, t0 = [], time.time()
     for i, sc in enumerate(scenarios, 1):
         rec = run_scenario(sc, llm, shared, regions)
@@ -120,7 +124,7 @@ def main() -> None:
               f"lat={sum(t['latency_s'] for t in rec['turns']):.0f}s "
               f"prov={sorted(set(rec['providers'])) or '-'} "
               f"viol={len(rec['violations'])} failed={failed[:3]}", flush=True)
-    with ANSWERS.open("w") as fh:
+    with answers_path.open("w") as fh:
         for r in records:
             fh.write(json.dumps({"id": r["id"], "answers": [t["answer"] for t in r["turns"]]},
                                 ensure_ascii=False) + "\n")
@@ -154,10 +158,10 @@ def main() -> None:
     text = json.dumps(report, indent=1, ensure_ascii=False, default=sorted)
     secrets = env_secret_values()
     assert not any(s in text for s in secrets), "secret found in report; not written"
-    OUT.write_text(text)
+    out_path.write_text(text)
     m = report["metrics"]
     viol = m["forbidden_behaviour"]["total_violations"]
-    print(f"written {OUT.relative_to(ROOT)}: success {m['task_success']['passed']}/"
+    print(f"written {out_path.relative_to(ROOT)}: success {m['task_success']['passed']}/"
           f"{m['task_success']['total']}, violations {viol}, "
           f"LLM calls {m['llm']['calls_total']}, mean latency "
           f"{m['latency_s_per_turn']['mean']} s, failed: {[f['id'] for f in failed]}")

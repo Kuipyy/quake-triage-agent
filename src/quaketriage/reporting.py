@@ -15,7 +15,9 @@ SUMMARY_ONLY = {"agent_eval": (
     "metrics.citation.cited_gold_page.", "metrics.citation.hand_reviewed.",
     "metrics.citation.dangling_citations", "metrics.citation.rough_support_sentences.",
     "metrics.latency_s_per_turn.", "metrics.llm.calls_total", "metrics.llm.successful_answers",
-    "metrics.llm.answers_by_provider.")}
+    "metrics.llm.answers_by_provider."),
+    "protocol_v1_vs_v2": ("v1.strict_", "v1.hand_", "v2.strict_", "v2.hand_", "v1.total",
+                          "v2.llm_requests")}
 
 
 def flatten(data: dict, prefix: str = "") -> dict[str, object]:

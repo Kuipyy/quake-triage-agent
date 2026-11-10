@@ -318,6 +318,15 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `depot_sensitivity` | `alternatives.town hall (OSM way 311391399).spearman` | 0.8414 |
 | `depot_sensitivity` | `alternatives.town hall (OSM way 311391399).top100_overlap` | 0.99 |
 | `depot_sensitivity` | `alternatives.town hall (OSM way 311391399).top500_overlap` | 0.974 |
+| `error_analysis` | `kate_cd_siamese.split` | test |
+| `error_analysis` | `kate_cd_siamese.threshold` | 0.2 |
+| `error_analysis` | `kate_cd_siamese.n_tiles` | 38 |
+| `error_analysis` | `kate_cd_siamese.n_tiles_with_any_damage_or_prediction` | 38 |
+| `error_analysis` | `kate_cd_siamese.n_worst_false_alarm` | 0 |
+| `error_analysis` | `kate_cd_siamese.n_worst_missed_damage` | 10 |
+| `error_analysis` | `kate_cd_siamese.note` | KATE-CD tiles, not buildings (no building labels there). |
+| `error_analysis` | `antakya_simulated.SIMULATED_DETECTOR` | True |
+| `error_analysis` | `antakya_simulated.definition` | highest-priority buildings that are NOT destroyed in HOTOSM truth and not in the verification queue; truth is incomplete, so some may be real damage |
 | `metrics_baseline` | `checkpoint` | baseline_best.pt |
 | `metrics_baseline` | `model` | early_fusion |
 | `metrics_baseline` | `split` | test |
@@ -653,6 +662,14 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `plan_demo` | `persons_in_candidates` | 1.637e+04 |
 | `plan_demo` | `solved` | True |
 | `plan_demo` | `disclaimer` | SIMULATED detector; scenario depot; not an operational plan |
+| `protocol_v1_vs_v2` | `v1.strict_gold_page` | 3/8 |
+| `protocol_v1_vs_v2` | `v1.strict_passed` | 3 |
+| `protocol_v1_vs_v2` | `v1.hand_reviewed_passed` | 4 |
+| `protocol_v1_vs_v2` | `v1.total` | 8 |
+| `protocol_v1_vs_v2` | `v2.strict_gold_page` | 7/8 |
+| `protocol_v1_vs_v2` | `v2.strict_passed` | 7 |
+| `protocol_v1_vs_v2` | `v2.hand_reviewed_passed` | 7 |
+| `protocol_v1_vs_v2` | `v2.llm_requests_incl_retries` | 80 |
 | `rag_ablation` | `n_questions` | 10 |
 | `uncertainty_baseline_test` | `model` | early_fusion |
 | `uncertainty_baseline_test` | `checkpoint` | baseline_best.pt |
@@ -817,6 +834,18 @@ P03/P04/P06/P07/P08 (hand-reviewed one by one, see `eval/protocol_hand_review.js
 answer from another passage, P06 is a wrong answer, P03/P07/P08 are honest "not in the passages" answers
 after the router rewrote the question into a poor keyword query; the gold set was not changed). Details: `failed_scenarios` in `reports/agent_eval.json`.
 
+**Protocol retrieval fix (v1 vs v2).** In v1 the router rewrote protocol questions into short English keyword queries, which retrieved the wrong passages for five of eight questions. v2 searches with the user's original message (`reports/protocol_v1_vs_v2.json`; v1 is kept unchanged in `reports/archive/agent_eval_v1.json`, v2 in `reports/archive/agent_eval_protocol_v2.json`). Same 8 questions and gold pages, single run each, hand review by the developer.
+
+| Protocol questions (8) | v1 (router query) | v2 (original message) |
+|---|---|---|
+| Cites the gold page (strict) | 3 / 8 | 7 / 8 |
+| Acceptable after hand review | 4 / 8 | 7 / 8 |
+| Dangling citations | 0 | 0 |
+| Answers served by | Groq 16 (router + answer) | Groq 16 |
+| LLM requests incl. retries | 80 | 80 |
+
+Remaining defects in v2: P04 still cites another (valid) passage instead of the gold page; P02 expands the acronym UCC wrongly ("United Nations Coordination Centre", the corpus says USAR Coordination Cell) and so does not count as acceptable; P01 and P05 use the fullwidth bracket 【1】, which the citation regexes do not see, so the "0 dangling citations" figure is blind to them. P01/P05 were read but not verified line by line.
+
 **Caveats.** 44 of 52 answers came from Groq because Gemini was mostly rate-limited (429), so the
 results cannot be attributed to Gemini; latency and request counts include the retries. The scenarios were written by the party that wrote the agent, so this is not an
 independent evaluation. The numbers rest on a single run and LLM output is not deterministic.
@@ -835,17 +864,8 @@ Operating threshold chosen on validation, evaluated once on test (`reports/compa
 
 Paired bootstrap, Siamese minus baseline: F1 +0.104 (95 % CI 0.038 to 0.166), IoU +0.099 (0.037 to 0.155). Small test set, one dataset.
 
-**2. Uncertainty filter (verification queue) on vs off — SIMULATED detector, Antakya** (`scripts/ablation_uncertainty_filter.py`, `reports/ablation_uncertainty_filter.json`).
-This measures the simulation's noise model, not real model behaviour: the simulated uncertainty peaks near the decision threshold and does *not* depend on whether the detector is right. Mean over 5 noise seeds; "FP" = reported damaged but not destroyed in the HOTOSM ground truth (that truth is itself incomplete, so FP is an upper bound).
-
-| Uncertainty of wrong detections | Queue size | False positives reported, off -> on | True positives held back |
-|---|---|---|---|
-| as simulated (k = 1) | ~100 | 153 -> 150 (-2 %) | 8.8 of 594 (1.5 %) |
-| x2 (ASSUMED) | ~157 | 153 -> 141 (-8 %) | 8.8 |
-| x3 (ASSUMED) | ~228 | 153 -> 133 (-13 %) | 8.8 |
-| x5 (ASSUMED) | ~276 | 153 -> 116 (-24 %) | 8.8 |
-
-With the simulation as it is, the filter removes false and true positives in about the same proportion (no real benefit). It only helps when wrong detections are more uncertain, which is the case for the real model on KATE-CD (14-21x higher uncertainty on wrong pixels) — the x2..x5 rows are an assumption showing the sensitivity, not a measurement. In the full pipeline (seed 0, real route solve) the 44 dispatched stops contain 18 false positives with the filter and 17 without (persons reached 3964 vs 3969): the filter changes the plan very little here. The top-400 candidate set is unchanged (about 151 non-destroyed buildings in it either way), because priority ranks by more than the damage flag.
+**2. Uncertainty filter (verification queue) on vs off — SIMULATED.**
+The simulated uncertainty does not depend on whether the detector is right, so the filter's effect is negligible in this setup, and it cannot be measured without real detector labels for Antakya. Numbers (5 noise seeds, `reports/ablation_uncertainty_filter.json`): false positives reported 153 -> 150, true positives held back 8.8 of 594, and in the route plan 18 vs 17 false positives among 44 stops. These figures describe the noise model only. No claim is made that the filter is useful; its safety role (holding back uncertain buildings for field verification) is a design rule, not an ablation result. The JSON also holds sensitivity rows with an ASSUMED higher uncertainty for wrong detections; they are not evidence. Ground truth is HOTOSM, which is incomplete, so "false positive" overstates real errors.
 
 ## Limitations
 
@@ -854,3 +874,17 @@ With the simulation as it is, the filter removes false and true positives in abo
 - Model accuracy is reported on KATE-CD only. The Kilis Vantor crop is a pipeline demo (different sensors/off-nadir angles, almost no damage labels); Antakya building damage uses HOTOSM destroyed-building labels as *simulated* detector output.
 - Vantor imagery is CC BY-NC 4.0 — commercial use requires a different imagery source.
 - INSARAG Guidelines 2020 used; new version effective January 2027.
+- Error analysis (`reports/error_analysis.json`, `reports/figures/worst10_siamese.png`): the 10 worst KATE-CD test tiles of the Siamese model are all *missed damage* (6 with IoU 0, 5 of them with nothing predicted). In the figure the ground truth is one to three building-sized blobs; one large flat-roofed industrial building is missed entirely, damage in dense low-rise districts is subtle, and in one tile the prediction sits next to the labelled building but does not overlap it. Tiles, not buildings (KATE-CD has no building labels); causes beyond what is visible were not tested.
+- Planning (SIMULATED Antakya): the ranking mixes damage with occupancy, so large residential buildings the detector considers undamaged (damage probability 0.02-0.09, ~100 estimated persons) appear among the top-priority buildings and in the route plan (17-18 of 44 stops are not destroyed in the HOTOSM truth, which is itself incomplete). Not changed in Week 7.
+- Agent evaluation: scenarios written by the agent's developer, single run, non-deterministic LLM, 44 of 52 answers from the Groq fallback (see the evaluation section). The citation-support check is a keyword heuristic; one wrong protocol answer (P06) passed it.
+- Routing: depot, debris, walking and night-occupancy rules are scenario assumptions, not operational data; the route solve takes ~30 s per plan.
+- The simulated detector means no Antakya number in this repository measures the damage model's accuracy.
+
+## Ethics and intended use
+
+- This is a research/portfolio prototype, **not an operational decision system**. Every Antakya output is flagged SIMULATED and must not be used to dispatch real teams.
+- Human in the loop: buildings with high uncertainty or a failed image-quality check are never ranked or dispatched; they go to a field-verification queue, and this is enforced in code, not in prompts.
+- Prioritisation weighs people at risk; the occupancy estimate (WorldPop, night/full-occupancy scenarios) is approximate and can under-serve places the data under-counts (informal housing, displaced people). Treat the ranking as decision support that a coordinator can override.
+- A missed damaged building is the costlier error; the damage threshold can therefore only be lowered, never raised, in what-if requests.
+- Imagery is CC BY-NC 4.0 (non-commercial); protocol passages are quoted from public INSARAG/AFAD documents with citations, and the LLM answers can still be wrong (see the protocol evaluation).
+- No personal data is used; building footprints and aggregate population rasters only.
