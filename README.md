@@ -455,6 +455,17 @@ cp .env.example .env  # fill in your API keys
 uv run pytest -q
 ```
 
+## Map preview
+
+Generate with `uv run python scripts/make_map.py`, then serve it over HTTP (do **not** open it via `file://`):
+
+```bash
+python3 -m http.server 8000 --directory reports
+# open http://localhost:8000/map_preview.html
+```
+
+OpenStreetMap tile servers return 403 for requests without a `Referer` header, which is what browsers send for `file://` pages, so the basemap stays blank.
+
 ## Limitations
 
 - Population estimates are approximations (WorldPop 100m, pre-earthquake).

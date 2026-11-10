@@ -5,7 +5,7 @@
 ## Durum özeti
 - **Aktif hafta:** Hafta 5 — TOPSIS önceliklendirme, rota/zaman planı (Hafta 4 tamamlandı)
 - **Sıradaki adım:** `PLAN.md` Hafta 5 bölümünü oku; bina tablosu `data/processed/buildings.gpkg` (5.895 bina, simüle dedektör), yol grafiği `data/raw/demo/antakya_roads.graphml`; simüle gürültünün öncelik sırasına etkisi için `reports/metrics_building.json` ızgarası kullanılacak
-- **Bekleyen manuel işler (the project owner):** `reports/map_preview.html` dosyasını tarayıcıda aç ve bak (Claude Chrome uzantısına bağlanamadı); sorun görürsen söyle
+- **Bekleyen manuel işler (the project owner):** yok (`reports/map_preview.html` tarayıcıda doğrulandı, binalar OSM ile örtüşüyor)
 
 ## Önemli metrikler
 
@@ -19,7 +19,7 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 - **Zonal istatistik** (`buildings/zonal.py`), **nüfus** (`buildings/population.py`, gece 0.9 / konut dışı 0.1 varsayımları config'te), **doğrulama kuyruğu** (`buildings/queue.py`); hepsi testli. YAML'da tırnaksız `yes` boolean oluyordu — düzeltildi.
 - **Bina bazlı değerlendirme:** bugünkü OSM'de yıkık binalar yok (8 örtüşme) → demo kümesi 732 HOTOSM yıkık + 5.163 yakın OSM binası; dedektör simüle (`buildings/simulate.py`); `reports/metrics_building.json` = gürültü duyarlılığı (SIMULATED işaretli), model doğruluğu iddiası değil.
 - **RAG:** bölüm farkında chunk, e5-small + BM25 hibrit; altın sette recall@1 0.8, MRR 0.80 (`reports/metrics_rag.json`, `reports/rag_ablation.json`). Bilinen kayıplar: Vol III tablo metni, İng→Türkçe.
-- **DoD:** `data/processed/buildings.gpkg`, `reports/metrics_building.json`, `reports/map_preview.html` (3.2 MB; tarayıcıda doğrulanamadı).
+- **DoD:** `data/processed/buildings.gpkg`, `reports/metrics_building.json`, `reports/map_preview.html` (3.2 MB; tarayıcıda doğrulandı).
 - Notlar: `docs/notes/week-04.md`. CI yeşil, 76 test.
 
 ### 2026-11-02 — Hafta 3 tamamlandı
