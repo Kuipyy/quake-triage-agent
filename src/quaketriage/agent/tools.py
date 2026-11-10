@@ -127,6 +127,16 @@ class Constraints(BaseModel):
                                    ge=0)
     scenario: Literal["night", "full_occupancy"] = "night"
 
+    @field_validator("damage_threshold")
+    @classmethod
+    def _threshold_only_lower(cls, v: float) -> float:
+        """Raising the damage threshold hides damaged buildings (less conservative), so a what-if
+        may only lower it; same rule as ``uncertainty_tau``."""
+        limit = get("thresholds.damage_prob")
+        if v > limit + 1e-9:
+            raise ValueError(f"damage_threshold may not exceed the configured {limit}")
+        return v
+
     @field_validator("uncertainty_tau")
     @classmethod
     def _tau_only_tighter(cls, v: float) -> float:

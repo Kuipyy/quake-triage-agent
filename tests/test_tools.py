@@ -290,7 +290,7 @@ def test_update_constraints_reports_only_stale_steps(ctx):
     assert "prioritize_sites" in out["unchanged_steps"]
     w = ctx.call("update_constraints", {"weights": {"damage_prob": 1.0}})
     assert w["stale_steps"] == ["prioritize_sites", "plan_routes", "write_sitrep"]
-    t = ctx.call("update_constraints", {"damage_threshold": 0.6})
+    t = ctx.call("update_constraints", {"damage_threshold": 0.1})
     assert t["stale_steps"] == ["score_buildings", "write_sitrep"]
     same = ctx.call("update_constraints", {"num_teams": 7})
     assert same["changed"] == {} and same["stale_steps"] == []
@@ -443,3 +443,15 @@ def test_uncertainty_threshold_can_be_tightened_but_not_relaxed(ctx):
     with pytest.raises(ToolError, match="may not exceed"):
         ctx.call("update_constraints", {"uncertainty_tau": 100.0})
     assert ctx.constraints.uncertainty_tau == limit / 2  # unchanged by the rejected request
+
+
+def test_damage_threshold_can_be_lowered_but_not_raised(ctx):
+    from quaketriage.config import get
+    limit = get("thresholds.damage_prob")
+    out = ctx.call("update_constraints", {"damage_threshold": limit / 2})
+    assert out["changed"] == {"damage_threshold": limit / 2}
+    with pytest.raises(ToolError, match="may not exceed"):
+        ctx.call("update_constraints", {"damage_threshold": 0.9})
+    assert ctx.constraints.damage_threshold == limit / 2  # unchanged by the rejected request
+    same = ctx.call("update_constraints", {"damage_threshold": limit})  # back to the default
+    assert same["changed"] == {"damage_threshold": limit}

@@ -9,6 +9,13 @@ from pathlib import Path
 BEGIN = "<!-- results:begin -->"
 END = "<!-- results:end -->"
 SKIP_KEYS = {"provenance"}
+# Reports whose JSON also holds per-item detail show only these key prefixes in the README table.
+SUMMARY_ONLY = {"agent_eval": (
+    "metrics.task_success.", "metrics.tool_selection_exact.", "metrics.forbidden_behaviour.total_",
+    "metrics.citation.cited_gold_page.", "metrics.citation.hand_reviewed.",
+    "metrics.citation.dangling_citations", "metrics.citation.rough_support_sentences.",
+    "metrics.latency_s_per_turn.", "metrics.llm.calls_total", "metrics.llm.successful_answers",
+    "metrics.llm.answers_by_provider.")}
 
 
 def flatten(data: dict, prefix: str = "") -> dict[str, object]:
@@ -32,7 +39,11 @@ def collect_metrics(reports_dir: str | Path) -> list[tuple[str, str, object]]:
         data = json.loads(path.read_text())
         if not isinstance(data, dict):
             continue
-        rows.extend((path.stem, key, value) for key, value in flatten(data).items())
+        flat = flatten(data)
+        keep = SUMMARY_ONLY.get(path.stem)
+        if keep:
+            flat = {k: v for k, v in flat.items() if k.startswith(keep)}
+        rows.extend((path.stem, key, value) for key, value in flat.items())
     return rows
 
 

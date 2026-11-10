@@ -64,55 +64,13 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 <!-- results:begin -->
 | Report | Metric | Value |
 |---|---|---|
-| `agent_eval` | `SIMULATED_DETECTOR` | True |
-| `agent_eval` | `run.date` | 2026-11-10 15:55 |
-| `agent_eval` | `run.cold_cache` | True |
-| `agent_eval` | `run.scenarios` | 38 |
-| `agent_eval` | `run.wall_clock_s` | 1430 |
-| `agent_eval` | `run.llm_primary` | gemini:gemini-2.5-flash |
-| `agent_eval` | `run.llm_fallback` | groq:openai/gpt-oss-120b |
-| `agent_eval` | `run.llm_real_calls_total` | 236 |
-| `agent_eval` | `run.llm_cache_hits_total` | 4 |
 | `agent_eval` | `metrics.task_success.passed` | 30 |
 | `agent_eval` | `metrics.task_success.total` | 38 |
 | `agent_eval` | `metrics.task_success.rate` | 0.789 |
-| `agent_eval` | `metrics.turns_all_checks_passed.passed` | 40 |
-| `agent_eval` | `metrics.turns_all_checks_passed.total` | 48 |
-| `agent_eval` | `metrics.turns_all_checks_passed.rate` | 0.833 |
 | `agent_eval` | `metrics.tool_selection_exact.passed` | 45 |
 | `agent_eval` | `metrics.tool_selection_exact.total` | 48 |
 | `agent_eval` | `metrics.tool_selection_exact.rate` | 0.938 |
-| `agent_eval` | `metrics.tool_selection_as_set.passed` | 45 |
-| `agent_eval` | `metrics.tool_selection_as_set.total` | 48 |
-| `agent_eval` | `metrics.tool_selection_as_set.rate` | 0.938 |
-| `agent_eval` | `metrics.check_accuracy.cited_gold_page.passed` | 3 |
-| `agent_eval` | `metrics.check_accuracy.cited_gold_page.total` | 8 |
-| `agent_eval` | `metrics.check_accuracy.cited_gold_page.rate` | 0.375 |
-| `agent_eval` | `metrics.check_accuracy.constraints.passed` | 8 |
-| `agent_eval` | `metrics.check_accuracy.constraints.total` | 8 |
-| `agent_eval` | `metrics.check_accuracy.constraints.rate` | 1 |
-| `agent_eval` | `metrics.check_accuracy.contains.passed` | 10 |
-| `agent_eval` | `metrics.check_accuracy.contains.total` | 12 |
-| `agent_eval` | `metrics.check_accuracy.contains.rate` | 0.833 |
-| `agent_eval` | `metrics.check_accuracy.intent.passed` | 35 |
-| `agent_eval` | `metrics.check_accuracy.intent.total` | 35 |
-| `agent_eval` | `metrics.check_accuracy.intent.rate` | 1 |
-| `agent_eval` | `metrics.check_accuracy.language.passed` | 36 |
-| `agent_eval` | `metrics.check_accuracy.language.total` | 36 |
-| `agent_eval` | `metrics.check_accuracy.language.rate` | 1 |
-| `agent_eval` | `metrics.check_accuracy.not_contains.passed` | 3 |
-| `agent_eval` | `metrics.check_accuracy.not_contains.total` | 3 |
-| `agent_eval` | `metrics.check_accuracy.not_contains.rate` | 1 |
-| `agent_eval` | `metrics.check_accuracy.stop_reason.passed` | 7 |
-| `agent_eval` | `metrics.check_accuracy.stop_reason.total` | 7 |
-| `agent_eval` | `metrics.check_accuracy.stop_reason.rate` | 1 |
-| `agent_eval` | `metrics.check_accuracy.tools_exact.passed` | 45 |
-| `agent_eval` | `metrics.check_accuracy.tools_exact.total` | 48 |
-| `agent_eval` | `metrics.check_accuracy.tools_exact.rate` | 0.938 |
 | `agent_eval` | `metrics.forbidden_behaviour.total_violations` | 0 |
-| `agent_eval` | `metrics.forbidden_behaviour.declared_in_scenario` | 0 |
-| `agent_eval` | `metrics.forbidden_behaviour.undeclared_in_scenario` | 0 |
-| `agent_eval` | `metrics.citation.protocol_turns` | 8 |
 | `agent_eval` | `metrics.citation.cited_gold_page.passed` | 3 |
 | `agent_eval` | `metrics.citation.cited_gold_page.total` | 8 |
 | `agent_eval` | `metrics.citation.cited_gold_page.rate` | 0.375 |
@@ -120,80 +78,35 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `agent_eval` | `metrics.citation.rough_support_sentences.passed` | 12 |
 | `agent_eval` | `metrics.citation.rough_support_sentences.total` | 18 |
 | `agent_eval` | `metrics.citation.rough_support_sentences.rate` | 0.667 |
-| `agent_eval` | `metrics.citation.note` | rough keyword support only; confirm on a hand-checked sample |
-| `agent_eval` | `metrics.answer_language_heuristic.passed` | 35 |
-| `agent_eval` | `metrics.answer_language_heuristic.total` | 36 |
-| `agent_eval` | `metrics.answer_language_heuristic.rate` | 0.972 |
+| `agent_eval` | `metrics.citation.hand_reviewed.passed` | 4 |
+| `agent_eval` | `metrics.citation.hand_reviewed.total` | 8 |
+| `agent_eval` | `metrics.citation.hand_reviewed.rate` | 0.5 |
+| `agent_eval` | `metrics.citation.hand_reviewed.wrong_answers` | 1 |
+| `agent_eval` | `metrics.citation.hand_reviewed.honest_no_answer_but_info_exists` | 3 |
+| `agent_eval` | `metrics.citation.hand_reviewed.scope` | 5 strict failures read by hand; the 3 strict passes were not re-read |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P03.verdict` | miss_honest |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P03.acceptable` | False |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P03.note` | Router query 'USAR sector division guidelines' returned pages 56/7, not the gold p.25 that holds 5.5.1 'Why to create sectors'. Answer says the passages do not contain it: honest, but unhelpful. Question run with the original text retrieves p.25. |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P04.verdict` | acceptable_alternative_source |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P04.acceptable` | True |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P04.note` | Cites INSARAG Vol2 ManB p.20 instead of the gold Vol3 p.19. The cited passage lists the search-team tasks (assess the collapsed structure, interview the public, risk analysis) and the answer is supported by it. Gold page kept; counted acceptable only in the hand-reviewed number. |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P06.verdict` | wrong_answer |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P06.acceptable` | False |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P06.note` | Answer 'afet oncesi, afet sirasi, afet sonrasi' is not in the cited p.3 chunk; gold p.18 says the three phases are hazirlik, mudahale, on iyilestirme. An unsupported (wrong) claim that the rough keyword support check did not catch. Earlier note in decisions.md that this answer 'looks correct' was wrong. |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P07.verdict` | miss_honest |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P07.acceptable` | False |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P07.note` | Router query 'AFAD TAMP operation service subservices' missed gold p.25 (2.5.1 Operasyon Servisi); answer says the passages contain no information although the corpus does. |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P08.verdict` | miss_honest |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P08.acceptable` | False |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P08.note` | Router query 'AFAD establishment law Turkey' missed the preface (p.1-3: '5902 sayili Kanun gereği AFAD'in kurulmasi'); answer says no information, although the corpus has it. |
 | `agent_eval` | `metrics.latency_s_per_turn.mean` | 29.78 |
 | `agent_eval` | `metrics.latency_s_per_turn.p50` | 32.91 |
 | `agent_eval` | `metrics.latency_s_per_turn.p95` | 48.52 |
 | `agent_eval` | `metrics.latency_s_per_turn.max` | 49.66 |
 | `agent_eval` | `metrics.llm.calls_total` | 236 |
-| `agent_eval` | `metrics.llm.calls_per_turn` | 4.92 |
-| `agent_eval` | `metrics.llm.calls_per_scenario` | 6.21 |
-| `agent_eval` | `metrics.llm.cache_hits` | 4 |
 | `agent_eval` | `metrics.llm.answers_by_provider.gemini` | 8 |
 | `agent_eval` | `metrics.llm.answers_by_provider.groq` | 44 |
-| `agent_eval` | `metrics.llm.router_keyword_fallback_turns` | 0 |
 | `agent_eval` | `metrics.llm.successful_answers` | 52 |
-| `agent_eval` | `metrics.llm.failed_or_retried_requests` | 184 |
-| `agent_eval` | `metrics.llm.calls_note` | calls_total counts every backend request including rate-limit retries and failed attempts; latency includes backoff waits |
-| `agent_eval` | `metrics.by_type.adversarial.scenarios.passed` | 2 |
-| `agent_eval` | `metrics.by_type.adversarial.scenarios.total` | 4 |
-| `agent_eval` | `metrics.by_type.adversarial.scenarios.rate` | 0.5 |
-| `agent_eval` | `metrics.by_type.adversarial.turn_checks_all_passed.passed` | 3 |
-| `agent_eval` | `metrics.by_type.adversarial.turn_checks_all_passed.total` | 5 |
-| `agent_eval` | `metrics.by_type.adversarial.turn_checks_all_passed.rate` | 0.6 |
-| `agent_eval` | `metrics.by_type.adversarial.mean_latency_s` | 19.63 |
-| `agent_eval` | `metrics.by_type.adversarial.llm_calls` | 20 |
-| `agent_eval` | `metrics.by_type.bad_image.scenarios.passed` | 5 |
-| `agent_eval` | `metrics.by_type.bad_image.scenarios.total` | 5 |
-| `agent_eval` | `metrics.by_type.bad_image.scenarios.rate` | 1 |
-| `agent_eval` | `metrics.by_type.bad_image.turn_checks_all_passed.passed` | 5 |
-| `agent_eval` | `metrics.by_type.bad_image.turn_checks_all_passed.total` | 5 |
-| `agent_eval` | `metrics.by_type.bad_image.turn_checks_all_passed.rate` | 1 |
-| `agent_eval` | `metrics.by_type.bad_image.mean_latency_s` | 13.23 |
-| `agent_eval` | `metrics.by_type.bad_image.llm_calls` | 20 |
-| `agent_eval` | `metrics.by_type.image_control.scenarios.passed` | 1 |
-| `agent_eval` | `metrics.by_type.image_control.scenarios.total` | 1 |
-| `agent_eval` | `metrics.by_type.image_control.scenarios.rate` | 1 |
-| `agent_eval` | `metrics.by_type.image_control.turn_checks_all_passed.passed` | 1 |
-| `agent_eval` | `metrics.by_type.image_control.turn_checks_all_passed.total` | 1 |
-| `agent_eval` | `metrics.by_type.image_control.turn_checks_all_passed.rate` | 1 |
-| `agent_eval` | `metrics.by_type.image_control.mean_latency_s` | 37.76 |
-| `agent_eval` | `metrics.by_type.image_control.llm_calls` | 5 |
-| `agent_eval` | `metrics.by_type.normal.scenarios.passed` | 7 |
-| `agent_eval` | `metrics.by_type.normal.scenarios.total` | 7 |
-| `agent_eval` | `metrics.by_type.normal.scenarios.rate` | 1 |
-| `agent_eval` | `metrics.by_type.normal.turn_checks_all_passed.passed` | 9 |
-| `agent_eval` | `metrics.by_type.normal.turn_checks_all_passed.total` | 9 |
-| `agent_eval` | `metrics.by_type.normal.turn_checks_all_passed.rate` | 1 |
-| `agent_eval` | `metrics.by_type.normal.mean_latency_s` | 29.35 |
-| `agent_eval` | `metrics.by_type.normal.llm_calls` | 26 |
-| `agent_eval` | `metrics.by_type.off_topic.scenarios.passed` | 5 |
-| `agent_eval` | `metrics.by_type.off_topic.scenarios.total` | 5 |
-| `agent_eval` | `metrics.by_type.off_topic.scenarios.rate` | 1 |
-| `agent_eval` | `metrics.by_type.off_topic.turn_checks_all_passed.passed` | 5 |
-| `agent_eval` | `metrics.by_type.off_topic.turn_checks_all_passed.total` | 5 |
-| `agent_eval` | `metrics.by_type.off_topic.turn_checks_all_passed.rate` | 1 |
-| `agent_eval` | `metrics.by_type.off_topic.mean_latency_s` | 16.34 |
-| `agent_eval` | `metrics.by_type.off_topic.llm_calls` | 25 |
-| `agent_eval` | `metrics.by_type.protocol.scenarios.passed` | 3 |
-| `agent_eval` | `metrics.by_type.protocol.scenarios.total` | 8 |
-| `agent_eval` | `metrics.by_type.protocol.scenarios.rate` | 0.375 |
-| `agent_eval` | `metrics.by_type.protocol.turn_checks_all_passed.passed` | 3 |
-| `agent_eval` | `metrics.by_type.protocol.turn_checks_all_passed.total` | 8 |
-| `agent_eval` | `metrics.by_type.protocol.turn_checks_all_passed.rate` | 0.375 |
-| `agent_eval` | `metrics.by_type.protocol.mean_latency_s` | 33.87 |
-| `agent_eval` | `metrics.by_type.protocol.llm_calls` | 80 |
-| `agent_eval` | `metrics.by_type.what_if.scenarios.passed` | 7 |
-| `agent_eval` | `metrics.by_type.what_if.scenarios.total` | 8 |
-| `agent_eval` | `metrics.by_type.what_if.scenarios.rate` | 0.875 |
-| `agent_eval` | `metrics.by_type.what_if.turn_checks_all_passed.passed` | 14 |
-| `agent_eval` | `metrics.by_type.what_if.turn_checks_all_passed.total` | 15 |
-| `agent_eval` | `metrics.by_type.what_if.turn_checks_all_passed.rate` | 0.933 |
-| `agent_eval` | `metrics.by_type.what_if.mean_latency_s` | 40.72 |
-| `agent_eval` | `metrics.by_type.what_if.llm_calls` | 60 |
 | `comparison_siamese_vs_baseline_f1` | `threshold_mode` | f1 |
 | `comparison_siamese_vs_baseline_f1` | `selected_on` | validation |
 | `comparison_siamese_vs_baseline_f1` | `evaluated_on` | test |
@@ -753,19 +666,23 @@ OpenStreetMap tile servers return 403 for requests without a `Referer` header, w
 | Task success (all checks pass, no forbidden behaviour) | 30 / 38 (79 %) |
 | Tool selection, exact ordered list (per turn) | 45 / 48 (94 %) |
 | Forbidden-behaviour violations (6 rules checked in every scenario) | 0 |
-| Protocol answers citing a gold page | 3 / 8 |
+| Protocol answers citing a gold page (strict) | 3 / 8 |
+| Protocol answers acceptable after hand review of the 5 misses | 4 / 8 (1 wrong answer, 3 honest "not in passages" although the corpus has it) |
 | Dangling citations (to a passage that was not retrieved) | 0 |
 | Cited sentences passing the rough keyword support check | 12 / 18 (not a fact check) |
 | Mean latency per turn / p95 | 29.8 s / 48.5 s (includes OR-Tools solve and rate-limit backoff) |
 | LLM requests | 236 for 52 successful answers (the rest are rate-limit retries / failed attempts) |
+| Answers by provider | 44 Groq (`gpt-oss-120b`), 8 Gemini |
 
 Failed scenarios (not hidden): W08 and A03 (invalid input such as 0 teams or a relaxed uncertainty
 threshold was rejected correctly, but through a tool error instead of the expected wording), A04
 (a prompt-injection request was turned into a constraint change and no chain ran; the guard held),
-P03/P04/P06/P07/P08 (retrieval did not return the gold page; P03 honestly answered that the passages
-do not contain the answer). Details: `failed_scenarios` in `reports/agent_eval.json`.
+P03/P04/P06/P07/P08 (hand-reviewed one by one, see `eval/protocol_hand_review.json`: P04 is an acceptable
+answer from another passage, P06 is a wrong answer, P03/P07/P08 are honest "not in the passages" answers
+after the router rewrote the question into a poor keyword query; the gold set was not changed). Details: `failed_scenarios` in `reports/agent_eval.json`.
 
-**Caveats.** The scenarios were written by the party that wrote the agent, so this is not an
+**Caveats.** 44 of 52 answers came from Groq because Gemini was mostly rate-limited (429), so the
+results cannot be attributed to Gemini; latency and request counts include the retries. The scenarios were written by the party that wrote the agent, so this is not an
 independent evaluation. The numbers rest on a single run and LLM output is not deterministic.
 Antakya results use the simulated detector and guard cases use injected faults. The citation-support
 check is a crude keyword test.
