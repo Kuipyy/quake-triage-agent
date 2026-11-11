@@ -1,0 +1,311 @@
+{
+  "scope": "Kilis Vantor crop, the only demo area with real pre/post imagery; Antakya has none. Windows touching a HOTOSM destroyed polygon are excluded, the rest are PRESUMED undamaged (not verified; HOTOSM is incomplete). Not a validated false-positive rate.",
+  "model": "siamese_best.pt, 8-view TTA",
+  "threshold": 0.2,
+  "tile": 512,
+  "n_windows": 16,
+  "n_touching_hotosm": 0,
+  "n_guard_rejected": 0,
+  "n_presumed_undamaged": 16,
+  "hotosm_destroyed_polygons_in_crop": 0,
+  "window_flag_share": 0.01,
+  "min_component_px": 500,
+  "presumed_undamaged_at_operating_threshold": {
+    "mean_pred_pixel_share": 0.00046,
+    "max_pred_pixel_share": 0.00348,
+    "windows_flagged": 0,
+    "windows_with_component": 0
+  },
+  "presumed_undamaged_at_0.5": {
+    "mean_pred_pixel_share": 0.0,
+    "max_pred_pixel_share": 0.0,
+    "windows_flagged": 0,
+    "windows_with_component": 0
+  },
+  "kate_cd_test_background_fp_pixel_rate": {
+    "value": 0.00782,
+    "n_background_pixels": 9680040,
+    "note": "share of label-0 pixels predicted damaged; every KATE-CD tile contains damage"
+  },
+  "windows": [
+    {
+      "y": 0,
+      "x": 0,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00405,
+      "mean_uncertainty": 0.00176,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 0,
+      "x": 512,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.004,
+      "mean_uncertainty": 0.00095,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 0,
+      "x": 1024,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00434,
+      "mean_uncertainty": 0.00203,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 0,
+      "x": 1536,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00394,
+      "mean_uncertainty": 0.00088,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 512,
+      "x": 0,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00531,
+      "mean_uncertainty": 0.00299,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.00268,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 512,
+      "x": 512,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00382,
+      "mean_uncertainty": 0.00095,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 512,
+      "x": 1024,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.0037,
+      "mean_uncertainty": 0.0007,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 512,
+      "x": 1536,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00392,
+      "mean_uncertainty": 0.00141,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 1024,
+      "x": 0,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00393,
+      "mean_uncertainty": 0.00117,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 1024,
+      "x": 512,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00529,
+      "mean_uncertainty": 0.00315,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.00348,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 1024,
+      "x": 1024,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00474,
+      "mean_uncertainty": 0.00256,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.00051,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 1024,
+      "x": 1536,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00396,
+      "mean_uncertainty": 0.00132,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 1536,
+      "x": 0,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00351,
+      "mean_uncertainty": 0.00058,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 1536,
+      "x": 512,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.0034,
+      "mean_uncertainty": 0.00052,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 1536,
+      "x": 1024,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00441,
+      "mean_uncertainty": 0.00227,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.00067,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    },
+    {
+      "y": 1536,
+      "x": 1536,
+      "touches_hotosm_destroyed": false,
+      "guard_ok": true,
+      "guard_reasons": [],
+      "mean_prob": 0.00343,
+      "mean_uncertainty": 0.00061,
+      "at_operating_threshold": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      },
+      "at_0.5": {
+        "pred_pixel_share": 0.0,
+        "components_ge_min": 0
+      }
+    }
+  ],
+  "seconds": 43.1,
+  "provenance": {
+    "created_utc": "2026-11-11T12:15:12+00:00",
+    "git_sha": "bb41bbf",
+    "git_dirty": true,
+    "seed": null
+  }
+}

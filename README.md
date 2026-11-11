@@ -703,6 +703,29 @@ the pre-gate numbers (VRP 27.80 / 3,969 persons) are archived in `reports/archiv
 | `metrics_siamese_f2` | `bootstrap_ci.iou.ci95_lo` | 0.3312 |
 | `metrics_siamese_f2` | `bootstrap_ci.iou.ci95_hi` | 0.4992 |
 | `metrics_siamese_f2` | `inference_secs` | 4.1 |
+| `metrics_unlabeled_windows` | `scope` | Kilis Vantor crop, the only demo area with real pre/post imagery; Antakya has none. Windows touching a HOTOSM destroyed polygon are excluded, the rest are PRESUMED undamaged (not verified; HOTOSM is incomplete). Not a validated false-positive rate. |
+| `metrics_unlabeled_windows` | `model` | siamese_best.pt, 8-view TTA |
+| `metrics_unlabeled_windows` | `threshold` | 0.2 |
+| `metrics_unlabeled_windows` | `tile` | 512 |
+| `metrics_unlabeled_windows` | `n_windows` | 16 |
+| `metrics_unlabeled_windows` | `n_touching_hotosm` | 0 |
+| `metrics_unlabeled_windows` | `n_guard_rejected` | 0 |
+| `metrics_unlabeled_windows` | `n_presumed_undamaged` | 16 |
+| `metrics_unlabeled_windows` | `hotosm_destroyed_polygons_in_crop` | 0 |
+| `metrics_unlabeled_windows` | `window_flag_share` | 0.01 |
+| `metrics_unlabeled_windows` | `min_component_px` | 500 |
+| `metrics_unlabeled_windows` | `presumed_undamaged_at_operating_threshold.mean_pred_pixel_share` | 0.00046 |
+| `metrics_unlabeled_windows` | `presumed_undamaged_at_operating_threshold.max_pred_pixel_share` | 0.00348 |
+| `metrics_unlabeled_windows` | `presumed_undamaged_at_operating_threshold.windows_flagged` | 0 |
+| `metrics_unlabeled_windows` | `presumed_undamaged_at_operating_threshold.windows_with_component` | 0 |
+| `metrics_unlabeled_windows` | `presumed_undamaged_at_0.5.mean_pred_pixel_share` | 0 |
+| `metrics_unlabeled_windows` | `presumed_undamaged_at_0.5.max_pred_pixel_share` | 0 |
+| `metrics_unlabeled_windows` | `presumed_undamaged_at_0.5.windows_flagged` | 0 |
+| `metrics_unlabeled_windows` | `presumed_undamaged_at_0.5.windows_with_component` | 0 |
+| `metrics_unlabeled_windows` | `kate_cd_test_background_fp_pixel_rate.value` | 0.00782 |
+| `metrics_unlabeled_windows` | `kate_cd_test_background_fp_pixel_rate.n_background_pixels` | 9680040 |
+| `metrics_unlabeled_windows` | `kate_cd_test_background_fp_pixel_rate.note` | share of label-0 pixels predicted damaged; every KATE-CD tile contains damage |
+| `metrics_unlabeled_windows` | `seconds` | 43.1 |
 | `plan_demo` | `SIMULATED_DETECTOR` | True |
 | `plan_demo` | `n_candidates` | 400 |
 | `plan_demo` | `n_unreachable` | 0 |
@@ -905,6 +928,7 @@ The simulated uncertainty does not depend on whether the detector is right, so t
 - Population estimates are approximations (WorldPop 100m, pre-earthquake).
 - Model trained on a single earthquake dataset (KATE-CD); generalization not guaranteed.
 - Model accuracy is reported on KATE-CD only. The Kilis Vantor crop is a pipeline demo (different sensors/off-nadir angles, almost no damage labels); Antakya building damage uses HOTOSM destroyed-building labels as *simulated* detector output.
+- Undamaged-window check (`reports/metrics_unlabeled_windows.json`, `scripts/eval_unlabeled_windows.py`): Antakya has no real imagery, so this runs on the Kilis Vantor crop, cut into 16 non-overlapping 512 px windows. None touches a HOTOSM destroyed polygon (the crop contains none), so all 16 are *presumed* undamaged, which was not verified on the ground. At the operating threshold 0.2 the Siamese model marks 0.046 % of their pixels as damaged (max 0.35 % in one window), no window reaches 1 % and no blob is larger than 500 px; at 0.5 nothing is marked. On KATE-CD background pixels (label 0) the same model marks 0.78 % as damaged. Read this carefully: a low rate on an unlabelled area is consistent with correct behaviour *and* with a model that is simply insensitive on this sensor (the crop's recall is unknown, there are no damage labels), so it is not evidence of accuracy. 16 windows from one small scene.
 - Vantor imagery is CC BY-NC 4.0 — commercial use requires a different imagery source.
 - INSARAG Guidelines 2020 used; new version effective January 2027.
 - Error analysis (`reports/error_analysis.json`; the figure `worst10_siamese.png` is generated locally by `scripts/error_analysis.py` but not shipped, because it shows KATE-CD imagery): the 10 worst KATE-CD test tiles of the Siamese model are all *missed damage* (6 with IoU 0, 5 of them with nothing predicted). In those tiles the ground truth is one to three building-sized blobs; one large flat-roofed industrial building is missed entirely, damage in dense low-rise districts is subtle, and in one tile the prediction sits next to the labelled building but does not overlap it. Tiles, not buildings (KATE-CD has no building labels); causes beyond what is visible were not tested.
