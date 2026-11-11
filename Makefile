@@ -1,4 +1,4 @@
-# Thin wrappers around the commands in CLAUDE.md. `make help` lists targets.
+# Thin wrappers around common project commands. `make help` lists targets.
 .PHONY: help sync test lint format report demo-data
 
 help:

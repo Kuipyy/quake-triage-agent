@@ -5,6 +5,9 @@ One section per project week until the first tagged release.
 
 ## [Unreleased]
 
+### Repository cleanup
+- Removed internal working files from the public tree (project plan, session log, assistant instructions, release checklist, Turkish glossary); decisions stay in `docs/decisions.md`.
+
 ### Week 8 — UI and release
 - `ui/app.py` (Gradio): region choice + agent chat; tabs Map, Before/after (local data only), Priority table, Situation report (download), Tool trace, Model card; SIMULATED notice on every tab.
 - `planning/plan_cache.py`: solved route plans cached on disk (key = solver params + closed areas + candidate-table digest); UI solver limit 10 s.
@@ -70,7 +73,7 @@ One section per project week until the first tagged release.
 - Downloaded RAG documents: AFAD TAMP (65 pp, text layer OK), INSARAG Vol II Man B + Vol III (originally noted as scanned; corrected in Week 3 — text layer is present).
 - `scripts/check_data.py`: verifies 10 files; all green.
 - Key decisions logged in `docs/decisions.md`; a weekly working note written (local, not published).
-- Documentation scaffolding: data card (TBDs partially filled), model card, glossary, docs map.
+- Documentation scaffolding: data card (TBDs partially filled), model card, docs map.
 - Tooling: CI workflow, pre-commit config (ruff, gitleaks), Makefile, config loader, provenance helper,
   results-table generator (`scripts/make_report.py`).
 

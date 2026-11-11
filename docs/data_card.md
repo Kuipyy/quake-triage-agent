@@ -78,7 +78,7 @@ One entry per dataset. Facts below come from `reports/metrics_eda.json`, `data/m
 
 ## AFAD TAMP and INSARAG Guidelines 2020
 
-- **Source:** see `PLAN.md` section 4.
+- **Source:** see the data-source table in `README.md` and `THIRD_PARTY.md`.
 - **Use:** RAG corpus with `[source#section]` citations.
 - **Known issues:** check that the PDF has a usable text layer and that Turkish characters survive extraction.
   INSARAG publishes a new version effective 1 January 2027 (noted in `README.md`).

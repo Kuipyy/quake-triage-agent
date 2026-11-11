@@ -59,7 +59,7 @@ flowchart LR
     PR --> UI
 ```
 
-Details and decisions: [`docs/decisions.md`](docs/decisions.md), [`PLAN.md`](PLAN.md).
+Details and decisions: [`docs/decisions.md`](docs/decisions.md).
 
 ## Headline results
 
@@ -916,7 +916,7 @@ The screenshots in `docs/images/` show the UI over OpenStreetMap tiles (© OpenS
 
 ## Documentation and citation
 
-See [`docs/README.md`](docs/README.md) for the documentation map: decisions, [data card](docs/data_card.md), [model card](docs/model_card.md), glossary.
+See [`docs/README.md`](docs/README.md) for the documentation map: decisions, [data card](docs/data_card.md), [model card](docs/model_card.md).
 Cite this repository via [`CITATION.cff`](CITATION.cff).
 
 ## Agent evaluation (SIMULATED detector for Antakya)
