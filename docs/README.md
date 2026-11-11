@@ -8,8 +8,7 @@
 | [`data_card.md`](data_card.md) | EN | Every dataset: source, license, size, known issues |
 | [`model_card.md`](model_card.md) | EN | Model details, intended use, evaluation, limitations |
 | [`glossary.md`](glossary.md) | TR/EN | Terms used in the project, short explanations |
-| [`notes/week-XX.md`](notes) | TR | One page per finished week: what, why, how to explain it |
-| [`review/`](review) | TR | Project reviews and proposals that are not yet decisions |
 
-Conventions: code, comments, commit messages and `README.md` are English; notes for the project owner are Turkish.
+Conventions: code, comments, commit messages and `README.md` are English; working notes for the project owner are Turkish.
+Personal working notes (`docs/notes/`, `docs/review/`, `docs/demo_script.md`) are kept locally and are git-ignored, so they are not part of the published repository.
 Numbers in any document must trace back to a file under `reports/`.

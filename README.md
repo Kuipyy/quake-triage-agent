@@ -892,7 +892,7 @@ The screenshots in `docs/images/` show the UI over OpenStreetMap tiles (© OpenS
 ## Documentation and citation
 
 See [`docs/README.md`](docs/README.md) for the documentation map: decisions, [data card](docs/data_card.md), [model card](docs/model_card.md), glossary.
-A 60–90 s demo walkthrough is in [`docs/demo_script.md`](docs/demo_script.md). Cite this repository via [`CITATION.cff`](CITATION.cff).
+Cite this repository via [`CITATION.cff`](CITATION.cff).
 
 ## Agent evaluation (SIMULATED detector for Antakya)
 

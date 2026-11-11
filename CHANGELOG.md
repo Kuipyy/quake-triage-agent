@@ -69,7 +69,7 @@ One section per project week until the first tagged release.
 - Downloaded for Antakya: OSM building footprints and road edges (OSMnx), WorldPop Turkey 100 m. (Counts of 1876/717 were of a wrong bbox; corrected in Week 4: 53,028 / 30,718.)
 - Downloaded RAG documents: AFAD TAMP (65 pp, text layer OK), INSARAG Vol II Man B + Vol III (originally noted as scanned; corrected in Week 3 — text layer is present).
 - `scripts/check_data.py`: verifies 10 files; all green.
-- Key decisions logged in `docs/decisions.md`; `docs/notes/week-01.md` written.
+- Key decisions logged in `docs/decisions.md`; a weekly working note written (local, not published).
 - Documentation scaffolding: data card (TBDs partially filled), model card, glossary, docs map.
 - Tooling: CI workflow, pre-commit config (ruff, gitleaks), Makefile, config loader, provenance helper,
   results-table generator (`scripts/make_report.py`).

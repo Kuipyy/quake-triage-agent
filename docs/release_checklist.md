@@ -22,4 +22,4 @@ The tree is publishable; the history is not, because of the KATE-CD figures (no 
 - **Option A (recommended, simplest):** publish a *new* repository with a single commit made from the current tree; keep the old private repository as the archive. No imagery, no old emails, no history surprises. Cost: the 87-commit history is not public.
 - **Option B:** rewrite history with `git filter-repo` (remove the paths above, optionally map the author email to the GitHub noreply address), then force-push. Keeps history, but rewrites every SHA and needs a fresh clone and a backup first.
 
-Numbered steps for both are in the final message of the Week 8 session and in `docs/notes/week-08.md`.
+Numbered steps for both were given in the Week 8 session (the local working note is not published).

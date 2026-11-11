@@ -66,3 +66,8 @@ Thumbs.db
 
 # Local Kaggle metadata with a real username (the committed files carry a placeholder; see scripts/kaggle_push.py)
 kaggle/**/*.local.json
+
+# Personal working notes: kept locally, not published
+/docs/notes/
+/docs/review/
+/docs/demo_script.md
