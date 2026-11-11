@@ -3,10 +3,11 @@
 > Her oturum sonunda Claude günceller. En yeni kayıt en üstte.
 
 ## Durum özeti
-- **Aktif hafta:** Hafta 8 — Arayüz ve yayın (kod/doküman tamam; Proje sahibinin manuel adımları bekliyor)
-- **Sıradaki adım:** the project owner: demo videosu (`docs/demo_script.md`), git geçmişi kararı (A: temiz yeni repo / B: filter-repo; `docs/release_checklist.md`), repoyu public yap, HF Space kararı (stretch). Ardından v1.0 etiketi
-- **YAYIN ENGELİ:** KATE-CD görselleri (kate_cd_samples, predictions_*, worst10_*) ağaçtan kaldırıldı ama git GEÇMİŞİNDE duruyor. Repo public yapılmadan önce geçmiş temizlenmeli (git filter-repo + force push, ya da sıkıştırılmış ağaçtan yeni public repo) — the project owner onayıyla, en son adım olarak. Bkz. docs/decisions.md (2026-11-11).
-- **Bekleyen manuel işler (the project owner):** yok. Damage gate sonrası tüm planlama çıktıları ve 38 senaryo eval'i 2026-11-11'de yeniden üretildi (eski sürümler `reports/archive/pre_gate/`). Elle protokol incelemesi yeni koşu için TEKRARLANMADI (yalnız sıkı 7/8 var; P04 hâlâ gold sayfayı atıflamıyor)
+- **Aktif hafta:** Hafta 8 tamamlandı (kod, doküman, yayın kontrolü). Public öncesi tek açık iş: git geçmişi kararı
+- **Sıradaki adım (the project owner):** (1) git geçmişi: A) temiz yeni repo (önerilen) ya da B) `git filter-repo`; geçmişte KATE-CD görselleri + kişisel e-posta var (`docs/release_checklist.md`, `docs/notes/week-08.md`); (2) demo videosu (`docs/demo_script.md`, "Before / after" sekmesini çekme); (3) repoyu public yap, Secret scanning + Push protection aç; (4) anahtarları yenile. Sonra v1.0 etiketi
+- **Kapatılan açık işler (2026-11-11):** hasarsız pencere değerlendirmesi (Kilis kesiti, 16 pencere hepsi "varsayılan hasarsız"; operasyon eşiğinde piksellerin %0,046'sı hasarlı işaretlendi, 0 pencere ≥%1; KATE arka plan yanlış pozitif oranı %0,78; doğruluk kanıtı DEĞİL, çünkü kesitte etiket yok), P01–P08 elle inceleme (6/8 kabul edilebilir; **bilinen hatalar:** P04 yanlış cevap, P02 yanlış kısaltma açılımı; README'de yazılı)
+- **Hugging Face Space:** yayından sonra (ZeroGPU ya da statik Space); hesap yeni, ücretsiz hesapta düz CPU Gradio Space yok
+- **Bekleyen manuel işler:** yukarıdaki dört adım. Elle protokol incelemesini bir insan da gözden geçirmeli (inceleyen tek model; P04/P02'yi kaynak sayfada kontrol et)
 
 ## Önemli metrikler
 
@@ -14,6 +15,11 @@ Metrikler `reports/*.json` dosyalarından otomatik üretilir ve `README.md` sonu
 Güncel değerler için: `uv run python scripts/make_report.py --check` → [README.md](../README.md#results)
 
 ## Oturum kayıtları
+
+### 2026-11-11 — Açık işlerin kapatılması
+- **Hasarsız pencereler:** `scripts/eval_unlabeled_windows.py` → `reports/metrics_unlabeled_windows.json` (43 sn). Kilis kesiti (Antakya'da görüntü yok), 512 px'lik 16 pencere, hiçbiri HOTOSM yıkık poligonuna değmiyor → hepsi "varsayılan hasarsız" (doğrulanmadı). Siamese eşik 0,2: ortalama %0,046 piksel işaretli (en fazla %0,35), 0 pencere ≥%1, 0,5 eşiğinde hiç işaret yok; KATE-CD arka planında %0,78. Düşük oran doğruluk kanıtı değil (kesitte hasar etiketi yok, model bu sensörde duyarsız olabilir). README sınırlamalara eklendi.
+- **Protokol elle inceleme** (`eval/protocol_hand_review_2026-11-11.json`, 8 cevabın hepsi kaynak metinle karşılaştırıldı): 6/8 kabul edilebilir. P04 yanlış cevap (Rescue ekibinin görevleri, teknik arama öncesi şartmış gibi sunuluyor; eski "kabul edilebilir" notu hatalıydı), P02 UCC açılımı yanlış. İkisi README "Known errors" bölümünde.
+- HF Space kararı güncellendi (yayından sonra).
 
 ### 2026-11-11 — Hafta 8 (UI + yayın hazırlığı)
 - **UI:** `uv run python -m quaketriage.ui.app` (Gradio 6). Sekmeler: Harita (hasar + ilk 20 öncelik + rotalar), Öncesi-Sonrası (yalnız yerel veri; yoksa indirme mesajı), Öncelik tablosu, Durum raporu (indirilebilir), Araç izi, Model kartı; her sekmede SIMULATED uyarısı.
