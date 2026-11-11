@@ -4,6 +4,10 @@
 
 > ⚠️ Research prototype only. Not validated for operational use in real search-and-rescue operations.
 > Every Antakya result is produced with a **simulated detector** (HOTOSM labels + noise) and is labelled SIMULATED.
+>
+> **Independent research prototype; not affiliated with or endorsed by AFAD, INSARAG/UN OCHA, Maxar/Vantor, Airbus or HOT (Humanitarian OpenStreetMap Team).** Protocol passages are short cited excerpts from public documents; the answers are machine-generated and can be wrong. Do not use any output to dispatch real teams.
+>
+> Developed with assistance from an AI coding assistant (Claude Code).
 
 ![Tour of the QuakeTriage UI: map, priority table, situation report, tool trace, model card](docs/images/demo_tour.gif)
 
@@ -867,6 +871,8 @@ the pre-gate numbers (VRP 27.80 / 3,969 persons) are archived in `reports/archiv
 </details>
 
 ## Data licenses
+
+The MIT licence of this repository covers the **source code only**. Data, imagery, documents and pretrained models keep their own licences, listed below and in [`THIRD_PARTY.md`](THIRD_PARTY.md). Nothing here is legal advice; the project takes reasonable care but users must check the terms of each source themselves.
 
 | Source | Use | License | In this repository? |
 |--------|-----|---------|---|
