@@ -21,9 +21,9 @@ jobs:
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
-      # Core + `train` extra: PyTorch is the CPU-only wheel on Linux (see [tool.uv.sources]).
-      # The agent/ui extras are not needed for the current tests.
-      - run: uv sync --frozen --extra train
+      # All extras: the agent tests import ortools/langgraph/sentence-transformers and the map
+      # tests import folium. PyTorch is the CPU-only wheel on Linux (see [tool.uv.sources]).
+      - run: uv sync --frozen --all-extras
       - run: uv run pytest -q -m "not slow and not network and not gpu"
 
   report-check:
