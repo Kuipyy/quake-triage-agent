@@ -5,6 +5,11 @@ One section per project week until the first tagged release.
 
 ## [Unreleased]
 
+### Week 8 — UI and release
+- `ui/app.py` (Gradio): region choice + agent chat; tabs Map, Before/after (local data only), Priority table, Situation report (download), Tool trace, Model card; SIMULATED notice on every tab.
+- `planning/plan_cache.py`: solved route plans cached on disk (key = solver params + closed areas + candidate-table digest); UI solver limit 10 s.
+- MIT `LICENSE`, `CITATION.cff` author, README rewrite, filled model/data cards, demo script, release checklist, imagery guard test.
+
 ### Week 7 follow-up — candidate gate and citation markers
 - TOPSIS runs only among buildings above the damage gate; intact crowded buildings no longer rank at the top
   (`planning/topsis.py`, `planning/vrp.py`, `agent/tools.py`). Planning results must be regenerated.

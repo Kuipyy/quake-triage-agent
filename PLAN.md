@@ -248,7 +248,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [x] Ekran görüntüleri, 60–90 saniyelik demo GIF/video (ekran görüntüleri + `docs/images/demo_tour.gif` + `docs/demo_script.md`; video Proje sahibinin)
 - [x] README (İngilizce): problem, mimari diyagramı, sonuç tabloları, kurulum, veri lisansları, sınırlamalar, etik
 - [x] `LICENSE` (kod: MIT; veri lisansları ayrıca belirtilir), model kartı
-- [ ] Yayın kontrol listesi: geçmişte sır yok (`git log -p | grep -i key`), büyük dosya yok, lisanslar doğru
+- [x] Yayın kontrol listesi (`docs/release_checklist.md`; açık: git geçmişinde KATE-CD görselleri): geçmişte sır yok (`git log -p | grep -i key`), büyük dosya yok, lisanslar doğru
 - [ ] (Stretch, zaman kalırsa — atlanmış sayılmaz) Hugging Face Space: ücretsiz hesapta düz CPU Gradio Space yok (ücretli plan gerekir); seçenekler: ZeroGPU Space veya statik Space, önbellek tabanlı demo modu; ayrıntı `docs/decisions.md` (2026-11-11). Hafta 8'in diğer maddeleri bitince the project owner'a sorulacak
 - **DoD:** `uv run python -m quaketriage.ui.app` çalışıyor, README tam, repo public yapılmaya hazır.
 

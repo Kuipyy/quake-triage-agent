@@ -3,8 +3,8 @@
 > Her oturum sonunda Claude günceller. En yeni kayıt en üstte.
 
 ## Durum özeti
-- **Aktif hafta:** Hafta 7 — Değerlendirme (senaryo seti hazır)
-- **Sıradaki adım:** Hafta 7 madde 2: `eval/run_agent_eval.py` (senaryoları gerçek LLM ile koşturur; paylaşılan yol grafı/RAG, çözücü süresi kısa; metrikler → `reports/agent_eval.json`: görev başarısı, araç doğruluğu, yasak davranış, atıf geçerliliği/destek, gecikme, LLM çağrısı). Tahmini ~45-60 LLM çağrısı: koşmadan önce the project owner'a söyle
+- **Aktif hafta:** Hafta 8 — Arayüz ve yayın (kod/doküman tamam; Proje sahibinin manuel adımları bekliyor)
+- **Sıradaki adım:** the project owner: demo videosu (`docs/demo_script.md`), git geçmişi kararı (A: temiz yeni repo / B: filter-repo; `docs/release_checklist.md`), repoyu public yap, HF Space kararı (stretch). Ardından v1.0 etiketi
 - **YAYIN ENGELİ:** KATE-CD görselleri (kate_cd_samples, predictions_*, worst10_*) ağaçtan kaldırıldı ama git GEÇMİŞİNDE duruyor. Repo public yapılmadan önce geçmiş temizlenmeli (git filter-repo + force push, ya da sıkıştırılmış ağaçtan yeni public repo) — the project owner onayıyla, en son adım olarak. Bkz. docs/decisions.md (2026-11-11).
 - **Bekleyen manuel işler (the project owner):** yok. Damage gate sonrası tüm planlama çıktıları ve 38 senaryo eval'i 2026-11-11'de yeniden üretildi (eski sürümler `reports/archive/pre_gate/`). Elle protokol incelemesi yeni koşu için TEKRARLANMADI (yalnız sıkı 7/8 var; P04 hâlâ gold sayfayı atıflamıyor)
 
@@ -14,6 +14,15 @@ Metrikler `reports/*.json` dosyalarından otomatik üretilir ve `README.md` sonu
 Güncel değerler için: `uv run python scripts/make_report.py --check` → [README.md](../README.md#results)
 
 ## Oturum kayıtları
+
+### 2026-11-11 — Hafta 8 (UI + yayın hazırlığı)
+- **UI:** `uv run python -m quaketriage.ui.app` (Gradio 6). Sekmeler: Harita (hasar + ilk 20 öncelik + rotalar), Öncesi-Sonrası (yalnız yerel veri; yoksa indirme mesajı), Öncelik tablosu, Durum raporu (indirilebilir), Araç izi, Model kartı; her sekmede SIMULATED uyarısı.
+- **Plan önbelleği:** soğuk soru ~29 sn, tekrar ~0,3 sn; UI çözücü limiti 10 sn (script 30 sn). 197 test, ruff temiz.
+- **Görsel kuralı korundu:** docs/images'ta yalnız UI ekran görüntüleri (OSM haritası) + GIF; `tests/test_no_imagery.py`.
+- **README yeniden yazıldı**, model/data kartı gerçek sayılarla dolduruldu (ölçülmeyenler "not measured"), LICENSE MIT, CITATION.cff (Kuipyy).
+- **Yayın kontrolü** (`docs/release_checklist.md`): gitleaks temiz, .env hiç commit'lenmemiş, ağırlık/tif yok. **Açık:** geçmişte KATE-CD görselleri + kişisel e-posta → public öncesi geçmiş kararı. INSARAG indirme URL'leri düzeltildi.
+- **HF Space:** stretch; ücretsiz hesapta düz CPU Gradio Space yok (ZeroGPU/statik seçenekleri `docs/decisions.md`).
+- Notlar: `docs/notes/week-08.md`.
 
 ### 2026-11-11 — Damage gate sonrası yeniden üretim
 - Planlama (400 aday, 4 ekip): VRP öncelik 27,80 → 26,03; kişi 3.969 → 3.106; ziyaret 44 → 42. Baselines: öncelik-önce 22,94/2.749; greedy 12,14/430; rastgele 11,72/899. VRP, öncelik-önce kuralından %13 iyi (eskiden %19). Aday kümesindeki kişi 16.372 → 10.309 (hasarsız kalabalık binalar çıktı).
