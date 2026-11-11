@@ -198,7 +198,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [x] Kayıp: Dice + Focal. Eşik doğrulama setinde F1'e göre seçilir.
 - [x] Eğitim: önce Mac MPS'te. Epoch başına 3 dakikadan uzun sürerse Kaggle GPU'ya geçilir (`kaggle/` + `kaggle kernels push`). → MPS 409s/epoch → Kaggle notebook hazırlandı.
 - [x] Değerlendirme: hasar sınıfı için IoU, F1, precision, recall → `reports/metrics_baseline.json`, tahmin örnekleri figürü
-- [ ] **Ek değerlendirme (hasarsız pencereler):** Demo bölgesinde HOTOSM etiketlenmeyen alanları "hasarsız" varsayarak sliding window uygula; yanlış pozitif oranını ayrıca raporla. *Eğitim veri setini değiştirme, yalnızca bu ek metriği ekle.*
+- [x] **Ek değerlendirme (hasarsız pencereler)** (`scripts/eval_unlabeled_windows.py` → `reports/metrics_unlabeled_windows.json`; Kilis kesiti, çünkü Antakya'da görüntü yok): Demo bölgesinde HOTOSM etiketlenmeyen alanları "hasarsız" varsayarak sliding window uygula; yanlış pozitif oranını ayrıca raporla. *Eğitim veri setini değiştirme, yalnızca bu ek metriği ekle.*
 - **DoD:** Test metrikleri JSON'da, figür hazır, checkpoint `models/` altında. ✓ (yalnızca hasarsız pencere değerlendirmesi Hafta 3'e taşındı)
 
 ### Hafta 3 (16–22 Kasım) — Siamese model, belirsizlik, guard, RAG ön işlemesi
@@ -249,7 +249,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [x] README (İngilizce): problem, mimari diyagramı, sonuç tabloları, kurulum, veri lisansları, sınırlamalar, etik
 - [x] `LICENSE` (kod: MIT; veri lisansları ayrıca belirtilir), model kartı
 - [x] Yayın kontrol listesi (`docs/release_checklist.md`; açık: git geçmişinde KATE-CD görselleri): geçmişte sır yok (`git log -p | grep -i key`), büyük dosya yok, lisanslar doğru
-- [ ] (Stretch, zaman kalırsa — atlanmış sayılmaz) Hugging Face Space: ücretsiz hesapta düz CPU Gradio Space yok (ücretli plan gerekir); seçenekler: ZeroGPU Space veya statik Space, önbellek tabanlı demo modu; ayrıntı `docs/decisions.md` (2026-11-11). Hafta 8'in diğer maddeleri bitince the project owner'a sorulacak
+- [ ] (Yayından sonra — karar 2026-11-11) Hugging Face Space: ZeroGPU veya statik Space, önbellek tabanlı demo modu; hesap yeni ve ücretsiz hesapta düz CPU Gradio Space yok; ayrıntı `docs/decisions.md`
 - **DoD:** `uv run python -m quaketriage.ui.app` çalışıyor, README tam, repo public yapılmaya hazır.
 
 ---
