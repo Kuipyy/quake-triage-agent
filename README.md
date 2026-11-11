@@ -911,7 +911,7 @@ The screenshots in `docs/images/` show the UI over OpenStreetMap tiles (© OpenS
   [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) through the Maxar Open Data Program.
   Non-commercial use only.
 - **Map data:** © OpenStreetMap contributors and Humanitarian OpenStreetMap Team (HOTOSM), ODbL.
-- **Population:** WorldPop, CC BY 4.0.
+- **Population:** WorldPop, University of Southampton, www.worldpop.org, CC BY 4.0.
 - **Training data:** KATE-CD; please cite Musaoglu et al., J. Appl. Remote Sens. 19(4), 044508 (2025), doi:10.1117/1.JRS.19.044508 (see [`THIRD_PARTY.md`](THIRD_PARTY.md)).
 
 ## Documentation and citation

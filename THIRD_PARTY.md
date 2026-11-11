@@ -20,7 +20,7 @@ that licence covers the code only, not the data, models or documents below.
 **Attribution texts**
 - "© OpenStreetMap contributors" (ODbL, <https://www.openstreetmap.org/copyright>): shown on every map in the UI and in the generated HTML maps.
 - Imagery: © Vantor (formerly Maxar) Open Data Program, CC BY-NC 4.0 (<https://creativecommons.org/licenses/by-nc/4.0/>).
-- Population: WorldPop (<https://www.worldpop.org>), University of Southampton, CC BY 4.0. Constrained individual-country population, Turkey, 2020, 100 m, UN-adjusted. Copy the exact "recommended citation" (with DOI) from the dataset page when you cite it; we did not verify the citation text for this vintage.
+- Population: WorldPop, University of Southampton, www.worldpop.org (CC BY 4.0). Dataset used: constrained individual-country population, Turkey, 2020, 100 m, UN-adjusted. We give the generic attribution only; no DOI is stated because the exact DOI for this vintage was not verified.
 - KATE-CD: Musaoglu N., Ozaydin E., Amirgan B., Taskin G., Nayir H., Kaya H., "KATE-CD: high-resolution change detection dataset from the 2023 Earthquake in Kahramanmaraş, Türkiye", *Journal of Applied Remote Sensing* 19(4), 044508 (2025), doi:10.1117/1.JRS.19.044508.
 
 **Map tiles.** The UI loads OpenStreetMap standard tiles from the OSM tile servers for demonstration at low volume. The [OSM tile usage policy](https://operations.osmfoundation.org/policies/tiles/) applies (attribution, no heavy use, valid Referer). Deployments with more than occasional use should use their own tile source.
