@@ -95,6 +95,9 @@ REQUIRED = [
     ),
 ]
 
+# Path 2 (model training) data: absence is reported but does not fail the check.
+OPTIONAL_PREFIXES = ("data/raw/kate_cd/",)
+
 BASE = Path(__file__).parent.parent
 MANIFEST_PATH = BASE / "data" / "manifest.json"
 
@@ -134,6 +137,9 @@ def main() -> int:
     for rel_path, min_size, label, source_url, license_, _ in REQUIRED:
         p = BASE / rel_path
         if not p.exists():
+            if rel_path.startswith(OPTIONAL_PREFIXES):
+                print(f"  optional  {label}: not downloaded (training only)")
+                continue
             print(f"  MISSING   {label}")
             print(f"            → {rel_path}")
             ok = False
@@ -174,7 +180,7 @@ def main() -> int:
     if ok:
         print("All files OK.")
         return 0
-    print("Some files are missing, too small, or have SHA-256 mismatches.")
+    print("Some required files are missing, too small, or have SHA-256 mismatches.")
     return 1
 
 

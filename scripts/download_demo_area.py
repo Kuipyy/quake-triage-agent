@@ -88,7 +88,7 @@ def download_worldpop():
         return
 
     print("Downloading WorldPop Turkey 100m...")
-    print("  (This is ~10 MB — clipping to demo area will happen in Week 4)")
+    print("  (~20 MB raster; the demo area is clipped from it later)")
     with requests.get(url, stream=True, timeout=120) as r:
         r.raise_for_status()
         total = int(r.headers.get("content-length", 0))
