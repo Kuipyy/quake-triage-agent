@@ -1,0 +1,31 @@
+{
+  "top_ks": [
+    100,
+    500
+  ],
+  "n_buildings": 5895,
+  "base_depot": [
+    36.17179,
+    36.20657
+  ],
+  "alternatives": {
+    "hospital (OSM way 366665647)": {
+      "depot": [
+        36.14928,
+        36.19184
+      ],
+      "spearman": 0.7239,
+      "top100_overlap": 0.99,
+      "top500_overlap": 0.984
+    },
+    "town hall (OSM way 311391399)": {
+      "depot": [
+        36.15972,
+        36.20266
+      ],
+      "spearman": 0.8414,
+      "top100_overlap": 0.99,
+      "top500_overlap": 0.974
+    }
+  }
+}

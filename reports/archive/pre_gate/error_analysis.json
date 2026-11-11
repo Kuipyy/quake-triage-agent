@@ -1,0 +1,235 @@
+{
+  "kate_cd_siamese": {
+    "split": "test",
+    "threshold": 0.2,
+    "n_tiles": 38,
+    "n_tiles_with_any_damage_or_prediction": 38,
+    "n_worst_false_alarm": 0,
+    "n_worst_missed_damage": 10,
+    "worst_tiles": [
+      {
+        "tile": 1,
+        "iou": 0.0,
+        "f1": 0.0,
+        "gt_px": 24340,
+        "pred_px": 0,
+        "fp_px": 0,
+        "fn_px": 24340,
+        "error_type": "missed_damage"
+      },
+      {
+        "tile": 34,
+        "iou": 0.0,
+        "f1": 0.0,
+        "gt_px": 4809,
+        "pred_px": 1077,
+        "fp_px": 1077,
+        "fn_px": 4809,
+        "error_type": "missed_damage"
+      },
+      {
+        "tile": 6,
+        "iou": 0.0,
+        "f1": 0.0,
+        "gt_px": 2937,
+        "pred_px": 0,
+        "fp_px": 0,
+        "fn_px": 2937,
+        "error_type": "missed_damage"
+      },
+      {
+        "tile": 30,
+        "iou": 0.0,
+        "f1": 0.0,
+        "gt_px": 1304,
+        "pred_px": 0,
+        "fp_px": 0,
+        "fn_px": 1304,
+        "error_type": "missed_damage"
+      },
+      {
+        "tile": 17,
+        "iou": 0.0,
+        "f1": 0.0,
+        "gt_px": 1243,
+        "pred_px": 0,
+        "fp_px": 0,
+        "fn_px": 1243,
+        "error_type": "missed_damage"
+      },
+      {
+        "tile": 13,
+        "iou": 0.0,
+        "f1": 0.0,
+        "gt_px": 437,
+        "pred_px": 0,
+        "fp_px": 0,
+        "fn_px": 437,
+        "error_type": "missed_damage"
+      },
+      {
+        "tile": 25,
+        "iou": 0.0881,
+        "f1": 0.162,
+        "gt_px": 8054,
+        "pred_px": 1405,
+        "fp_px": 639,
+        "fn_px": 7288,
+        "error_type": "missed_damage"
+      },
+      {
+        "tile": 7,
+        "iou": 0.098,
+        "f1": 0.1784,
+        "gt_px": 4105,
+        "pred_px": 3696,
+        "fp_px": 3000,
+        "fn_px": 3409,
+        "error_type": "missed_damage"
+      },
+      {
+        "tile": 15,
+        "iou": 0.1559,
+        "f1": 0.2697,
+        "gt_px": 1469,
+        "pred_px": 229,
+        "fp_px": 0,
+        "fn_px": 1240,
+        "error_type": "missed_damage"
+      },
+      {
+        "tile": 35,
+        "iou": 0.168,
+        "f1": 0.2876,
+        "gt_px": 3872,
+        "pred_px": 1886,
+        "fp_px": 1058,
+        "fn_px": 3044,
+        "error_type": "missed_damage"
+      }
+    ],
+    "note": "KATE-CD tiles, not buildings (no building labels there)."
+  },
+  "antakya_simulated": {
+    "SIMULATED_DETECTOR": true,
+    "definition": "highest-priority buildings that are NOT destroyed in HOTOSM truth and not in the verification queue; truth is incomplete, so some may be real damage",
+    "worst_false_alarms": [
+      {
+        "building_id": 1139723666,
+        "row": 529,
+        "priority": 0.6247,
+        "damage_prob": 0.085,
+        "flagged_damaged": false,
+        "uncertainty": 0.129,
+        "estimated_persons": 109.8,
+        "building_tag": "yes",
+        "floors": null
+      },
+      {
+        "building_id": 1139527311,
+        "row": 295,
+        "priority": 0.6196,
+        "damage_prob": 0.063,
+        "flagged_damaged": false,
+        "uncertainty": 0.079,
+        "estimated_persons": 110.2,
+        "building_tag": "yes",
+        "floors": null
+      },
+      {
+        "building_id": 311391399,
+        "row": 12,
+        "priority": 0.6167,
+        "damage_prob": 0.053,
+        "flagged_damaged": false,
+        "uncertainty": 0.077,
+        "estimated_persons": 109.9,
+        "building_tag": "yes",
+        "floors": null
+      },
+      {
+        "building_id": 1140722734,
+        "row": 1655,
+        "priority": 0.6131,
+        "damage_prob": 0.03,
+        "flagged_damaged": false,
+        "uncertainty": 0.09,
+        "estimated_persons": 111.1,
+        "building_tag": "yes",
+        "floors": null
+      },
+      {
+        "building_id": 543180918,
+        "row": 69,
+        "priority": 0.6119,
+        "damage_prob": 0.019,
+        "flagged_damaged": false,
+        "uncertainty": 0.078,
+        "estimated_persons": 109.4,
+        "building_tag": "yes",
+        "floors": "6"
+      },
+      {
+        "building_id": 1140866186,
+        "row": 1974,
+        "priority": 0.5987,
+        "damage_prob": 0.091,
+        "flagged_damaged": false,
+        "uncertainty": 0.116,
+        "estimated_persons": 100.5,
+        "building_tag": "yes",
+        "floors": null
+      },
+      {
+        "building_id": 1140688438,
+        "row": 1554,
+        "priority": 0.5931,
+        "damage_prob": 0.046,
+        "flagged_damaged": false,
+        "uncertainty": 0.094,
+        "estimated_persons": 102.4,
+        "building_tag": "yes",
+        "floors": null
+      },
+      {
+        "building_id": 1461883302,
+        "row": 5160,
+        "priority": 0.5902,
+        "damage_prob": 0.026,
+        "flagged_damaged": false,
+        "uncertainty": 0.077,
+        "estimated_persons": 101.1,
+        "building_tag": "apartments",
+        "floors": null
+      },
+      {
+        "building_id": 1140693716,
+        "row": 1592,
+        "priority": 0.5823,
+        "damage_prob": 0.023,
+        "flagged_damaged": false,
+        "uncertainty": 0.092,
+        "estimated_persons": 100.7,
+        "building_tag": "yes",
+        "floors": null
+      },
+      {
+        "building_id": 1140185194,
+        "row": 1047,
+        "priority": 0.5793,
+        "damage_prob": 0.047,
+        "flagged_damaged": false,
+        "uncertainty": 0.117,
+        "estimated_persons": 98.0,
+        "building_tag": "yes",
+        "floors": null
+      }
+    ]
+  },
+  "provenance": {
+    "created_utc": "2026-11-10T13:15:57+00:00",
+    "git_sha": "a195992",
+    "git_dirty": true,
+    "seed": null
+  }
+}

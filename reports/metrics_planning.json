@@ -27,32 +27,32 @@
    "n_unreachable": 0,
    "n_need_walking": 0,
    "n_visited": 44,
-   "priority_collected": 27.8226,
-   "persons_reached": 3969.1,
-   "persons_in_candidates": 16372.1,
-   "solve_s": 30.3,
+   "priority_collected": 26.9323,
+   "persons_reached": 3198.2,
+   "persons_in_candidates": 10309.1,
+   "solve_s": 30.2,
    "n_unreachable_all_buildings": 0
   },
   "closures_no_walking": {
-   "n_candidates": 304,
-   "n_unreachable": 96,
+   "n_candidates": 274,
+   "n_unreachable": 126,
    "n_need_walking": 0,
-   "n_visited": 44,
-   "priority_collected": 26.8017,
-   "persons_reached": 3891.1,
-   "persons_in_candidates": 13541.5,
+   "n_visited": 43,
+   "priority_collected": 24.2046,
+   "persons_reached": 2825.0,
+   "persons_in_candidates": 7346.6,
    "solve_s": 30.3,
    "n_unreachable_all_buildings": 1139
   },
   "closures_with_walking": {
    "n_candidates": 400,
    "n_unreachable": 0,
-   "n_need_walking": 96,
-   "n_visited": 44,
-   "priority_collected": 27.7961,
-   "persons_reached": 3969.4,
-   "persons_in_candidates": 16372.1,
-   "solve_s": 30.2,
+   "n_need_walking": 126,
+   "n_visited": 42,
+   "priority_collected": 26.033,
+   "persons_reached": 3106.1,
+   "persons_in_candidates": 10309.1,
+   "solve_s": 30.1,
    "n_unreachable_all_buildings": 0
   }
  },
@@ -60,41 +60,41 @@
   "200": {
    "n_candidates": 200,
    "n_unreachable": 0,
-   "n_need_walking": 37,
-   "n_visited": 44,
-   "priority_collected": 27.7522,
-   "persons_reached": 4000.8,
-   "persons_in_candidates": 11628.0,
+   "n_need_walking": 54,
+   "n_visited": 42,
+   "priority_collected": 26.033,
+   "persons_reached": 3106.1,
+   "persons_in_candidates": 8048.8,
    "solve_s": 30.2
   },
   "400": {
    "n_candidates": 400,
    "n_unreachable": 0,
-   "n_need_walking": 96,
-   "n_visited": 44,
-   "priority_collected": 27.7961,
-   "persons_reached": 3969.4,
-   "persons_in_candidates": 16372.1,
-   "solve_s": 30.2
+   "n_need_walking": 126,
+   "n_visited": 42,
+   "priority_collected": 26.033,
+   "persons_reached": 3106.1,
+   "persons_in_candidates": 10309.1,
+   "solve_s": 30.1
   },
   "500": {
    "n_candidates": 500,
    "n_unreachable": 0,
-   "n_need_walking": 126,
-   "n_visited": 44,
-   "priority_collected": 27.7527,
-   "persons_reached": 3979.6,
-   "persons_in_candidates": 18000.8,
+   "n_need_walking": 159,
+   "n_visited": 41,
+   "priority_collected": 25.5479,
+   "persons_reached": 3051.7,
+   "persons_in_candidates": 11155.0,
    "solve_s": 30.3
   },
   "1000": {
-   "n_candidates": 1000,
+   "n_candidates": 734,
    "n_unreachable": 0,
-   "n_need_walking": 213,
-   "n_visited": 43,
-   "priority_collected": 27.2593,
-   "persons_reached": 3906.6,
-   "persons_in_candidates": 28241.9,
+   "n_need_walking": 230,
+   "n_visited": 42,
+   "priority_collected": 26.015,
+   "persons_reached": 3101.8,
+   "persons_in_candidates": 12459.0,
    "solve_s": 30.3
   }
  },
@@ -103,49 +103,48 @@
   "vrp": {
    "n_candidates": 400,
    "n_unreachable": 0,
-   "n_need_walking": 96,
-   "n_visited": 44,
-   "priority_collected": 27.7961,
-   "persons_reached": 3969.4,
-   "persons_in_candidates": 16372.1,
-   "solve_s": 30.2,
-   "n_unreachable_all_buildings": 0,
-   "priority_vs_random_mean_x": 1.8
+   "n_need_walking": 126,
+   "n_visited": 42,
+   "priority_collected": 26.033,
+   "persons_reached": 3106.1,
+   "persons_in_candidates": 10309.1,
+   "solve_s": 30.1,
+   "priority_vs_random_mean_x": 2.22
   },
   "greedy_nearest": {
    "n_candidates": 400,
    "n_unreachable": 0,
-   "n_need_walking": 96,
+   "n_need_walking": 126,
    "n_visited": 44,
-   "priority_collected": 18.5429,
-   "persons_reached": 1452.9,
-   "persons_in_candidates": 16372.1,
+   "priority_collected": 12.1353,
+   "persons_reached": 429.9,
+   "persons_in_candidates": 10309.1,
    "solve_s": 0.0,
-   "priority_vs_random_mean_x": 1.2
+   "priority_vs_random_mean_x": 1.04
   },
   "priority_first": {
    "n_candidates": 400,
    "n_unreachable": 0,
-   "n_need_walking": 96,
+   "n_need_walking": 126,
    "n_visited": 36,
-   "priority_collected": 23.29,
-   "persons_reached": 3273.2,
-   "persons_in_candidates": 16372.1,
+   "priority_collected": 22.9393,
+   "persons_reached": 2748.8,
+   "persons_in_candidates": 10309.1,
    "solve_s": 0.0,
-   "priority_vs_random_mean_x": 1.51
+   "priority_vs_random_mean_x": 1.96
   },
   "random_30_seeds": {
    "n_visited": {
-    "mean": 35.867,
-    "std": 0.618
+    "mean": 35.567,
+    "std": 0.803
    },
    "priority_collected": {
-    "mean": 15.434,
-    "std": 0.592
+    "mean": 11.715,
+    "std": 0.701
    },
    "persons_reached": {
-    "mean": 1455.187,
-    "std": 165.824
+    "mean": 899.063,
+    "std": 125.935
    }
   }
  },

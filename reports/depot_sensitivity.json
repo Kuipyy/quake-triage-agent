@@ -14,18 +14,18 @@
         36.14928,
         36.19184
       ],
-      "spearman": 0.7239,
-      "top100_overlap": 0.99,
-      "top500_overlap": 0.984
+      "spearman": 0.9997,
+      "top100_overlap": 0.97,
+      "top500_overlap": 0.942
     },
     "town hall (OSM way 311391399)": {
       "depot": [
         36.15972,
         36.20266
       ],
-      "spearman": 0.8414,
-      "top100_overlap": 0.99,
-      "top500_overlap": 0.974
+      "spearman": 0.9997,
+      "top100_overlap": 0.93,
+      "top500_overlap": 0.912
     }
   }
 }

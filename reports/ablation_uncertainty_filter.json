@@ -39,12 +39,12 @@
           "std": 9.7
         },
         "topn_tp": {
-          "mean": 249.2,
-          "std": 5.5
+          "mean": 342.2,
+          "std": 7.6
         },
         "topn_fp": {
-          "mean": 150.8,
-          "std": 5.5
+          "mean": 57.8,
+          "std": 7.6
         }
       },
       "filter_off": {
@@ -69,12 +69,12 @@
           "std": 0.0
         },
         "topn_tp": {
-          "mean": 249.2,
-          "std": 5.0
+          "mean": 343.2,
+          "std": 6.6
         },
         "topn_fp": {
-          "mean": 150.8,
-          "std": 5.0
+          "mean": 56.8,
+          "std": 6.6
         }
       },
       "ASSUMED": false
@@ -102,12 +102,12 @@
           "std": 6.1
         },
         "topn_tp": {
-          "mean": 248.8,
-          "std": 5.7
+          "mean": 343.4,
+          "std": 8.8
         },
         "topn_fp": {
-          "mean": 151.2,
-          "std": 5.7
+          "mean": 56.6,
+          "std": 8.8
         }
       },
       "filter_off": {
@@ -132,12 +132,12 @@
           "std": 0.0
         },
         "topn_tp": {
-          "mean": 249.2,
-          "std": 5.0
+          "mean": 343.2,
+          "std": 6.6
         },
         "topn_fp": {
-          "mean": 150.8,
-          "std": 5.0
+          "mean": 56.8,
+          "std": 6.6
         }
       },
       "ASSUMED": true
@@ -165,12 +165,12 @@
           "std": 13.3
         },
         "topn_tp": {
-          "mean": 248.6,
-          "std": 6.2
+          "mean": 343.8,
+          "std": 8.4
         },
         "topn_fp": {
-          "mean": 151.4,
-          "std": 6.2
+          "mean": 56.2,
+          "std": 8.4
         }
       },
       "filter_off": {
@@ -195,12 +195,12 @@
           "std": 0.0
         },
         "topn_tp": {
-          "mean": 249.2,
-          "std": 5.0
+          "mean": 343.2,
+          "std": 6.6
         },
         "topn_fp": {
-          "mean": 150.8,
-          "std": 5.0
+          "mean": 56.8,
+          "std": 6.6
         }
       },
       "ASSUMED": true
@@ -228,12 +228,12 @@
           "std": 10.9
         },
         "topn_tp": {
-          "mean": 249.2,
-          "std": 5.9
+          "mean": 345.4,
+          "std": 8.1
         },
         "topn_fp": {
-          "mean": 150.8,
-          "std": 5.9
+          "mean": 54.6,
+          "std": 8.1
         }
       },
       "filter_off": {
@@ -258,12 +258,12 @@
           "std": 0.0
         },
         "topn_tp": {
-          "mean": 249.2,
-          "std": 5.0
+          "mean": 343.2,
+          "std": 6.6
         },
         "topn_fp": {
-          "mean": 150.8,
-          "std": 5.0
+          "mean": 56.8,
+          "std": 6.6
         }
       },
       "ASSUMED": true
@@ -271,26 +271,26 @@
   },
   "vrp_seed0_k1": {
     "filter_on": {
-      "n_visited": 44,
-      "dispatched_true_destroyed": 26,
-      "dispatched_false_positive": 18,
-      "persons_reached": 3964.0,
-      "priority_collected": 27.714,
+      "n_visited": 42,
+      "dispatched_true_destroyed": 41,
+      "dispatched_false_positive": 1,
+      "persons_reached": 3043.3,
+      "priority_collected": 25.6854,
       "n_excluded_verification": 112
     },
     "filter_off": {
-      "n_visited": 44,
-      "dispatched_true_destroyed": 27,
-      "dispatched_false_positive": 17,
-      "persons_reached": 3969.4,
-      "priority_collected": 27.7961,
+      "n_visited": 42,
+      "dispatched_true_destroyed": 41,
+      "dispatched_false_positive": 1,
+      "persons_reached": 3106.1,
+      "priority_collected": 26.033,
       "n_excluded_verification": 0
     }
   },
-  "seconds": 64,
+  "seconds": 65,
   "provenance": {
-    "created_utc": "2026-11-10T13:08:04+00:00",
-    "git_sha": "1f4796d",
+    "created_utc": "2026-11-11T11:12:41+00:00",
+    "git_sha": "28a1ef1",
     "git_dirty": true,
     "seed": null
   }

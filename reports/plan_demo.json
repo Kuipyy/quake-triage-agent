@@ -2,11 +2,11 @@
  "SIMULATED_DETECTOR": true,
  "n_candidates": 400,
  "n_unreachable": 0,
- "n_visited": 44,
- "n_need_walking": 96,
- "priority_collected": 27.7961,
- "persons_reached": 3969.4,
- "persons_in_candidates": 16372.1,
+ "n_visited": 42,
+ "n_need_walking": 126,
+ "priority_collected": 26.033,
+ "persons_reached": 3106.1,
+ "persons_in_candidates": 10309.1,
  "solved": true,
  "routes": [
   {
@@ -14,18 +14,9 @@
    "stops": [
     {
      "building_id": null,
-     "row": 5532,
-     "arrival_s": 206,
-     "priority": 0.6192,
-     "estimated_persons": 75.0,
-     "node": 670227349,
-     "walk_m": 13.0
-    },
-    {
-     "building_id": null,
      "row": 5533,
-     "arrival_s": 2043,
-     "priority": 0.6388,
+     "arrival_s": 211,
+     "priority": 0.6281,
      "estimated_persons": 72.6,
      "node": 8679070667,
      "walk_m": 0.0
@@ -33,113 +24,227 @@
     {
      "building_id": null,
      "row": 5893,
-     "arrival_s": 3873,
-     "priority": 0.6704,
+     "arrival_s": 2041,
+     "priority": 0.6496,
      "estimated_persons": 74.6,
      "node": 670227345,
      "walk_m": 0.0
     },
     {
      "building_id": null,
-     "row": 5892,
-     "arrival_s": 5673,
-     "priority": 0.6007,
-     "estimated_persons": 76.5,
-     "node": 670227345,
+     "row": 5532,
+     "arrival_s": 3874,
+     "priority": 0.6338,
+     "estimated_persons": 75.0,
+     "node": 670227349,
+     "walk_m": 13.0
+    },
+    {
+     "building_id": null,
+     "row": 5682,
+     "arrival_s": 6059,
+     "priority": 0.628,
+     "estimated_persons": 73.2,
+     "node": 2232022179,
      "walk_m": 0.0
     },
     {
      "building_id": null,
-     "row": 5545,
-     "arrival_s": 7600,
-     "priority": 0.6843,
-     "estimated_persons": 75.8,
-     "node": 10628345861,
+     "row": 5525,
+     "arrival_s": 8121,
+     "priority": 0.5328,
+     "estimated_persons": 62.5,
+     "node": 6025635234,
      "walk_m": 0.0
     },
     {
      "building_id": null,
-     "row": 5549,
-     "arrival_s": 9400,
-     "priority": 0.6796,
-     "estimated_persons": 83.6,
-     "node": 10628345861,
+     "row": 5221,
+     "arrival_s": 9984,
+     "priority": 0.864,
+     "estimated_persons": 110.6,
+     "node": 1186571020,
      "walk_m": 0.0
-    },
-    {
-     "building_id": 1140866186,
-     "row": 1974,
-     "arrival_s": 11657,
-     "priority": 0.5987,
-     "estimated_persons": 100.5,
-     "node": 717643590,
-     "walk_m": 70.0
     },
     {
      "building_id": null,
-     "row": 5779,
-     "arrival_s": 13724,
-     "priority": 0.6611,
-     "estimated_persons": 104.9,
-     "node": 1186554799,
-     "walk_m": 88.0
+     "row": 5662,
+     "arrival_s": 11865,
+     "priority": 0.8109,
+     "estimated_persons": 100.8,
+     "node": 670227084,
+     "walk_m": 47.0
     },
     {
-     "building_id": 1140722734,
-     "row": 1655,
-     "arrival_s": 15840,
-     "priority": 0.6131,
-     "estimated_persons": 111.1,
-     "node": 1982050548,
-     "walk_m": 0.0
+     "building_id": null,
+     "row": 5614,
+     "arrival_s": 13779,
+     "priority": 0.4851,
+     "estimated_persons": 54.3,
+     "node": 670227084,
+     "walk_m": 47.0
     },
     {
-     "building_id": 543180918,
-     "row": 69,
-     "arrival_s": 17737,
-     "priority": 0.6119,
-     "estimated_persons": 109.4,
-     "node": 1186265332,
+     "building_id": null,
+     "row": 5616,
+     "arrival_s": 15881,
+     "priority": 0.5539,
+     "estimated_persons": 61.1,
+     "node": 2906082887,
      "walk_m": 0.0
     },
     {
      "building_id": null,
      "row": 5798,
-     "arrival_s": 19643,
-     "priority": 0.5949,
+     "arrival_s": 17704,
+     "priority": 0.5988,
      "estimated_persons": 68.8,
      "node": 10656307442,
      "walk_m": 0.0
+    },
+    {
+     "building_id": null,
+     "row": 5880,
+     "arrival_s": 19591,
+     "priority": 0.5156,
+     "estimated_persons": 56.7,
+     "node": 2906825117,
+     "walk_m": 0.0
     }
    ],
-   "return_s": 21574
+   "return_s": 21522
   },
   {
    "team": 1,
    "stops": [
     {
-     "building_id": 1140186112,
-     "row": 1065,
-     "arrival_s": 128,
-     "priority": 0.5557,
-     "estimated_persons": 89.4,
-     "node": 10624149781,
+     "building_id": null,
+     "row": 5769,
+     "arrival_s": 442,
+     "priority": 0.504,
+     "estimated_persons": 57.1,
+     "node": 2231970286,
      "walk_m": 0.0
     },
     {
      "building_id": null,
+     "row": 5210,
+     "arrival_s": 2425,
+     "priority": 0.5129,
+     "estimated_persons": 60.7,
+     "node": 2231970540,
+     "walk_m": 0.0
+    },
+    {
+     "building_id": null,
+     "row": 5823,
+     "arrival_s": 4422,
+     "priority": 0.5059,
+     "estimated_persons": 60.6,
+     "node": 10633655092,
+     "walk_m": 0.0
+    },
+    {
+     "building_id": null,
+     "row": 5786,
+     "arrival_s": 6408,
+     "priority": 0.5331,
+     "estimated_persons": 67.9,
+     "node": 10633152433,
+     "walk_m": 0.0
+    },
+    {
+     "building_id": null,
+     "row": 5356,
+     "arrival_s": 8327,
+     "priority": 0.5451,
+     "estimated_persons": 65.9,
+     "node": 2231945667,
+     "walk_m": 0.0
+    },
+    {
+     "building_id": 1140264063,
+     "row": 1323,
+     "arrival_s": 10156,
+     "priority": 0.5532,
+     "estimated_persons": 67.9,
+     "node": 2231945665,
+     "walk_m": 0.0
+    },
+    {
+     "building_id": null,
+     "row": 5211,
+     "arrival_s": 11956,
+     "priority": 0.535,
+     "estimated_persons": 62.5,
+     "node": 2231945665,
+     "walk_m": 0.0
+    },
+    {
+     "building_id": null,
+     "row": 5585,
+     "arrival_s": 14311,
+     "priority": 0.7924,
+     "estimated_persons": 98.4,
+     "node": 2232022105,
+     "walk_m": 93.0
+    },
+    {
+     "building_id": null,
+     "row": 5432,
+     "arrival_s": 16567,
+     "priority": 0.6869,
+     "estimated_persons": 86.4,
+     "node": 1982050790,
+     "walk_m": 124.0
+    },
+    {
+     "building_id": null,
+     "row": 5801,
+     "arrival_s": 18665,
+     "priority": 0.5165,
+     "estimated_persons": 60.5,
+     "node": 1982050790,
+     "walk_m": 124.0
+    }
+   ],
+   "return_s": 20975
+  },
+  {
+   "team": 2,
+   "stops": [
+    {
+     "building_id": null,
      "row": 5527,
-     "arrival_s": 1961,
-     "priority": 0.607,
+     "arrival_s": 161,
+     "priority": 0.6235,
      "estimated_persons": 72.9,
      "node": 10624149779,
      "walk_m": 0.0
     },
     {
      "building_id": null,
+     "row": 5889,
+     "arrival_s": 2012,
+     "priority": 0.6067,
+     "estimated_persons": 72.9,
+     "node": 2232075815,
+     "walk_m": 0.0
+    },
+    {
+     "building_id": null,
+     "row": 5892,
+     "arrival_s": 3938,
+     "priority": 0.6361,
+     "estimated_persons": 76.5,
+     "node": 670227345,
+     "walk_m": 0.0
+    },
+    {
+     "building_id": null,
      "row": 5544,
-     "arrival_s": 3929,
-     "priority": 0.5812,
+     "arrival_s": 5822,
+     "priority": 0.6437,
      "estimated_persons": 79.4,
      "node": 1982050977,
      "walk_m": 0.0
@@ -147,140 +252,95 @@
     {
      "building_id": null,
      "row": 5811,
-     "arrival_s": 5741,
-     "priority": 0.6562,
+     "arrival_s": 7634,
+     "priority": 0.6498,
      "estimated_persons": 75.3,
      "node": 1982050982,
      "walk_m": 0.0
     },
     {
      "building_id": null,
-     "row": 5585,
-     "arrival_s": 7600,
-     "priority": 0.7436,
-     "estimated_persons": 98.4,
-     "node": 2232022105,
-     "walk_m": 93.0
-    },
-    {
-     "building_id": null,
-     "row": 5682,
-     "arrival_s": 9975,
-     "priority": 0.6418,
-     "estimated_persons": 73.2,
-     "node": 2232022179,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": 1140197975,
-     "row": 1122,
-     "arrival_s": 12043,
-     "priority": 0.5551,
-     "estimated_persons": 91.9,
-     "node": 2234293776,
+     "row": 5545,
+     "arrival_s": 9465,
+     "priority": 0.6619,
+     "estimated_persons": 75.8,
+     "node": 10628345861,
      "walk_m": 0.0
     },
     {
      "building_id": null,
-     "row": 5221,
-     "arrival_s": 13921,
-     "priority": 0.8116,
-     "estimated_persons": 110.6,
-     "node": 1186571020,
+     "row": 5549,
+     "arrival_s": 11265,
+     "priority": 0.7009,
+     "estimated_persons": 83.6,
+     "node": 10628345861,
      "walk_m": 0.0
     },
     {
      "building_id": null,
-     "row": 5442,
-     "arrival_s": 15851,
-     "priority": 0.5666,
-     "estimated_persons": 64.7,
-     "node": 2234294021,
+     "row": 5807,
+     "arrival_s": 13110,
+     "priority": 0.708,
+     "estimated_persons": 88.4,
+     "node": 2232057883,
      "walk_m": 0.0
     },
     {
-     "building_id": 462397572,
-     "row": 68,
-     "arrival_s": 17666,
-     "priority": 0.5651,
-     "estimated_persons": 94.8,
-     "node": 670227114,
+     "building_id": null,
+     "row": 5809,
+     "arrival_s": 14941,
+     "priority": 0.6991,
+     "estimated_persons": 82.8,
+     "node": 2232057879,
      "walk_m": 0.0
     },
     {
-     "building_id": 311391399,
-     "row": 12,
-     "arrival_s": 19531,
-     "priority": 0.6167,
-     "estimated_persons": 109.9,
-     "node": 364616491,
+     "building_id": null,
+     "row": 5504,
+     "arrival_s": 16906,
+     "priority": 0.5123,
+     "estimated_persons": 58.0,
+     "node": 13661064427,
+     "walk_m": 70.0
+    },
+    {
+     "building_id": null,
+     "row": 5272,
+     "arrival_s": 19161,
+     "priority": 0.7922,
+     "estimated_persons": 96.1,
+     "node": 1186555059,
      "walk_m": 0.0
     }
    ],
-   "return_s": 21568
+   "return_s": 21448
   },
   {
-   "team": 2,
+   "team": 3,
    "stops": [
     {
-     "building_id": 1141999844,
-     "row": 4553,
-     "arrival_s": 204,
-     "priority": 0.5697,
-     "estimated_persons": 94.4,
-     "node": 2234766004,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": 102165082,
-     "row": 5,
-     "arrival_s": 2079,
-     "priority": 0.572,
-     "estimated_persons": 95.1,
-     "node": 1770083970,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": 1140185194,
-     "row": 1047,
-     "arrival_s": 3956,
-     "priority": 0.5793,
-     "estimated_persons": 98.0,
-     "node": 1186266085,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": 1140693716,
-     "row": 1592,
-     "arrival_s": 5806,
-     "priority": 0.5823,
-     "estimated_persons": 100.7,
-     "node": 8817850417,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": 1140688438,
-     "row": 1554,
-     "arrival_s": 7640,
-     "priority": 0.5931,
-     "estimated_persons": 102.4,
-     "node": 10629771882,
-     "walk_m": 0.0
+     "building_id": null,
+     "row": 5577,
+     "arrival_s": 384,
+     "priority": 0.4915,
+     "estimated_persons": 56.6,
+     "node": 2234850455,
+     "walk_m": 188.0
     },
     {
      "building_id": null,
-     "row": 5519,
-     "arrival_s": 9572,
-     "priority": 0.5773,
-     "estimated_persons": 55.6,
-     "node": 1186555443,
+     "row": 5298,
+     "arrival_s": 2892,
+     "priority": 0.5262,
+     "estimated_persons": 58.8,
+     "node": 1186571040,
      "walk_m": 0.0
     },
     {
      "building_id": null,
      "row": 5256,
-     "arrival_s": 11428,
-     "priority": 0.6106,
+     "arrival_s": 4786,
+     "priority": 0.5713,
      "estimated_persons": 63.2,
      "node": 2232057838,
      "walk_m": 109.0
@@ -288,146 +348,68 @@
     {
      "building_id": null,
      "row": 5447,
-     "arrival_s": 13490,
-     "priority": 0.8127,
+     "arrival_s": 6848,
+     "priority": 0.8631,
      "estimated_persons": 108.0,
      "node": 2232057838,
      "walk_m": 109.0
     },
     {
      "building_id": null,
-     "row": 5582,
-     "arrival_s": 15605,
-     "priority": 0.6293,
-     "estimated_persons": 117.6,
-     "node": 1186554885,
-     "walk_m": 0.0
+     "row": 5439,
+     "arrival_s": 8910,
+     "priority": 0.5293,
+     "estimated_persons": 59.4,
+     "node": 2232057838,
+     "walk_m": 109.0
     },
     {
-     "building_id": 1139723666,
-     "row": 529,
-     "arrival_s": 17454,
-     "priority": 0.6247,
-     "estimated_persons": 109.8,
-     "node": 1186555428,
-     "walk_m": 0.0
+     "building_id": null,
+     "row": 5828,
+     "arrival_s": 11052,
+     "priority": 0.5077,
+     "estimated_persons": 56.9,
+     "node": 1186555220,
+     "walk_m": 86.0
     },
     {
      "building_id": null,
      "row": 5777,
-     "arrival_s": 19313,
-     "priority": 0.8078,
+     "arrival_s": 13069,
+     "priority": 0.8732,
      "estimated_persons": 117.9,
      "node": 1186570983,
      "walk_m": 0.0
-    }
-   ],
-   "return_s": 21490
-  },
-  {
-   "team": 3,
-   "stops": [
+    },
     {
      "building_id": null,
-     "row": 5889,
-     "arrival_s": 185,
-     "priority": 0.5601,
-     "estimated_persons": 72.9,
-     "node": 2232075815,
+     "row": 5519,
+     "arrival_s": 14930,
+     "priority": 0.519,
+     "estimated_persons": 55.6,
+     "node": 1186555443,
      "walk_m": 0.0
     },
     {
      "building_id": null,
-     "row": 5432,
-     "arrival_s": 2061,
-     "priority": 0.6123,
-     "estimated_persons": 86.4,
-     "node": 1982050790,
-     "walk_m": 124.0
+     "row": 5779,
+     "arrival_s": 16793,
+     "priority": 0.7666,
+     "estimated_persons": 104.9,
+     "node": 1186554799,
+     "walk_m": 88.0
     },
     {
      "building_id": null,
-     "row": 5809,
-     "arrival_s": 4236,
-     "priority": 0.6835,
-     "estimated_persons": 82.8,
-     "node": 2232057879,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": null,
-     "row": 5807,
-     "arrival_s": 6061,
-     "priority": 0.6428,
-     "estimated_persons": 88.4,
-     "node": 2232057883,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": null,
-     "row": 5272,
-     "arrival_s": 8195,
-     "priority": 0.7725,
-     "estimated_persons": 96.1,
-     "node": 1186555059,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": 1141517473,
-     "row": 2720,
-     "arrival_s": 10097,
-     "priority": 0.5784,
-     "estimated_persons": 100.4,
-     "node": 10633955136,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": null,
-     "row": 5662,
-     "arrival_s": 12066,
-     "priority": 0.7596,
-     "estimated_persons": 100.8,
-     "node": 670227084,
-     "walk_m": 47.0
-    },
-    {
-     "building_id": 1139527311,
-     "row": 295,
-     "arrival_s": 14068,
-     "priority": 0.6196,
-     "estimated_persons": 110.2,
-     "node": 1186265846,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": null,
-     "row": 5616,
-     "arrival_s": 15967,
-     "priority": 0.5833,
-     "estimated_persons": 61.1,
-     "node": 2906082887,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": 1461883302,
-     "row": 5160,
-     "arrival_s": 17826,
-     "priority": 0.5902,
-     "estimated_persons": 101.1,
-     "node": 2234163882,
-     "walk_m": 0.0
-    },
-    {
-     "building_id": 1139258522,
-     "row": 175,
-     "arrival_s": 19647,
-     "priority": 0.5618,
-     "estimated_persons": 93.0,
-     "node": 2234163803,
+     "row": 5442,
+     "arrival_s": 19066,
+     "priority": 0.5653,
+     "estimated_persons": 64.7,
+     "node": 2234294021,
      "walk_m": 0.0
     }
    ],
-   "return_s": 21539
+   "return_s": 21153
   }
  ],
  "depot_lonlat": [
