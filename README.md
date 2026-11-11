@@ -49,13 +49,14 @@ assumption):
 
 | Method | Priority collected | Persons reached | Visits |
 |---|---|---|---|
-| OR-Tools prize-collecting VRP | 27.80 | 3,969 | 44 |
-| Highest priority first | 23.29 | 3,273 | 36 |
-| Nearest first (greedy) | 18.54 | 1,453 | 44 |
-| Random (30 seeds, mean) | 15.43 | 1,455 | 35.9 |
+| OR-Tools prize-collecting VRP | 26.03 | 3,106 | 42 |
+| Highest priority first | 22.94 | 2,749 | 36 |
+| Nearest first (greedy) | 12.14 | 430 | 44 |
+| Random (30 seeds, mean) | 11.72 | 899 | 35.6 |
 
-The VRP collects **19 % more priority than the highest-priority-first rule**, 1.5x the nearest-first rule and
-1.8x the random rule. These numbers describe planning behaviour on simulated detections, not rescue outcomes.
+Only buildings above the damage gate (`damage_prob` > 0.2) are candidates (see `docs/decisions.md`, 2026-11-10);
+the pre-gate numbers (VRP 27.80 / 3,969 persons) are archived in `reports/archive/pre_gate/`. The VRP collects
+**13 % more priority than the highest-priority-first rule**, 2.1x the nearest-first rule and 2.2x the random rule. These numbers describe planning behaviour on simulated detections, not rescue outcomes.
 
 ## Results
 
@@ -81,10 +82,10 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.held_back_fp.std` | 1.9 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.queue_size.mean` | 99.8 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.queue_size.std` | 9.7 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_tp.mean` | 249.2 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_tp.std` | 5.5 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_fp.mean` | 150.8 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_fp.std` | 5.5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_tp.mean` | 342.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_tp.std` | 7.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_fp.mean` | 57.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_on.topn_fp.std` | 7.6 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.reported_tp.mean` | 585.4 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.reported_tp.std` | 8 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.reported_fp.mean` | 153 |
@@ -95,10 +96,10 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.held_back_fp.std` | 0 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.queue_size.mean` | 0 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.queue_size.std` | 0 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_tp.mean` | 249.2 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_tp.std` | 5 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_fp.mean` | 150.8 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_fp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_tp.mean` | 343.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_tp.std` | 6.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_fp.mean` | 56.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=1.filter_off.topn_fp.std` | 6.6 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=1.ASSUMED` | False |
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.reported_tp.mean` | 576.6 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.reported_tp.std` | 9 |
@@ -110,10 +111,10 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.held_back_fp.std` | 2.3 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.queue_size.mean` | 157 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.queue_size.std` | 6.1 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_tp.mean` | 248.8 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_tp.std` | 5.7 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_fp.mean` | 151.2 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_fp.std` | 5.7 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_tp.mean` | 343.4 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_tp.std` | 8.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_fp.mean` | 56.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_on.topn_fp.std` | 8.8 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.reported_tp.mean` | 585.4 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.reported_tp.std` | 8 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.reported_fp.mean` | 153 |
@@ -124,10 +125,10 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.held_back_fp.std` | 0 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.queue_size.mean` | 0 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.queue_size.std` | 0 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_tp.mean` | 249.2 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_tp.std` | 5 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_fp.mean` | 150.8 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_fp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_tp.mean` | 343.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_tp.std` | 6.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_fp.mean` | 56.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=2.filter_off.topn_fp.std` | 6.6 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=2.ASSUMED` | True |
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.reported_tp.mean` | 576.6 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.reported_tp.std` | 9 |
@@ -139,10 +140,10 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.held_back_fp.std` | 5 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.queue_size.mean` | 228.4 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.queue_size.std` | 13.3 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_tp.mean` | 248.6 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_tp.std` | 6.2 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_fp.mean` | 151.4 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_fp.std` | 6.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_tp.mean` | 343.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_tp.std` | 8.4 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_fp.mean` | 56.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_on.topn_fp.std` | 8.4 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.reported_tp.mean` | 585.4 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.reported_tp.std` | 8 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.reported_fp.mean` | 153 |
@@ -153,10 +154,10 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.held_back_fp.std` | 0 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.queue_size.mean` | 0 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.queue_size.std` | 0 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_tp.mean` | 249.2 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_tp.std` | 5 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_fp.mean` | 150.8 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_fp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_tp.mean` | 343.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_tp.std` | 6.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_fp.mean` | 56.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=3.filter_off.topn_fp.std` | 6.6 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=3.ASSUMED` | True |
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.reported_tp.mean` | 576.6 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.reported_tp.std` | 9 |
@@ -168,10 +169,10 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.held_back_fp.std` | 8.7 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.queue_size.mean` | 276.4 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.queue_size.std` | 10.9 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_tp.mean` | 249.2 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_tp.std` | 5.9 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_fp.mean` | 150.8 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_fp.std` | 5.9 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_tp.mean` | 345.4 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_tp.std` | 8.1 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_fp.mean` | 54.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_on.topn_fp.std` | 8.1 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.reported_tp.mean` | 585.4 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.reported_tp.std` | 8 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.reported_fp.mean` | 153 |
@@ -182,67 +183,46 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.held_back_fp.std` | 0 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.queue_size.mean` | 0 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.queue_size.std` | 0 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_tp.mean` | 249.2 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_tp.std` | 5 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_fp.mean` | 150.8 |
-| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_fp.std` | 5 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_tp.mean` | 343.2 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_tp.std` | 6.6 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_fp.mean` | 56.8 |
+| `ablation_uncertainty_filter` | `counts_by_k.k=5.filter_off.topn_fp.std` | 6.6 |
 | `ablation_uncertainty_filter` | `counts_by_k.k=5.ASSUMED` | True |
-| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.n_visited` | 44 |
-| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.dispatched_true_destroyed` | 26 |
-| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.dispatched_false_positive` | 18 |
-| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.persons_reached` | 3964 |
-| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.priority_collected` | 27.71 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.n_visited` | 42 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.dispatched_true_destroyed` | 41 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.dispatched_false_positive` | 1 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.persons_reached` | 3043 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.priority_collected` | 25.69 |
 | `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_on.n_excluded_verification` | 112 |
-| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.n_visited` | 44 |
-| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.dispatched_true_destroyed` | 27 |
-| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.dispatched_false_positive` | 17 |
-| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.persons_reached` | 3969 |
-| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.priority_collected` | 27.8 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.n_visited` | 42 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.dispatched_true_destroyed` | 41 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.dispatched_false_positive` | 1 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.persons_reached` | 3106 |
+| `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.priority_collected` | 26.03 |
 | `ablation_uncertainty_filter` | `vrp_seed0_k1.filter_off.n_excluded_verification` | 0 |
-| `ablation_uncertainty_filter` | `seconds` | 64 |
-| `agent_eval` | `metrics.task_success.passed` | 30 |
+| `ablation_uncertainty_filter` | `seconds` | 65 |
+| `agent_eval` | `metrics.task_success.passed` | 34 |
 | `agent_eval` | `metrics.task_success.total` | 38 |
-| `agent_eval` | `metrics.task_success.rate` | 0.789 |
+| `agent_eval` | `metrics.task_success.rate` | 0.895 |
 | `agent_eval` | `metrics.tool_selection_exact.passed` | 45 |
 | `agent_eval` | `metrics.tool_selection_exact.total` | 48 |
 | `agent_eval` | `metrics.tool_selection_exact.rate` | 0.938 |
 | `agent_eval` | `metrics.forbidden_behaviour.total_violations` | 0 |
-| `agent_eval` | `metrics.citation.cited_gold_page.passed` | 3 |
+| `agent_eval` | `metrics.citation.cited_gold_page.passed` | 7 |
 | `agent_eval` | `metrics.citation.cited_gold_page.total` | 8 |
-| `agent_eval` | `metrics.citation.cited_gold_page.rate` | 0.375 |
+| `agent_eval` | `metrics.citation.cited_gold_page.rate` | 0.875 |
 | `agent_eval` | `metrics.citation.dangling_citations` | 0 |
-| `agent_eval` | `metrics.citation.rough_support_sentences.passed` | 12 |
-| `agent_eval` | `metrics.citation.rough_support_sentences.total` | 18 |
-| `agent_eval` | `metrics.citation.rough_support_sentences.rate` | 0.667 |
-| `agent_eval` | `metrics.citation.hand_reviewed.passed` | 4 |
-| `agent_eval` | `metrics.citation.hand_reviewed.total` | 8 |
-| `agent_eval` | `metrics.citation.hand_reviewed.rate` | 0.5 |
-| `agent_eval` | `metrics.citation.hand_reviewed.wrong_answers` | 1 |
-| `agent_eval` | `metrics.citation.hand_reviewed.honest_no_answer_but_info_exists` | 3 |
-| `agent_eval` | `metrics.citation.hand_reviewed.scope` | 5 strict failures read by hand; the 3 strict passes were not re-read |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P03.verdict` | miss_honest |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P03.acceptable` | False |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P03.note` | Router query 'USAR sector division guidelines' returned pages 56/7, not the gold p.25 that holds 5.5.1 'Why to create sectors'. Answer says the passages do not contain it: honest, but unhelpful. Question run with the original text retrieves p.25. |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P04.verdict` | acceptable_alternative_source |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P04.acceptable` | True |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P04.note` | Cites INSARAG Vol2 ManB p.20 instead of the gold Vol3 p.19. The cited passage lists the search-team tasks (assess the collapsed structure, interview the public, risk analysis) and the answer is supported by it. Gold page kept; counted acceptable only in the hand-reviewed number. |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P06.verdict` | wrong_answer |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P06.acceptable` | False |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P06.note` | Answer 'afet oncesi, afet sirasi, afet sonrasi' is not in the cited p.3 chunk; gold p.18 says the three phases are hazirlik, mudahale, on iyilestirme. An unsupported (wrong) claim that the rough keyword support check did not catch. Earlier note in decisions.md that this answer 'looks correct' was wrong. |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P07.verdict` | miss_honest |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P07.acceptable` | False |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P07.note` | Router query 'AFAD TAMP operation service subservices' missed gold p.25 (2.5.1 Operasyon Servisi); answer says the passages contain no information although the corpus does. |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P08.verdict` | miss_honest |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P08.acceptable` | False |
-| `agent_eval` | `metrics.citation.hand_reviewed.details.P08.note` | Router query 'AFAD establishment law Turkey' missed the preface (p.1-3: '5902 sayili Kanun gereği AFAD'in kurulmasi'); answer says no information, although the corpus has it. |
-| `agent_eval` | `metrics.latency_s_per_turn.mean` | 29.78 |
-| `agent_eval` | `metrics.latency_s_per_turn.p50` | 32.91 |
-| `agent_eval` | `metrics.latency_s_per_turn.p95` | 48.52 |
-| `agent_eval` | `metrics.latency_s_per_turn.max` | 49.66 |
-| `agent_eval` | `metrics.llm.calls_total` | 236 |
-| `agent_eval` | `metrics.llm.answers_by_provider.gemini` | 8 |
-| `agent_eval` | `metrics.llm.answers_by_provider.groq` | 44 |
+| `agent_eval` | `metrics.citation.rough_support_sentences.passed` | 21 |
+| `agent_eval` | `metrics.citation.rough_support_sentences.total` | 26 |
+| `agent_eval` | `metrics.citation.rough_support_sentences.rate` | 0.808 |
+| `agent_eval` | `metrics.latency_s_per_turn.mean` | 23.61 |
+| `agent_eval` | `metrics.latency_s_per_turn.p50` | 32.24 |
+| `agent_eval` | `metrics.latency_s_per_turn.p95` | 33.84 |
+| `agent_eval` | `metrics.latency_s_per_turn.max` | 47.42 |
+| `agent_eval` | `metrics.llm.calls_total` | 163 |
 | `agent_eval` | `metrics.llm.successful_answers` | 52 |
+| `agent_eval` | `metrics.llm.answers_by_provider.gemini` | 25 |
+| `agent_eval` | `metrics.llm.answers_by_provider.groq` | 27 |
 | `comparison_siamese_vs_baseline_f1` | `threshold_mode` | f1 |
 | `comparison_siamese_vs_baseline_f1` | `selected_on` | validation |
 | `comparison_siamese_vs_baseline_f1` | `evaluated_on` | test |
@@ -312,12 +292,12 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `comparison_siamese_vs_baseline_f2` | `paired_bootstrap_siamese_minus_baseline.recall.ci95_hi` | 0.1628 |
 | `comparison_siamese_vs_baseline_f2` | `paired_bootstrap_siamese_minus_baseline.recall.p_not_better` | 0.016 |
 | `depot_sensitivity` | `n_buildings` | 5895 |
-| `depot_sensitivity` | `alternatives.hospital (OSM way 366665647).spearman` | 0.7239 |
-| `depot_sensitivity` | `alternatives.hospital (OSM way 366665647).top100_overlap` | 0.99 |
-| `depot_sensitivity` | `alternatives.hospital (OSM way 366665647).top500_overlap` | 0.984 |
-| `depot_sensitivity` | `alternatives.town hall (OSM way 311391399).spearman` | 0.8414 |
-| `depot_sensitivity` | `alternatives.town hall (OSM way 311391399).top100_overlap` | 0.99 |
-| `depot_sensitivity` | `alternatives.town hall (OSM way 311391399).top500_overlap` | 0.974 |
+| `depot_sensitivity` | `alternatives.hospital (OSM way 366665647).spearman` | 0.9997 |
+| `depot_sensitivity` | `alternatives.hospital (OSM way 366665647).top100_overlap` | 0.97 |
+| `depot_sensitivity` | `alternatives.hospital (OSM way 366665647).top500_overlap` | 0.942 |
+| `depot_sensitivity` | `alternatives.town hall (OSM way 311391399).spearman` | 0.9997 |
+| `depot_sensitivity` | `alternatives.town hall (OSM way 311391399).top100_overlap` | 0.93 |
+| `depot_sensitivity` | `alternatives.town hall (OSM way 311391399).top500_overlap` | 0.912 |
 | `error_analysis` | `kate_cd_siamese.split` | test |
 | `error_analysis` | `kate_cd_siamese.threshold` | 0.2 |
 | `error_analysis` | `kate_cd_siamese.n_tiles` | 38 |
@@ -468,96 +448,95 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `metrics_planning` | `variants_at_candidate_n.no_closures.n_unreachable` | 0 |
 | `metrics_planning` | `variants_at_candidate_n.no_closures.n_need_walking` | 0 |
 | `metrics_planning` | `variants_at_candidate_n.no_closures.n_visited` | 44 |
-| `metrics_planning` | `variants_at_candidate_n.no_closures.priority_collected` | 27.82 |
-| `metrics_planning` | `variants_at_candidate_n.no_closures.persons_reached` | 3969 |
-| `metrics_planning` | `variants_at_candidate_n.no_closures.persons_in_candidates` | 1.637e+04 |
-| `metrics_planning` | `variants_at_candidate_n.no_closures.solve_s` | 30.3 |
+| `metrics_planning` | `variants_at_candidate_n.no_closures.priority_collected` | 26.93 |
+| `metrics_planning` | `variants_at_candidate_n.no_closures.persons_reached` | 3198 |
+| `metrics_planning` | `variants_at_candidate_n.no_closures.persons_in_candidates` | 1.031e+04 |
+| `metrics_planning` | `variants_at_candidate_n.no_closures.solve_s` | 30.2 |
 | `metrics_planning` | `variants_at_candidate_n.no_closures.n_unreachable_all_buildings` | 0 |
-| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.n_candidates` | 304 |
-| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.n_unreachable` | 96 |
+| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.n_candidates` | 274 |
+| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.n_unreachable` | 126 |
 | `metrics_planning` | `variants_at_candidate_n.closures_no_walking.n_need_walking` | 0 |
-| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.n_visited` | 44 |
-| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.priority_collected` | 26.8 |
-| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.persons_reached` | 3891 |
-| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.persons_in_candidates` | 1.354e+04 |
+| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.n_visited` | 43 |
+| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.priority_collected` | 24.2 |
+| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.persons_reached` | 2825 |
+| `metrics_planning` | `variants_at_candidate_n.closures_no_walking.persons_in_candidates` | 7347 |
 | `metrics_planning` | `variants_at_candidate_n.closures_no_walking.solve_s` | 30.3 |
 | `metrics_planning` | `variants_at_candidate_n.closures_no_walking.n_unreachable_all_buildings` | 1139 |
 | `metrics_planning` | `variants_at_candidate_n.closures_with_walking.n_candidates` | 400 |
 | `metrics_planning` | `variants_at_candidate_n.closures_with_walking.n_unreachable` | 0 |
-| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.n_need_walking` | 96 |
-| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.n_visited` | 44 |
-| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.priority_collected` | 27.8 |
-| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.persons_reached` | 3969 |
-| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.persons_in_candidates` | 1.637e+04 |
-| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.solve_s` | 30.2 |
+| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.n_need_walking` | 126 |
+| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.n_visited` | 42 |
+| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.priority_collected` | 26.03 |
+| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.persons_reached` | 3106 |
+| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.persons_in_candidates` | 1.031e+04 |
+| `metrics_planning` | `variants_at_candidate_n.closures_with_walking.solve_s` | 30.1 |
 | `metrics_planning` | `variants_at_candidate_n.closures_with_walking.n_unreachable_all_buildings` | 0 |
 | `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.n_candidates` | 200 |
 | `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.n_unreachable` | 0 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.n_need_walking` | 37 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.n_visited` | 44 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.priority_collected` | 27.75 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.persons_reached` | 4001 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.persons_in_candidates` | 1.163e+04 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.n_need_walking` | 54 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.n_visited` | 42 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.priority_collected` | 26.03 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.persons_reached` | 3106 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.persons_in_candidates` | 8049 |
 | `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.200.solve_s` | 30.2 |
 | `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.n_candidates` | 400 |
 | `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.n_unreachable` | 0 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.n_need_walking` | 96 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.n_visited` | 44 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.priority_collected` | 27.8 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.persons_reached` | 3969 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.persons_in_candidates` | 1.637e+04 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.solve_s` | 30.2 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.n_need_walking` | 126 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.n_visited` | 42 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.priority_collected` | 26.03 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.persons_reached` | 3106 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.persons_in_candidates` | 1.031e+04 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.400.solve_s` | 30.1 |
 | `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.n_candidates` | 500 |
 | `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.n_unreachable` | 0 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.n_need_walking` | 126 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.n_visited` | 44 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.priority_collected` | 27.75 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.persons_reached` | 3980 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.persons_in_candidates` | 1.8e+04 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.n_need_walking` | 159 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.n_visited` | 41 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.priority_collected` | 25.55 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.persons_reached` | 3052 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.persons_in_candidates` | 1.116e+04 |
 | `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.500.solve_s` | 30.3 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.n_candidates` | 1000 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.n_candidates` | 734 |
 | `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.n_unreachable` | 0 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.n_need_walking` | 213 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.n_visited` | 43 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.priority_collected` | 27.26 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.persons_reached` | 3907 |
-| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.persons_in_candidates` | 2.824e+04 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.n_need_walking` | 230 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.n_visited` | 42 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.priority_collected` | 26.02 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.persons_reached` | 3102 |
+| `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.persons_in_candidates` | 1.246e+04 |
 | `metrics_planning` | `candidate_n_sensitivity_closures_with_walking.1000.solve_s` | 30.3 |
 | `metrics_planning` | `baselines_closures_with_walking.n` | 400 |
 | `metrics_planning` | `baselines_closures_with_walking.vrp.n_candidates` | 400 |
 | `metrics_planning` | `baselines_closures_with_walking.vrp.n_unreachable` | 0 |
-| `metrics_planning` | `baselines_closures_with_walking.vrp.n_need_walking` | 96 |
-| `metrics_planning` | `baselines_closures_with_walking.vrp.n_visited` | 44 |
-| `metrics_planning` | `baselines_closures_with_walking.vrp.priority_collected` | 27.8 |
-| `metrics_planning` | `baselines_closures_with_walking.vrp.persons_reached` | 3969 |
-| `metrics_planning` | `baselines_closures_with_walking.vrp.persons_in_candidates` | 1.637e+04 |
-| `metrics_planning` | `baselines_closures_with_walking.vrp.solve_s` | 30.2 |
-| `metrics_planning` | `baselines_closures_with_walking.vrp.n_unreachable_all_buildings` | 0 |
-| `metrics_planning` | `baselines_closures_with_walking.vrp.priority_vs_random_mean_x` | 1.8 |
+| `metrics_planning` | `baselines_closures_with_walking.vrp.n_need_walking` | 126 |
+| `metrics_planning` | `baselines_closures_with_walking.vrp.n_visited` | 42 |
+| `metrics_planning` | `baselines_closures_with_walking.vrp.priority_collected` | 26.03 |
+| `metrics_planning` | `baselines_closures_with_walking.vrp.persons_reached` | 3106 |
+| `metrics_planning` | `baselines_closures_with_walking.vrp.persons_in_candidates` | 1.031e+04 |
+| `metrics_planning` | `baselines_closures_with_walking.vrp.solve_s` | 30.1 |
+| `metrics_planning` | `baselines_closures_with_walking.vrp.priority_vs_random_mean_x` | 2.22 |
 | `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.n_candidates` | 400 |
 | `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.n_unreachable` | 0 |
-| `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.n_need_walking` | 96 |
+| `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.n_need_walking` | 126 |
 | `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.n_visited` | 44 |
-| `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.priority_collected` | 18.54 |
-| `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.persons_reached` | 1453 |
-| `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.persons_in_candidates` | 1.637e+04 |
+| `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.priority_collected` | 12.14 |
+| `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.persons_reached` | 429.9 |
+| `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.persons_in_candidates` | 1.031e+04 |
 | `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.solve_s` | 0 |
-| `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.priority_vs_random_mean_x` | 1.2 |
+| `metrics_planning` | `baselines_closures_with_walking.greedy_nearest.priority_vs_random_mean_x` | 1.04 |
 | `metrics_planning` | `baselines_closures_with_walking.priority_first.n_candidates` | 400 |
 | `metrics_planning` | `baselines_closures_with_walking.priority_first.n_unreachable` | 0 |
-| `metrics_planning` | `baselines_closures_with_walking.priority_first.n_need_walking` | 96 |
+| `metrics_planning` | `baselines_closures_with_walking.priority_first.n_need_walking` | 126 |
 | `metrics_planning` | `baselines_closures_with_walking.priority_first.n_visited` | 36 |
-| `metrics_planning` | `baselines_closures_with_walking.priority_first.priority_collected` | 23.29 |
-| `metrics_planning` | `baselines_closures_with_walking.priority_first.persons_reached` | 3273 |
-| `metrics_planning` | `baselines_closures_with_walking.priority_first.persons_in_candidates` | 1.637e+04 |
+| `metrics_planning` | `baselines_closures_with_walking.priority_first.priority_collected` | 22.94 |
+| `metrics_planning` | `baselines_closures_with_walking.priority_first.persons_reached` | 2749 |
+| `metrics_planning` | `baselines_closures_with_walking.priority_first.persons_in_candidates` | 1.031e+04 |
 | `metrics_planning` | `baselines_closures_with_walking.priority_first.solve_s` | 0 |
-| `metrics_planning` | `baselines_closures_with_walking.priority_first.priority_vs_random_mean_x` | 1.51 |
-| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.n_visited.mean` | 35.87 |
-| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.n_visited.std` | 0.618 |
-| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.priority_collected.mean` | 15.43 |
-| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.priority_collected.std` | 0.592 |
-| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.persons_reached.mean` | 1455 |
-| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.persons_reached.std` | 165.8 |
+| `metrics_planning` | `baselines_closures_with_walking.priority_first.priority_vs_random_mean_x` | 1.96 |
+| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.n_visited.mean` | 35.57 |
+| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.n_visited.std` | 0.803 |
+| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.priority_collected.mean` | 11.71 |
+| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.priority_collected.std` | 0.701 |
+| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.persons_reached.mean` | 899.1 |
+| `metrics_planning` | `baselines_closures_with_walking.random_30_seeds.persons_reached.std` | 125.9 |
 | `metrics_planning` | `note` | OR-Tools guided local search is time-limited, hence not exactly reproducible; differences of a few percent are noise. |
 | `metrics_rag` | `n_questions` | 10 |
 | `metrics_rag` | `n_chunks` | 458 |
@@ -655,11 +634,11 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `plan_demo` | `SIMULATED_DETECTOR` | True |
 | `plan_demo` | `n_candidates` | 400 |
 | `plan_demo` | `n_unreachable` | 0 |
-| `plan_demo` | `n_visited` | 44 |
-| `plan_demo` | `n_need_walking` | 96 |
-| `plan_demo` | `priority_collected` | 27.8 |
-| `plan_demo` | `persons_reached` | 3969 |
-| `plan_demo` | `persons_in_candidates` | 1.637e+04 |
+| `plan_demo` | `n_visited` | 42 |
+| `plan_demo` | `n_need_walking` | 126 |
+| `plan_demo` | `priority_collected` | 26.03 |
+| `plan_demo` | `persons_reached` | 3106 |
+| `plan_demo` | `persons_in_candidates` | 1.031e+04 |
 | `plan_demo` | `solved` | True |
 | `plan_demo` | `disclaimer` | SIMULATED detector; scenario depot; not an operational plan |
 | `protocol_v1_vs_v2` | `v1.strict_gold_page` | 3/8 |
@@ -811,28 +790,28 @@ OpenStreetMap tile servers return 403 for requests without a `Referer` header, w
 ## Agent evaluation (SIMULATED detector for Antakya)
 
 38 scripted scenarios (`eval/agent_scenarios.yaml`), run once against the real LLM with a cold cache
-(`scripts/run_agent_eval.py`, 2026-11-10; Gemini primary, Groq fallback; per-scenario provider in
+(`scripts/run_agent_eval.py`, 2026-11-11, after the damage gate and citation normalisation; Gemini primary, Groq fallback; per-scenario provider in
 `reports/agent_eval.json`).
 
 | Metric | Result |
 |---|---|
-| Task success (all checks pass, no forbidden behaviour) | 30 / 38 (79 %) |
+| Task success (all checks pass, no forbidden behaviour) | 34 / 38 (89 %) (before the gate: 30 / 38) |
 | Tool selection, exact ordered list (per turn) | 45 / 48 (94 %) |
 | Forbidden-behaviour violations (6 rules checked in every scenario) | 0 |
-| Protocol answers citing a gold page (strict) | 3 / 8 |
-| Protocol answers acceptable after hand review of the 5 misses | 4 / 8 (1 wrong answer, 3 honest "not in passages" although the corpus has it) |
+| Protocol answers citing a gold page (strict) | 7 / 8 (before: 3 / 8) |
+| Protocol hand review | not repeated for this run (the earlier review covered the 2026-11-10 answers only) |
 | Dangling citations (to a passage that was not retrieved) | 0 |
-| Cited sentences passing the rough keyword support check | 12 / 18 (not a fact check) |
-| Mean latency per turn / p95 | 29.8 s / 48.5 s (includes OR-Tools solve and rate-limit backoff) |
-| LLM requests | 236 for 52 successful answers (the rest are rate-limit retries / failed attempts) |
-| Answers by provider | 44 Groq (`gpt-oss-120b`), 8 Gemini |
+| Cited sentences passing the rough keyword support check | 21 / 26 (before: 12 / 18; not a fact check) |
+| Mean latency per turn / p95 | 23.6 s / 33.8 s (includes OR-Tools solve and rate-limit backoff) |
+| LLM requests | 163 for 52 successful answers (the rest are rate-limit retries / failed attempts) |
+| Answers by provider | 27 Groq (`gpt-oss-120b`), 25 Gemini (scenarios: 17 Gemini only, 19 Groq only, 1 mixed, 1 without an LLM answer) |
 
 Failed scenarios (not hidden): W08 and A03 (invalid input such as 0 teams or a relaxed uncertainty
-threshold was rejected correctly, but through a tool error instead of the expected wording), A04
-(a prompt-injection request was turned into a constraint change and no chain ran; the guard held),
-P03/P04/P06/P07/P08 (hand-reviewed one by one, see `eval/protocol_hand_review.json`: P04 is an acceptable
-answer from another passage, P06 is a wrong answer, P03/P07/P08 are honest "not in the passages" answers
-after the router rewrote the question into a poor keyword query; the gold set was not changed). Details: `failed_scenarios` in `reports/agent_eval.json`.
+threshold is rejected correctly, but through a tool error instead of the expected wording; unchanged since the
+first run), P04 (cites another valid passage instead of the gold page), and W04 (new: in the second turn the weight
+change was applied, but the intent label and exact tool list differed from the expectation; LLM variance is
+possible, one run only). Fixed since the first run: A04, P03, P06, P07, P08. Expectations were not changed after
+seeing results. Details: `failed_scenarios` in `reports/agent_eval.json`; the pre-gate run is `reports/archive/pre_gate/agent_eval.json`.
 
 **Protocol retrieval fix (v1 vs v2).** In v1 the router rewrote protocol questions into short English keyword queries, which retrieved the wrong passages for five of eight questions. v2 searches with the user's original message (`reports/protocol_v1_vs_v2.json`; v1 is kept unchanged in `reports/archive/agent_eval_v1.json`, v2 in `reports/archive/agent_eval_protocol_v2.json`). Same 8 questions and gold pages, single run each, hand review by the developer.
 
@@ -844,10 +823,10 @@ after the router rewrote the question into a poor keyword query; the gold set wa
 | Answers served by | Groq 16 (router + answer) | Groq 16 |
 | LLM requests incl. retries | 80 | 80 |
 
-Remaining defects in v2: P04 still cites another (valid) passage instead of the gold page; P02 expands the acronym UCC wrongly ("United Nations Coordination Centre", the corpus says USAR Coordination Cell) and so does not count as acceptable; P01 and P05 use the fullwidth bracket 【1】, which the citation regexes do not see, so the "0 dangling citations" figure is blind to them. P01/P05 were read but not verified line by line.
+Remaining defects in v2: P04 still cites another (valid) passage instead of the gold page; P02 expands the acronym UCC wrongly ("United Nations Coordination Centre", the corpus says USAR Coordination Cell) and so does not count as acceptable; P01 and P05 used the fullwidth bracket 【1】, which the old citation regexes did not see; `agent/citations.py` now normalises it, and in the 2026-11-11 run P01 has 4 of 5 cited sentences passing the rough support check (before: 3 of 3 seen) and P05 1 of 1.
 
-**Caveats.** 44 of 52 answers came from Groq because Gemini was mostly rate-limited (429), so the
-results cannot be attributed to Gemini; latency and request counts include the retries. The scenarios were written by the party that wrote the agent, so this is not an
+**Caveats.** In the latest run 27 of 52 answers came from Groq and 25 from Gemini (first run: 44 / 8) because of rate limits (429), so the
+results cannot be attributed to a single model; latency and request counts include the retries. The scenarios were written by the party that wrote the agent, so this is not an
 independent evaluation. The numbers rest on a single run and LLM output is not deterministic.
 Antakya results use the simulated detector and guard cases use injected faults. The citation-support
 check is a crude keyword test.
@@ -865,7 +844,7 @@ Operating threshold chosen on validation, evaluated once on test (`reports/compa
 Paired bootstrap, Siamese minus baseline: F1 +0.104 (95 % CI 0.038 to 0.166), IoU +0.099 (0.037 to 0.155). Small test set, one dataset.
 
 **2. Uncertainty filter (verification queue) on vs off — SIMULATED.**
-The simulated uncertainty does not depend on whether the detector is right, so the filter's effect is negligible in this setup, and it cannot be measured without real detector labels for Antakya. Numbers (5 noise seeds, `reports/ablation_uncertainty_filter.json`): false positives reported 153 -> 150, true positives held back 8.8 of 594, and in the route plan 18 vs 17 false positives among 44 stops. These figures describe the noise model only. No claim is made that the filter is useful; its safety role (holding back uncertain buildings for field verification) is a design rule, not an ablation result. The JSON also holds sensitivity rows with an ASSUMED higher uncertainty for wrong detections; they are not evidence. Ground truth is HOTOSM, which is incomplete, so "false positive" overstates real errors.
+The simulated uncertainty does not depend on whether the detector is right, so the filter's effect is negligible in this setup, and it cannot be measured without real detector labels for Antakya. Numbers (5 noise seeds, `reports/ablation_uncertainty_filter.json`): false positives reported 153 -> 150, true positives held back 8.8 of 594, and in the route plan 1 vs 1 false positives among 42 stops (after the damage gate; before it: 18 vs 17 among 44). Among the 400 top candidates the filter even leaves slightly more false positives (57.8 vs 56.8), i.e. no benefit is visible. These figures describe the noise model only. No claim is made that the filter is useful; its safety role (holding back uncertain buildings for field verification) is a design rule, not an ablation result. The JSON also holds sensitivity rows with an ASSUMED higher uncertainty for wrong detections; they are not evidence. Ground truth is HOTOSM, which is incomplete, so "false positive" overstates real errors.
 
 ## Limitations
 

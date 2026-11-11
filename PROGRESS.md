@@ -5,7 +5,7 @@
 ## Durum özeti
 - **Aktif hafta:** Hafta 7 — Değerlendirme (senaryo seti hazır)
 - **Sıradaki adım:** Hafta 7 madde 2: `eval/run_agent_eval.py` (senaryoları gerçek LLM ile koşturur; paylaşılan yol grafı/RAG, çözücü süresi kısa; metrikler → `reports/agent_eval.json`: görev başarısı, araç doğruluğu, yasak davranış, atıf geçerliliği/destek, gecikme, LLM çağrısı). Tahmini ~45-60 LLM çağrısı: koşmadan önce the project owner'a söyle
-- **Bekleyen manuel işler (the project owner):** TOPSIS aday kapısı (`damage_gate`) ve atıf normalleştirme koda eklendi (testli, 2026-11-10; bulut ortamında yazıldı, `data/` ve LLM anahtarı olmadığı için yeniden üretim yapılamadı). Kapıdan önce üretilen planlama sayıları ESKİ: `reports/metrics_planning.json`, `plan_demo.json`, `depot_sensitivity.json`, `route_map.html`, `error_analysis.json`, belirsizlik-filtresi ablasyonu ve agent_eval. Mac'te yeniden üretilecek (Claude'a yaptır): `scripts/plan_routes.py`, `depot_sensitivity.py`, `make_route_map.py`, `ablation_uncertainty_filter.py`, `error_analysis.py`, sonra `run_agent_eval.py` (38 senaryo, soğuk önbellek, ~24 dk), en sonda `make_report.py`. Ayrıntı: `docs/decisions.md` (2026-11-10, "Damage gate")
+- **Bekleyen manuel işler (the project owner):** yok. Damage gate sonrası tüm planlama çıktıları ve 38 senaryo eval'i 2026-11-11'de yeniden üretildi (eski sürümler `reports/archive/pre_gate/`). Elle protokol incelemesi yeni koşu için TEKRARLANMADI (yalnız sıkı 7/8 var; P04 hâlâ gold sayfayı atıflamıyor)
 
 ## Önemli metrikler
 
@@ -13,6 +13,12 @@ Metrikler `reports/*.json` dosyalarından otomatik üretilir ve `README.md` sonu
 Güncel değerler için: `uv run python scripts/make_report.py --check` → [README.md](../README.md#results)
 
 ## Oturum kayıtları
+
+### 2026-11-11 — Damage gate sonrası yeniden üretim
+- Planlama (400 aday, 4 ekip): VRP öncelik 27,80 → 26,03; kişi 3.969 → 3.106; ziyaret 44 → 42. Baselines: öncelik-önce 22,94/2.749; greedy 12,14/430; rastgele 11,72/899. VRP, öncelik-önce kuralından %13 iyi (eskiden %19). Aday kümesindeki kişi 16.372 → 10.309 (hasarsız kalabalık binalar çıktı).
+- Depo duyarlılığı: Spearman 0,72/0,84 → 0,9997; ilk-100 örtüşme 0,97/0,93, ilk-500 0,94/0,91 (eskiden 0,99/0,98). Belirsizlik filtresi: FP 153→150 aynı; plan düzeyinde 1 vs 1 FP (eskiden 18 vs 17) — fayda yok. Hata analizi: en kötü 10 karo yine hep kaçırılmış hasar.
+- Eval (38 senaryo, soğuk, 163 istek, 1134 sn): görev başarısı 30 → 34/38; araç seçimi 45/48 aynı; ihlal 0; altın sayfa atfı 3/8 → 7/8; destek 12/18 → 21/26. Sağlayıcı: 27 Groq / 25 Gemini cevap (senaryo bazında JSON'da). Başarısız: W04 (yeni), W08, A03, P04. Düzelen: A04, P03, P06, P07, P08. Not: bu fark gate+atıf+protokol düzeltmesinin birleşimi, tek koşu, LLM varyansı var; eski v1 koşusuyla karşılaştırma adil olmayabilir (protokol v2 düzeltmesi de içeride).
+- P01/P05 atıf: P01 4/5 destekli (eskiden 3/3), P05 1/1.
 
 ### 2026-11-10 — Hafta 6 tamamlandı
 - **llm.py** (Gemini + Groq yedeği, backoff, önbellek), **tools.py** (9 araç; guard ve belirsizlik kuralı araç kodunda; her çıktıda SIMULATED_DETECTOR + belirsizlik), **graph.py** (router, koşullu kenarlar, kalite kapısı, what-if'te yalnız bayat adımlar), **CLI** `python -m quaketriage.agent`.
