@@ -19,7 +19,7 @@ One entry per dataset. Facts below come from `reports/metrics_eda.json`, `data/m
 
 ## KATE-CD
 
-- **Source:** `huggingface.co/datasets/CSCRS/kate-cd` (Parquet). Paper: *Earthquake Damage Assessment with SAMCD*; code: `cscrs/kate-cd`.
+- **Source:** `huggingface.co/datasets/CSCRS/kate-cd` (Parquet). Paper: Musaoglu et al., J. Appl. Remote Sens. 19(4), 044508 (2025), doi:10.1117/1.JRS.19.044508; code: `cscrs/kate-cd`.
 - **Content:** 512×512 pre-event image, post-event image, binary damage mask.
 - **License / provenance (checked 2026-11-11):** no license declared on the sources we could read; the dataset
   description says its imagery comes from Maxar Open Data (CC BY-NC 4.0) and Airbus Pleiades (proprietary imagery,

@@ -878,6 +878,8 @@ the pre-gate numbers (VRP 27.80 / 3,969 persons) are archived in `reports/archiv
 | AFAD TAMP, INSARAG Guidelines 2020 | RAG corpus | Public documents | short cited passages only |
 | Code (this repository) | | **MIT** ([`LICENSE`](LICENSE)) | yes |
 
+Full terms, attribution texts, pretrained-model and dependency licences: [`THIRD_PARTY.md`](THIRD_PARTY.md).
+
 The screenshots in `docs/images/` show the UI over OpenStreetMap tiles (© OpenStreetMap contributors) and contain no satellite imagery.
 
 ## Attribution
@@ -887,7 +889,7 @@ The screenshots in `docs/images/` show the UI over OpenStreetMap tiles (© OpenS
   Non-commercial use only.
 - **Map data:** © OpenStreetMap contributors and Humanitarian OpenStreetMap Team (HOTOSM), ODbL.
 - **Population:** WorldPop, CC BY 4.0.
-- **Training data:** KATE-CD; please cite *Earthquake Damage Assessment with SAMCD* (see `cscrs/kate-cd`).
+- **Training data:** KATE-CD; please cite Musaoglu et al., J. Appl. Remote Sens. 19(4), 044508 (2025), doi:10.1117/1.JRS.19.044508 (see [`THIRD_PARTY.md`](THIRD_PARTY.md)).
 
 ## Documentation and citation
 

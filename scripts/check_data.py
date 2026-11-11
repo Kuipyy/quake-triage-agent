@@ -18,7 +18,7 @@ REQUIRED = [
         1_000_000,
         "KATE-CD train split",
         "https://huggingface.co/datasets/CSCRS/kate-cd",
-        "No explicit license; cite Earthquake Damage Assessment with SAMCD",
+        "No explicit license; cite Musaoglu et al., JARS 19(4) 044508 (2025)",
         None,
     ),
     (
@@ -26,7 +26,7 @@ REQUIRED = [
         100_000,
         "KATE-CD val split",
         "https://huggingface.co/datasets/CSCRS/kate-cd",
-        "No explicit license; cite Earthquake Damage Assessment with SAMCD",
+        "No explicit license; cite Musaoglu et al., JARS 19(4) 044508 (2025)",
         None,
     ),
     (
@@ -34,7 +34,7 @@ REQUIRED = [
         100_000,
         "KATE-CD test split",
         "https://huggingface.co/datasets/CSCRS/kate-cd",
-        "No explicit license; cite Earthquake Damage Assessment with SAMCD",
+        "No explicit license; cite Musaoglu et al., JARS 19(4) 044508 (2025)",
         None,
     ),
     (

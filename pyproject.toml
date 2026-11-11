@@ -2,6 +2,7 @@
 name = "quaketriage"
 version = "0.1.0"
 description = "Agentic post-earthquake building damage assessment and rescue prioritization"
+license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     # Geo

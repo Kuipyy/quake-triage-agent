@@ -102,7 +102,7 @@ Hepsi ücretsiz. Lisanslar README'de mutlaka belirtilecek.
 
 | Kaynak | Kullanım | Erişim | Lisans / not |
 |---|---|---|---|
-| **KATE-CD** | Model eğitimi ve testi | `huggingface.co/datasets/CSCRS/kate-cd` (Parquet; 404 eğitim / 44 doğrulama / 38 test; 512×512 öncesi/sonrası/maske) | Sayfada lisans yok, makalesine atıf yapılacak (Earthquake Damage Assessment with SAMCD; GitHub: `cscrs/kate-cd`) |
+| **KATE-CD** | Model eğitimi ve testi | `huggingface.co/datasets/CSCRS/kate-cd` (Parquet; 404 eğitim / 44 doğrulama / 38 test; 512×512 öncesi/sonrası/maske) | Sayfada lisans yok, makalesine atıf yapılacak (Musaoglu et al., J. Appl. Remote Sens. 19(4), 044508 (2025); GitHub: `cscrs/kate-cd`) |
 | **Vantor (eski Maxar) Open Data** | Demo bölgesinin koordinatlı öncesi/sonrası görüntüsü | STAC: `https://maxar-opendata.s3.amazonaws.com/events/catalog.json`, `aws s3 ls --no-sign-request s3://maxar-opendata/`, olay listesi: `github.com/opengeos/maxar-open-data` (`Kahramanmaras-turkey-earthquake-23`) | **CC BY-NC 4.0**, ticari kullanım yasak. Arşiv Vantor'a taşınıyor, erişilebilirlik 1. haftada doğrulanacak |
 | **HOTOSM yıkılmış binalar** | Bina bazında doğrulama etiketleri | `data.humdata.org/dataset/hotosm_tur_destroyed_buildings` | ODbL (OSM) |
 | **HOTOSM / OSM binalar ve yollar** | Bina sınırları, kat sayısı, yol ağı | HDX `hotosm_tur_buildings` veya OSMnx/Overpass | ODbL |
