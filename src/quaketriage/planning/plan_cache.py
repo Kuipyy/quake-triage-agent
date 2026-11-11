@@ -1,9 +1,9 @@
 """Disk cache for solved route plans.
 
-The OR-Tools solve takes ~30 s, so an identical question (same constraints, same priority table) must
-not be solved twice. The key is a hash of the solver parameters, the closed areas, the depot and a digest
-of the candidate table (row index, priority, damage probability, persons); change any of them and the
-key changes. Plans are plain JSON (the same dict ``plan_routes`` returns).
+The OR-Tools solve takes ~30 s, so an identical question (same constraints, same priority
+table) must not be solved twice. The key is a hash of the solver parameters, the closed areas, the
+depot and a digest of the candidate table (row index, priority, damage probability, persons);
+change any of them and the key changes. Plans are plain JSON (the dict ``plan_routes`` returns).
 """
 from __future__ import annotations
 
