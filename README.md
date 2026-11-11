@@ -84,25 +84,42 @@ from the candidate set, 16,372 → 10,309 persons among candidates). The scenari
 
 ## Quickstart
 
-Everything below uses free tiers only.
+Everything below uses free tiers only. Times are measured on a clean clone (Apple-silicon Mac, home broadband); the long ones are network-bound.
+
+### Path 1 — public data → Antakya demo (no model weights needed)
+
+The demo uses the simulated detector, so no training and no imagery are required.
 
 ```bash
-uv sync --all-extras               # plain `uv sync` drops the torch/agent extras and breaks the tests
-cp .env.example .env               # add a free Gemini key (and optionally a Groq key); never commit .env
-uv run pytest -q && uv run ruff check .
+uv sync --all-extras                          # 1-5 min. Plain `uv sync` drops the torch/agent extras and breaks the tests
+cp .env.example .env                          # then add ONE free LLM key (Gemini by default, or Groq); never commit .env
+uv run python scripts/download_demo_area.py   # ~3.5 min: OSM buildings/roads (Overpass), WorldPop raster (~20 MB)
+uv run python scripts/download_docs.py        # ~5 s: AFAD TAMP + INSARAG PDFs
+uv run python scripts/download_hotosm.py      # ~10 s: HOTOSM destroyed-building polygons (HDX)
+uv run python scripts/extract_rag_text.py && uv run python scripts/build_rag_index.py   # ~30 s
+uv run python scripts/build_buildings.py      # ~3 s: Antakya demo set with the simulated detector
+uv run python scripts/check_data.py           # sanity check; KATE-CD is reported as optional
 ```
 
-Data (not in the repository; sources and licenses in [`docs/data_card.md`](docs/data_card.md)):
+The same sequence is available as one command: `make demo-data` (after `uv sync` and `.env`). Data sources and licenses: [`docs/data_card.md`](docs/data_card.md). Optional checks: `uv run pytest -q -m "not slow and not network and not gpu"` (~45 s; the full `uv run pytest -q` takes ~3 min and skips the KATE-CD tests when that data is absent) and `uv run ruff check .`.
+
+### Path 2 — train your own change-detection model (optional)
+
+Needs the KATE-CD dataset and a `HF_TOKEN` in `.env`.
 
 ```bash
-uv run python scripts/download_demo_area.py   # OSM buildings/roads, WorldPop
-uv run python scripts/download_docs.py        # AFAD TAMP + INSARAG PDFs
-# HOTOSM destroyed-building polygons: download the GeoJSON from HDX (hotosm_tur_destroyed_buildings)
-# into data/raw/hotosm/ (see docs/data_card.md); check_data.py lists what is missing.
-uv run python scripts/extract_rag_text.py && uv run python scripts/build_rag_index.py
-uv run python scripts/build_buildings.py      # Antakya demo set with the simulated detector
-uv run python scripts/check_data.py           # sanity check of what you downloaded
+uv run python scripts/download_kate_cd.py     # KATE-CD from Hugging Face (not redistributed here)
+uv run python scripts/train.py                # local training; or use the notebooks in kaggle/ on a free Kaggle GPU
 ```
+
+For Kaggle, put `KAGGLE_USERNAME` (and your Kaggle API credentials) in `.env`, then `uv run python scripts/kaggle_push.py siamese` (or `baseline`). The committed metadata files use the placeholder `YOUR_KAGGLE_USERNAME`; use your own account, not anyone else's.
+
+### Troubleshooting downloads
+
+- **Overpass busy / timeout / HTTP 429 or 504** (`download_demo_area.py`): public Overpass servers are shared; wait a few minutes and rerun. Finished files are kept.
+- **HTTP 404 or a changed URL** (`download_docs.py`, WorldPop): the publisher moved the file. Download it by hand from the source in [`docs/data_card.md`](docs/data_card.md) into the path `check_data.py` reports as missing.
+- **HDX unavailable** (`download_hotosm.py`): download the GeoJSON zip from <https://data.humdata.org/dataset/hotosm_tur_destroyed_buildings> and unpack it into `data/raw/hotosm/`.
+- **Hugging Face warns about unauthenticated requests**: harmless for the embedding model; set `HF_TOKEN` only if you hit rate limits.
 
 Run the app (it serves over http; OSM map tiles do not load from `file://`):
 
