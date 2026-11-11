@@ -3,8 +3,7 @@ message: "If you use this software, please cite it as below."
 title: "QuakeTriage: agentic post-earthquake building damage assessment and rescue prioritization"
 type: software
 authors:
-  - given-names: "the project owner"
-    family-names: ""
+  - alias: "Kuipyy"
 repository-code: "https://github.com/Kuipyy/quake-triage-agent"
 abstract: >-
   Research prototype that detects building damage from pre/post-earthquake satellite imagery,

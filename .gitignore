@@ -63,3 +63,6 @@ Thumbs.db
 /reports/figures/kate_cd_samples.png
 /reports/figures/predictions_*.png
 /reports/figures/worst10_*.png
+
+# Local Kaggle metadata with a real username (the committed files carry a placeholder; see scripts/kaggle_push.py)
+kaggle/**/*.local.json

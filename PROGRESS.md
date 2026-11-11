@@ -4,7 +4,7 @@
 
 ## Durum özeti
 - **Aktif hafta:** Hafta 8 tamamlandı (kod, doküman, yayın kontrolü). Public öncesi tek açık iş: git geçmişi kararı
-- **Sıradaki adım (the project owner):** (1) git geçmişi: A) temiz yeni repo (önerilen) ya da B) `git filter-repo`; geçmişte KATE-CD görselleri + kişisel e-posta var (`docs/release_checklist.md`, `docs/notes/week-08.md`); (2) demo videosu (`docs/demo_script.md`, "Before / after" sekmesini çekme); (3) repoyu public yap, Secret scanning + Push protection aç; (4) anahtarları yenile. Sonra v1.0 etiketi
+- **Sıradaki adım (proje sahibi):** (1) git geçmişi: A) temiz yeni repo (önerilen) ya da B) `git filter-repo`; geçmişte KATE-CD görselleri + kişisel e-posta var (`docs/release_checklist.md`, `docs/notes/week-08.md`); (2) demo videosu (`docs/demo_script.md`, "Before / after" sekmesini çekme); (3) repoyu public yap, Secret scanning + Push protection aç; (4) anahtarları yenile. Sonra v1.0 etiketi
 - **Kapatılan açık işler (2026-11-11):** hasarsız pencere değerlendirmesi (Kilis kesiti, 16 pencere hepsi "varsayılan hasarsız"; operasyon eşiğinde piksellerin %0,046'sı hasarlı işaretlendi, 0 pencere ≥%1; KATE arka plan yanlış pozitif oranı %0,78; doğruluk kanıtı DEĞİL, çünkü kesitte etiket yok), P01–P08 elle inceleme (6/8 kabul edilebilir; **bilinen hatalar:** P04 yanlış cevap, P02 yanlış kısaltma açılımı; README'de yazılı)
 - **Hugging Face Space:** yayından sonra (ZeroGPU ya da statik Space); hesap yeni, ücretsiz hesapta düz CPU Gradio Space yok
 - **Bekleyen manuel işler:** yukarıdaki dört adım. Elle protokol incelemesini bir insan da gözden geçirmeli (inceleyen tek model; P04/P02'yi kaynak sayfada kontrol et)
@@ -25,7 +25,7 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 - **UI:** `uv run python -m quaketriage.ui.app` (Gradio 6). Sekmeler: Harita (hasar + ilk 20 öncelik + rotalar), Öncesi-Sonrası (yalnız yerel veri; yoksa indirme mesajı), Öncelik tablosu, Durum raporu (indirilebilir), Araç izi, Model kartı; her sekmede SIMULATED uyarısı.
 - **Plan önbelleği:** soğuk soru ~29 sn, tekrar ~0,3 sn; UI çözücü limiti 10 sn (script 30 sn). 197 test, ruff temiz.
 - **Görsel kuralı korundu:** docs/images'ta yalnız UI ekran görüntüleri (OSM haritası) + GIF; `tests/test_no_imagery.py`.
-- **README yeniden yazıldı**, model/data kartı gerçek sayılarla dolduruldu (ölçülmeyenler "not measured"), LICENSE MIT, CITATION.cff (Kuipyy).
+- **README yeniden yazıldı**, model/data kartı gerçek sayılarla dolduruldu (ölçülmeyenler "not measured"), LICENSE MIT, CITATION.cff (telif sahibi: Kuipyy).
 - **Yayın kontrolü** (`docs/release_checklist.md`): gitleaks temiz, .env hiç commit'lenmemiş, ağırlık/tif yok. **Açık:** geçmişte KATE-CD görselleri + kişisel e-posta → public öncesi geçmiş kararı. INSARAG indirme URL'leri düzeltildi.
 - **HF Space:** stretch; ücretsiz hesapta düz CPU Gradio Space yok (ZeroGPU/statik seçenekleri `docs/decisions.md`).
 - Notlar: `docs/notes/week-08.md`.
@@ -64,7 +64,7 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 ### 2026-11-02 — Hafta 3 tamamlandı
 - **Siamese:** Kaggle'da eğitildi (23 epoch, en iyi 13), `models/siamese_best.pt` CLI ile indirildi. Test (thr 0.2, val'de seçildi): F1 0.602 vs baseline 0.502, ΔF1 +0.104 [+0.038, +0.166] (eşleştirilmiş bootstrap, `reports/comparison_siamese_vs_baseline_f1.json`).
 - **Eşik kuralı:** val'de seçilir (`evaluate.py --threshold-mode`); operasyon eşiği 0.2. F2 kararsız (ızgara kenarı) → "yüksek recall profili", varsayılan değil.
-- **Belirsizlik kararı:** 8 görünümlü TTA > MC Dropout (4 model×split'te Brier ve hata farkındalığı). Dropout'lu 3. Kaggle koşusu atlandı (the project owner onayı).
+- **Belirsizlik kararı:** 8 görünümlü TTA > MC Dropout (4 model×split'te Brier ve hata farkındalığı). Dropout'lu 3. Kaggle koşusu atlandı (proje sahibi onayı).
 - **Guard:** SSIM eşiği 0.05 (KATE-CD dağılımı). **infer_area.py:** Siamese + TTA, Kilis kesitinde çalışıyor (doğruluk kanıtı değil).
 - **RAG:** ham metin `data/interim/rag_text/` (OCR gerekmedi).
 - **Altyapı:** CI yeşil (CPU torch), `metrics.py` birleştirildi (çıktılar birebir aynı), `compare_models.py`, `models/loading.py`.
@@ -80,7 +80,7 @@ Güncel değerler için: `uv run python scripts/make_report.py --check` → [REA
 - `scripts/evaluate.py` yazıldı: bootstrap CI, figür, `reports/metrics_baseline.json`.
 - **Test sonuçları (threshold=0.5):** F1=0.490 [0.370–0.582], Precision=0.657, Recall=0.391, IoU=0.325.
 - Hasarsız pencere değerlendirmesi Hafta 3'e taşındı (`infer_area.py` ile birlikte yapılacak).
-- Kaggle kernel slug: `YOUR_KAGGLE_USERNAME/quaketriage-training` (metadata'daki `quaketriage-train`'den farklı — Kaggle otomatik değiştirdi).
+- Kaggle kernel slug: `<kaggle-kullanıcı>/quaketriage-training` (metadata'daki `quaketriage-train`'den farklı — Kaggle otomatik değiştirdi).
 - Sıradaki: Hafta 3 — Siamese model, MC Dropout + TTA, quality guard, RAG metin çıkarımı.
 
 ### 2026-10-31 — Hafta 1 tamamlandı

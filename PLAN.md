@@ -6,7 +6,7 @@
 - **Sahip:** proje sahibi
 - **Süre:** 8 hafta + kurulum (2 Kasım – 27 Aralık 2026), haftada 10–15 saat
 - **Bütçe:** 0 TL (yalnızca ücretsiz kaynaklar)
-- **Çalışma şekli:** Kodu Claude Code yazar ve çalıştırır. the project owner yönlendirir, karar verir, haftalık notları okur.
+- **Çalışma şekli:** Kodu Claude Code yazar ve çalıştırır. Proje sahibi yönlendirir, karar verir, haftalık notları okur.
 
 ---
 
@@ -153,7 +153,7 @@ quake-triage-agent/
 ├── reports/                # metrik JSON'ları + küçük figürler (commit edilir)
 ├── docs/
 │   ├── decisions.md        # önemli kararlar ve gerekçeleri
-│   └── notes/week-XX.md    # the project owner için haftalık öğrenme notu (TR)
+│   └── notes/week-XX.md    # proje sahibi için haftalık öğrenme notu (TR)
 ├── kaggle/                 # kernel-metadata.json + eğitim notebook'u
 ├── scripts/                # download_*.py, check_data.py, train.py, evaluate.py, infer_area.py
 ├── src/quaketriage/
@@ -179,7 +179,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [x] `uv` kurulumu, `pyproject.toml`, temel bağımlılıklar
 - [x] Repo iskeleti (bölüm 6), `.gitignore` (data/, models/, .env, outputs/, *.tif, *.pt)
 - [x] `.env.example`: `GEMINI_API_KEY`, `GROQ_API_KEY`, `LLM_PROVIDER`, `LLM_MODEL`, `HF_TOKEN`, `KAGGLE_USERNAME`, `KAGGLE_KEY`
-- [x] the project owner `.env` dosyasını kendisi doldurur. Anahtarlar sohbete yazılmaz.
+- [x] Proje sahibi `.env` dosyasını kendisi doldurur. Anahtarlar sohbete yazılmaz.
 - [x] Smoke test: `uv run pytest -q` geçer, PyTorch MPS/CPU kontrolü yapılır, Gemini'ye tek bir test çağrısı gider
 - **DoD:** Repo GitHub'da, testler yeşil, LLM çağrısı çalışıyor. ✓
 
@@ -245,7 +245,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [x] Gradio arayüzü:
   - sol: demo bölgesi seçimi + sohbet
   - sağ sekmeler: Harita (hasar katmanı, öncelik işaretleri, rotalar) / Öncesi-Sonrası (ImageSlider) / Öncelik tablosu / Durum raporu (indirilebilir) / Araç izi / Model kartı
-- [x] Ekran görüntüleri, 60–90 saniyelik demo GIF/video (ekran görüntüleri + `docs/images/demo_tour.gif` + `docs/demo_script.md`; video Proje sahibinin)
+- [x] Ekran görüntüleri, 60–90 saniyelik demo GIF/video (ekran görüntüleri + `docs/images/demo_tour.gif` + `docs/demo_script.md`; video proje sahibinin)
 - [x] README (İngilizce): problem, mimari diyagramı, sonuç tabloları, kurulum, veri lisansları, sınırlamalar, etik
 - [x] `LICENSE` (kod: MIT; veri lisansları ayrıca belirtilir), model kartı
 - [x] Yayın kontrol listesi (`docs/release_checklist.md`; açık: git geçmişinde KATE-CD görselleri): geçmişte sır yok (`git log -p | grep -i key`), büyük dosya yok, lisanslar doğru
@@ -288,9 +288,9 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 
 ---
 
-## 11. Çalışma ritmi (the project owner + Claude)
+## 11. Çalışma ritmi (proje sahibi + Claude)
 
-**Her oturumun başında** the project owner şöyle yazar:
+**Her oturumun başında** Proje sahibi şöyle yazar:
 > `PROGRESS.md'yi ve PLAN.md'de sıradaki haftanın bölümünü oku, kaldığımız yerden devam et.`
 
 **Her oturumun sonunda Claude:**
