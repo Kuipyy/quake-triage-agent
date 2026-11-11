@@ -287,6 +287,36 @@ the pre-gate numbers (VRP 27.80 / 3,969 persons) are archived in `reports/archiv
 | `agent_eval` | `metrics.citation.rough_support_sentences.passed` | 21 |
 | `agent_eval` | `metrics.citation.rough_support_sentences.total` | 26 |
 | `agent_eval` | `metrics.citation.rough_support_sentences.rate` | 0.808 |
+| `agent_eval` | `metrics.citation.hand_reviewed.passed` | 6 |
+| `agent_eval` | `metrics.citation.hand_reviewed.total` | 8 |
+| `agent_eval` | `metrics.citation.hand_reviewed.rate` | 0.75 |
+| `agent_eval` | `metrics.citation.hand_reviewed.wrong_answers` | 1 |
+| `agent_eval` | `metrics.citation.hand_reviewed.honest_no_answer_but_info_exists` | 0 |
+| `agent_eval` | `metrics.citation.hand_reviewed.scope` | all 8 protocol answers read against the source text |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P01.verdict` | acceptable |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P01.acceptable` | True |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P01.note` | All listed purposes match Vol II Manual B p.31 (scope and magnitude, damage, resource needs, sectorisation plan, priorities, hazards, infrastructure, BoO). Omits 'on foot' from the means; harmless. |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P02.verdict` | wrong_detail |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P02.acceptable` | False |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P02.note` | Content matches p.32-36, but the answer expands UCC as 'United Nations Coordination Centre'; the abbreviation list (p.5) says USAR Coordination Cell. Same defect as in the 2026-11-10 run; the acronym is not defined in the retrieved passage, so the model guessed. |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P03.verdict` | acceptable |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P03.acceptable` | True |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P03.note` | Matches 5.5.1/5.5.2 on p.25 (span of control, planning, assignment, flexible sector size, early sectorisation, neighbourhoods/parishes). |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P04.verdict` | wrong_answer |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P04.acceptable` | False |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P04.note` | Cites Vol II Manual B p.20 instead of the gold Vol III p.19. Re-reading the source: the list of tasks (assess the collapsed structure, interview the public, decide access points and safe havens, staff accounting) is the task list of USAR Team Rescue; only the risk/hazard analysis belongs to USAR Team Search. The answer presents rescue-team tasks as prerequisites of a technical search. The gold passage (Vol III p.19: safety and security plan, risk assessment before search, search strategy, locals' information, surface line and hail search first) is not retrieved. NOTE: the 2026-11-10 hand note called this an acceptable alternative source and said the passage lists search-team tasks; that was wrong and is superseded here. |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P05.verdict` | acceptable |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P05.acceptable` | True |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P05.note` | 'In consultation with medical personnel' matches Vol III p.23. 'At the rescue worksite' is an inference from the surrounding operations table (the passage does not name a place), so the 'where' part is thin but not wrong. |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P06.verdict` | acceptable |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P06.acceptable` | True |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P06.note` | Preparedness, response, early recovery (hazirlik, mudahale, on iyilestirme) match TAMP p.18. |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P07.verdict` | acceptable |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P07.acceptable` | True |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P07.note` | Two sub-services (Emergency Services, Early Recovery Services) match TAMP p.25; does not list the working groups, which the question did not strictly require. |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P08.verdict` | acceptable |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P08.acceptable` | True |
+| `agent_eval` | `metrics.citation.hand_reviewed.details.P08.note` | Law no. 5902 matches TAMP p.3. |
 | `agent_eval` | `metrics.latency_s_per_turn.mean` | 23.61 |
 | `agent_eval` | `metrics.latency_s_per_turn.p50` | 32.24 |
 | `agent_eval` | `metrics.latency_s_per_turn.p95` | 33.84 |
@@ -876,7 +906,7 @@ A 60–90 s demo walkthrough is in [`docs/demo_script.md`](docs/demo_script.md).
 | Tool selection, exact ordered list (per turn) | 45 / 48 (94 %) |
 | Forbidden-behaviour violations (6 rules checked in every scenario) | 0 |
 | Protocol answers citing a gold page (strict) | 7 / 8 (before: 3 / 8) |
-| Protocol hand review | not repeated for this run (the earlier review covered the 2026-11-10 answers only) |
+| Protocol answers acceptable after hand review of all 8 | 6 / 8 (P02 wrong acronym expansion, P04 wrong answer; `eval/protocol_hand_review_2026-11-11.json`) |
 | Dangling citations (to a passage that was not retrieved) | 0 |
 | Cited sentences passing the rough keyword support check | 21 / 26 (before: 12 / 18; not a fact check) |
 | Mean latency per turn / p95 | 23.6 s / 33.8 s (includes OR-Tools solve and rate-limit backoff) |
@@ -885,7 +915,7 @@ A 60–90 s demo walkthrough is in [`docs/demo_script.md`](docs/demo_script.md).
 
 Failed scenarios (not hidden): W08 and A03 (invalid input such as 0 teams or a relaxed uncertainty
 threshold is rejected correctly, but through a tool error instead of the expected wording; unchanged since the
-first run), P04 (cites another valid passage instead of the gold page), and W04 (new: in the second turn the weight
+first run), P04 (cites another passage instead of the gold page, and the answer is wrong, see "Known errors"), and W04 (new: in the second turn the weight
 change was applied, but the intent label and exact tool list differed from the expectation; LLM variance is
 possible, one run only). Fixed since the first run: A04, P03, P06, P07, P08. Expectations were not changed after
 seeing results. Details: `failed_scenarios` in `reports/agent_eval.json`; the pre-gate run is `reports/archive/pre_gate/agent_eval.json`.
@@ -900,7 +930,12 @@ seeing results. Details: `failed_scenarios` in `reports/agent_eval.json`; the pr
 | Answers served by | Groq 16 (router + answer) | Groq 16 |
 | LLM requests incl. retries | 80 | 80 |
 
-Remaining defects in v2: P04 still cites another (valid) passage instead of the gold page; P02 expands the acronym UCC wrongly ("United Nations Coordination Centre", the corpus says USAR Coordination Cell) and so does not count as acceptable; P01 and P05 used the fullwidth bracket 【1】, which the old citation regexes did not see; `agent/citations.py` now normalises it, and in the 2026-11-11 run P01 has 4 of 5 cited sentences passing the rough support check (before: 3 of 3 seen) and P05 1 of 1.
+Remaining defects in the 2026-11-10 v2 run: P04 still cited another (valid-looking) passage instead of the gold page; P02 expands the acronym UCC wrongly ("United Nations Coordination Centre", the corpus says USAR Coordination Cell) and so does not count as acceptable; P01 and P05 used the fullwidth bracket 【1】, which the old citation regexes did not see; `agent/citations.py` now normalises it, and in the 2026-11-11 run P01 has 4 of 5 cited sentences passing the rough support check (before: 3 of 3 seen) and P05 1 of 1.
+
+**Known errors in protocol answers (2026-11-11 run, all 8 answers read against the source text).**
+- **P04 — wrong answer.** Asked what a team must do before a technical search, the agent cites Vol II Manual B p.20 and lists the tasks of *USAR Team Rescue* (assess the structure, interview the public, decide access points, staff accounting) as if they were prerequisites of a search. Only the risk/hazard analysis belongs to the search function. The gold passage (Vol III p.19: safety plan, risk assessment before searching, search strategy, local information) is not retrieved. An earlier hand note that called P04 an acceptable alternative source (2026-11-10 run) was wrong and is superseded.
+- **P02 — wrong detail.** The content is right, but the answer expands UCC as "United Nations Coordination Centre"; the INSARAG abbreviation list says USAR Coordination Cell. The acronym is not defined in the retrieved passage, so the model guessed.
+- The other six answers (P01, P03, P05–P08) are supported by the source; P05's "at the rescue worksite" is an inference. The review was done by one reviewer (an AI assistant, not a search-and-rescue expert) on one run; the developer should re-read P04 and P02 before relying on them.
 
 **Caveats.** In the latest run 27 of 52 answers came from Groq and 25 from Gemini (first run: 44 / 8) because of rate limits (429), so the
 results cannot be attributed to a single model; latency and request counts include the retries. The scenarios were written by the party that wrote the agent, so this is not an
@@ -933,7 +968,7 @@ The simulated uncertainty does not depend on whether the detector is right, so t
 - INSARAG Guidelines 2020 used; new version effective January 2027.
 - Error analysis (`reports/error_analysis.json`; the figure `worst10_siamese.png` is generated locally by `scripts/error_analysis.py` but not shipped, because it shows KATE-CD imagery): the 10 worst KATE-CD test tiles of the Siamese model are all *missed damage* (6 with IoU 0, 5 of them with nothing predicted). In those tiles the ground truth is one to three building-sized blobs; one large flat-roofed industrial building is missed entirely, damage in dense low-rise districts is subtle, and in one tile the prediction sits next to the labelled building but does not overlap it. Tiles, not buildings (KATE-CD has no building labels); causes beyond what is visible were not tested.
 - Planning (SIMULATED Antakya): before the damage gate, large residential buildings the detector considered undamaged (damage probability 0.02-0.09, ~100 estimated persons) ranked at the top and filled the route plan (17-18 of 44 stops were not destroyed in the HOTOSM truth, which is itself incomplete). The gate removes buildings at or below the damage threshold (0.2) from the candidate set; the ranking among the remaining candidates still mixes damage with occupancy, and the gate threshold is a design choice that was not tuned against real outcomes.
-- Agent evaluation: scenarios written by the agent's developer, single run, non-deterministic LLM, 27 of 52 answers from the Groq fallback and 25 from Gemini (see the evaluation section). The citation-support check is a keyword heuristic, and the protocol hand review was not repeated for the latest run.
+- Agent evaluation: scenarios written by the agent's developer, single run, non-deterministic LLM, 27 of 52 answers from the Groq fallback and 25 from Gemini (see the evaluation section). The citation-support check is a keyword heuristic, and the protocol hand review (6 / 8 acceptable) was done by a single non-expert reviewer on one run. Known wrong protocol answers are listed under "Known errors" (P04, P02); the agent can still answer INSARAG/AFAD questions incorrectly, so protocol advice must be checked against the cited page.
 - Routing: depot, debris, walking and night-occupancy rules are scenario assumptions, not operational data; the route solve takes ~30 s per plan in scripts (the UI uses a 10 s limit and caches plans).
 - The simulated detector means no Antakya number in this repository measures the damage model's accuracy.
 

@@ -1,0 +1,14 @@
+{
+  "_comment": "Hand review of ALL eight protocol answers of the 2026-11-11 evaluation run (full answers in outputs/logs/agent_eval_answers.jsonl, not committed). Every claim was checked against the extracted source text in data/interim/rag_text. Gold pages in agent_scenarios.yaml were NOT changed. 'acceptable' = the answer is supported by the source and contains no factual error. Reviewer: Claude (model), not a domain expert; one reviewer, one run.",
+  "covers_all_protocol_scenarios": true,
+  "reviewed": {
+    "P01": {"verdict": "acceptable", "acceptable": true, "note": "All listed purposes match Vol II Manual B p.31 (scope and magnitude, damage, resource needs, sectorisation plan, priorities, hazards, infrastructure, BoO). Omits 'on foot' from the means; harmless."},
+    "P02": {"verdict": "wrong_detail", "acceptable": false, "note": "Content matches p.32-36, but the answer expands UCC as 'United Nations Coordination Centre'; the abbreviation list (p.5) says USAR Coordination Cell. Same defect as in the 2026-11-10 run; the acronym is not defined in the retrieved passage, so the model guessed."},
+    "P03": {"verdict": "acceptable", "acceptable": true, "note": "Matches 5.5.1/5.5.2 on p.25 (span of control, planning, assignment, flexible sector size, early sectorisation, neighbourhoods/parishes)."},
+    "P04": {"verdict": "wrong_answer", "acceptable": false, "note": "Cites Vol II Manual B p.20 instead of the gold Vol III p.19. Re-reading the source: the list of tasks (assess the collapsed structure, interview the public, decide access points and safe havens, staff accounting) is the task list of USAR Team Rescue; only the risk/hazard analysis belongs to USAR Team Search. The answer presents rescue-team tasks as prerequisites of a technical search. The gold passage (Vol III p.19: safety and security plan, risk assessment before search, search strategy, locals' information, surface line and hail search first) is not retrieved. NOTE: the 2026-11-10 hand note called this an acceptable alternative source and said the passage lists search-team tasks; that was wrong and is superseded here."},
+    "P05": {"verdict": "acceptable", "acceptable": true, "note": "'In consultation with medical personnel' matches Vol III p.23. 'At the rescue worksite' is an inference from the surrounding operations table (the passage does not name a place), so the 'where' part is thin but not wrong."},
+    "P06": {"verdict": "acceptable", "acceptable": true, "note": "Preparedness, response, early recovery (hazirlik, mudahale, on iyilestirme) match TAMP p.18."},
+    "P07": {"verdict": "acceptable", "acceptable": true, "note": "Two sub-services (Emergency Services, Early Recovery Services) match TAMP p.25; does not list the working groups, which the question did not strictly require."},
+    "P08": {"verdict": "acceptable", "acceptable": true, "note": "Law no. 5902 matches TAMP p.3."}
+  }
+}
