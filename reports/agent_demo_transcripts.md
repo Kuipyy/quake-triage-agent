@@ -198,9 +198,9 @@ Generated 2026-11-10 15:19 with the real LLM (primary `gemini`, fallback `groq`)
 ]
 ```
 
-**Cited passage(s), verbatim**
+**Cited passage(s), excerpt (clipped to 300 characters)**
 
-> [2] (INSARAG_Vol2_ManB, p. 7-7) 2.3 Operations The operations phase is the period when international USAR Teams are performing USAR operations in the affected country. It starts with arrival of a USAR Team at the Reception/Departure Centre (RDC) in the affected country, registration with the UCC/OSOCC, reporting to the Local Emergency Management Agency (LEMA) (or National Disaster Management Authority (NDMA)), and performing of USAR operations. The phase ends when the USAR Team is instructed to cease operations.
+> [2] (INSARAG_Vol2_ManB, p. 7-7) 2.3 Operations The operations phase is the period when international USAR Teams are performing USAR operations in the affected country.
 
 ## 5. Off-topic (TR)
 

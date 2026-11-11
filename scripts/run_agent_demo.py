@@ -15,7 +15,7 @@ import rasterio
 
 from quaketriage.agent.graph import Agent
 from quaketriage.agent.llm import make_llm
-from quaketriage.agent.tools import validate_citations
+from quaketriage.agent.tools import clip_sentences, validate_citations
 from quaketriage.config import get
 
 ROOT = Path(__file__).parents[1]
@@ -106,11 +106,11 @@ def main() -> None:
             support = agent.last_support  # same rough check that feeds the metrics
             body += ["**Citation support check (rough keyword test)**", "", "```json",
                      json.dumps(support, indent=1, ensure_ascii=False), "```", "",
-                     "**Cited passage(s), verbatim**", ""]
+                     "**Cited passage(s), excerpt (clipped to 300 characters)**", ""]
             for ref in sorted({x["ref"] for x in support}):
                 h = next(h for h in hits if h["ref"] == ref)
-                body += [f"> [{ref}] ({h['doc']}, p. {h['pages']}) " + " ".join(h["text"].split()),
-                         ""]
+                body += [f"> [{ref}] ({h['doc']}, p. {h['pages']}) "
+                         + clip_sentences(" ".join(h["text"].split()), 300), ""]
     text = "\n".join(lines + summary + [""] + body)
     secrets = [v for k, v in os.environ.items()
                if any(t in k.upper() for t in ("KEY", "TOKEN", "SECRET", "PASSWORD"))
