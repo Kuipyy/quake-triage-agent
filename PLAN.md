@@ -245,7 +245,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 - [x] Gradio arayüzü:
   - sol: demo bölgesi seçimi + sohbet
   - sağ sekmeler: Harita (hasar katmanı, öncelik işaretleri, rotalar) / Öncesi-Sonrası (ImageSlider) / Öncelik tablosu / Durum raporu (indirilebilir) / Araç izi / Model kartı
-- [ ] Ekran görüntüleri, 60–90 saniyelik demo GIF/video
+- [x] Ekran görüntüleri, 60–90 saniyelik demo GIF/video (ekran görüntüleri + `docs/images/demo_tour.gif` + `docs/demo_script.md`; video Proje sahibinin)
 - [ ] README (İngilizce): problem, mimari diyagramı, sonuç tabloları, kurulum, veri lisansları, sınırlamalar, etik
 - [x] `LICENSE` (kod: MIT; veri lisansları ayrıca belirtilir), model kartı
 - [ ] Yayın kontrol listesi: geçmişte sır yok (`git log -p | grep -i key`), büyük dosya yok, lisanslar doğru
