@@ -458,3 +458,22 @@ def test_damage_threshold_can_be_lowered_but_not_raised(ctx):
     assert ctx.constraints.damage_threshold == limit / 2  # unchanged by the rejected request
     same = ctx.call("update_constraints", {"damage_threshold": limit})  # back to the default
     assert same["changed"] == {"damage_threshold": limit}
+
+
+def test_plan_cache_replays_identical_plan_and_misses_on_change(ctx, tmp_path):
+    ctx.plan_cache_dir = tmp_path
+    ctx.call("prioritize_sites", {})
+    first = ctx.call("plan_routes", {})
+    assert first["from_cache"] is False and list(tmp_path.glob("*.json"))
+    second = ctx.call("plan_routes", {})
+    assert second["from_cache"] is True
+    assert second["priority_collected"] == first["priority_collected"]
+    assert second["n_closed_edges"] == first["n_closed_edges"]
+    changed = ctx.call("plan_routes", {"num_teams": 2})  # other constraints -> other key
+    assert changed["from_cache"] is False
+
+
+def test_plan_cache_disabled_by_default(ctx):
+    ctx.call("prioritize_sites", {})
+    assert ctx.call("plan_routes", {})["from_cache"] is False
+    assert ctx.call("plan_routes", {})["from_cache"] is False

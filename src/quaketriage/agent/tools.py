@@ -23,6 +23,7 @@ from quaketriage.agent.citations import cited_refs, normalize_citations
 from quaketriage.buildings.queue import flag_verification
 from quaketriage.config import get
 from quaketriage.planning.debris import DebrisInput, apply_debris_risk, close_edges_near
+from quaketriage.planning.plan_cache import load_plan, plan_key, save_plan, table_digest
 from quaketriage.planning.topsis import TopsisInput, prioritise
 from quaketriage.planning.vrp import VrpInput, plan_routes
 from quaketriage.rag.index import SearchInput
@@ -186,6 +187,7 @@ class ToolContext:
     quality_reasons: list[str] = field(default_factory=list)
     outputs: dict[str, dict] = field(default_factory=dict)  # last output of every tool
     lang: str = "en"  # language of user-facing warnings (set per turn by the graph)
+    plan_cache_dir: Path | None = None  # None = no caching (tests, evaluation); the UI sets it
 
     def quality_block(self, lang: str | None = None) -> str | None:
         """Why decisions are blocked (failed image-quality guard), enforced inside the tools."""
@@ -585,6 +587,7 @@ class PlanRoutesOutput(ToolOutput):
     n_need_walking: int = 0
     n_closed_edges: int = 0
     n_excluded_verification: int = 0
+    from_cache: bool = False  # plan replayed from the disk cache instead of solved again
     teams: list[TeamRoute] = []
 
 
@@ -601,20 +604,28 @@ def plan_routes_tool(inp: PlanRoutesInput, ctx: ToolContext) -> PlanRoutesOutput
     for k in ("num_teams", "mission_hours", "candidate_n"):
         if getattr(inp, k) is not None:
             setattr(c, k, getattr(inp, k))
-    g = apply_debris_risk(ctx.graph(), b, DebrisInput())
-    if c.closed_areas:
-        by_radius: dict[float, list[tuple[float, float]]] = {}
-        for lon, lat, r in c.closed_areas:
-            by_radius.setdefault(r, []).append((lon, lat))
-        for r, pts in by_radius.items():
-            g = close_edges_near(g, pts, r)
     params = VrpInput(candidate_n=c.candidate_n, num_teams=c.num_teams,
                       mission_hours=c.mission_hours, intervention_minutes=c.intervention_minutes,
                       time_limit_s=c.solver_time_limit_s, walking=c.walking)
     held = b["needs_verification"].to_numpy(bool)  # never dispatched before verification
-    plan = plan_routes(g, b[~held], c.depot_lonlat, params)
+    key = plan_key(params.model_dump(),
+                   [list(a) for a in c.closed_areas], c.depot_lonlat, table_digest(b[~held]))
+    stored = load_plan(ctx.plan_cache_dir, key)
+    from_cache = stored is not None
+    if from_cache:
+        plan, closed = stored["plan"], stored["n_closed_edges"]
+    else:
+        g = apply_debris_risk(ctx.graph(), b, DebrisInput())
+        if c.closed_areas:
+            by_radius: dict[float, list[tuple[float, float]]] = {}
+            for lon, lat, r in c.closed_areas:
+                by_radius.setdefault(r, []).append((lon, lat))
+            for r, pts in by_radius.items():
+                g = close_edges_near(g, pts, r)
+        plan = plan_routes(g, b[~held], c.depot_lonlat, params)
+        closed = sum(bool(d.get("blocked")) for *_, d in g.edges(data=True))
+        save_plan(ctx.plan_cache_dir, key, {"plan": plan, "n_closed_edges": closed})
     ctx.plan = plan
-    closed = sum(bool(d.get("blocked")) for *_, d in g.edges(data=True))
     teams = [TeamRoute(team=r["team"] + 1, return_h=round(r["return_s"] / 3600, 2),
                        stops=[StopRow(row=s["row"], building_id=s["building_id"],
                                       arrival_h=round(s["arrival_s"] / 3600, 2),
@@ -623,7 +634,7 @@ def plan_routes_tool(inp: PlanRoutesInput, ctx: ToolContext) -> PlanRoutesOutput
                                       walk_m=s["walk_m"]) for s in r["stops"]])
              for r in plan["routes"]]
     return PlanRoutesOutput(
-        n_excluded_verification=int(held.sum()),
+        from_cache=from_cache, n_excluded_verification=int(held.sum()),
         warnings=([msg(ctx.lang, "held", n=int(held.sum()))] if held.any() else []),
         n_visited=plan["n_visited"],
         priority_collected=plan["priority_collected"], persons_reached=plan["persons_reached"],
