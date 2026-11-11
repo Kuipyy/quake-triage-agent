@@ -107,7 +107,7 @@ Hepsi ücretsiz. Lisanslar README'de mutlaka belirtilecek.
 | **HOTOSM yıkılmış binalar** | Bina bazında doğrulama etiketleri | `data.humdata.org/dataset/hotosm_tur_destroyed_buildings` | ODbL (OSM) |
 | **HOTOSM / OSM binalar ve yollar** | Bina sınırları, kat sayısı, yol ağı | HDX `hotosm_tur_buildings` veya OSMnx/Overpass | ODbL |
 | **WorldPop Türkiye 100 m** | Nüfus tahmini | `hub.worldpop.org/geodata/summary?id=75773` | CC BY 4.0 |
-| **AFAD TAMP** | RAG (TR) | `https://www.afad.gov.tr/kurumlar/afad.gov.tr/e_Kutuphane/Planlar/TAMP.pdf` (yedek: `https://mebakub.meb.gov.tr/akub/dosyalar/TAMP.pdf`) | Kamu belgesi |
+| **AFAD TAMP** | RAG (TR) | `https://www.afad.gov.tr/kurumlar/afad.gov.tr/e_Kutuphane/Planlar/TAMP.pdf` | Kamu belgesi |
 | **INSARAG Guidelines 2020** | RAG (EN): Vol. II Man. B Operations, Vol. III Field Guide | `https://www.insarag.org/guidelines` | Kamu belgesi. Yeni sürüm 1 Ocak 2027'de yürürlüğe giriyor, README'de belirtilecek |
 | xBD (opsiyonel) | Ön eğitim / karşılaştırma | xview2.org (eğitim paketi ~30 GB) | CC BY-NC-SA, sadece stretch hedefte |
 
@@ -175,7 +175,7 @@ quake-triage-agent/
 Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazsa PROGRESS.md'ye nedeni yazılır ve "çıkarılacaklar" listesine bakılır.
 
 ### Hafta 0 — Kurulum (ilk oturum, ~1–2 saat)
-- [x] Git bağlantısı: `gh auth status` kontrolü → `git init -b main` → `git remote add origin https://github.com/<kullanıcı>/quake-triage-agent.git` → ilk commit → `git push -u origin main`. Bundan sonra **her tamamlanan madde ayrı bir commit olarak push edilir** (CLAUDE.md'deki kural).
+- [x] Git bağlantısı: `gh auth status` kontrolü → `git init -b main` → `git remote add origin <repo-url>` → ilk commit → `git push -u origin main`. Bundan sonra **her tamamlanan madde ayrı bir commit olarak push edilir** (CLAUDE.md'deki kural).
 - [x] `uv` kurulumu, `pyproject.toml`, temel bağımlılıklar
 - [x] Repo iskeleti (bölüm 6), `.gitignore` (data/, models/, .env, outputs/, *.tif, *.pt)
 - [x] `.env.example`: `GEMINI_API_KEY`, `GROQ_API_KEY`, `LLM_PROVIDER`, `LLM_MODEL`, `HF_TOKEN`, `KAGGLE_USERNAME`, `KAGGLE_KEY`

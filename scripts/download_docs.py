@@ -11,7 +11,6 @@ DOCS = [
         "name": "AFAD_TAMP.pdf",
         "urls": [
             "https://www.afad.gov.tr/kurumlar/afad.gov.tr/e_Kutuphane/Planlar/TAMP.pdf",
-            "https://mebakub.meb.gov.tr/akub/dosyalar/TAMP.pdf",
         ],
         "description": "AFAD Türkiye Afet Müdahale Planı (TAMP)",
     },
@@ -20,7 +19,6 @@ DOCS = [
         "urls": [
             # official page: https://www.insarag.org/guidelines (verified 2026-11-11)
             "https://insarag.org/wp-content/uploads/2021/06/INSARAG20Guidelines20Vol20II2C20Man20B.pdf",
-            "https://www.insarag.org/wp-content/uploads/2021/01/INSARAG_Guidelines_2020_Vol_II_Manual_B.pdf",
         ],
         "description": "INSARAG Guidelines 2020 Vol II Manual B — Operations",
     },
@@ -28,7 +26,6 @@ DOCS = [
         "name": "INSARAG_Vol3_FieldGuide.pdf",
         "urls": [
             "https://insarag.org/wp-content/uploads/2021/06/INSARAG20Guidelines20Vol20III.pdf",
-            "https://www.insarag.org/wp-content/uploads/2021/01/INSARAG_Guidelines_2020_Vol_III.pdf",
         ],
         "description": "INSARAG Guidelines 2020 Vol III — Field Guide",
     },
