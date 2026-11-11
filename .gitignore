@@ -57,3 +57,9 @@ Thumbs.db
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Figures that show KATE-CD imagery: the dataset has no declared license and mixes Maxar Open Data
+# (CC BY-NC) with Airbus Pleiades imagery, so these are generated locally but never committed.
+/reports/figures/kate_cd_samples.png
+/reports/figures/predictions_*.png
+/reports/figures/worst10_*.png

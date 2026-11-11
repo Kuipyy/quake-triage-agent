@@ -5,6 +5,7 @@
 ## Durum özeti
 - **Aktif hafta:** Hafta 7 — Değerlendirme (senaryo seti hazır)
 - **Sıradaki adım:** Hafta 7 madde 2: `eval/run_agent_eval.py` (senaryoları gerçek LLM ile koşturur; paylaşılan yol grafı/RAG, çözücü süresi kısa; metrikler → `reports/agent_eval.json`: görev başarısı, araç doğruluğu, yasak davranış, atıf geçerliliği/destek, gecikme, LLM çağrısı). Tahmini ~45-60 LLM çağrısı: koşmadan önce the project owner'a söyle
+- **YAYIN ENGELİ:** KATE-CD görselleri (kate_cd_samples, predictions_*, worst10_*) ağaçtan kaldırıldı ama git GEÇMİŞİNDE duruyor. Repo public yapılmadan önce geçmiş temizlenmeli (git filter-repo + force push, ya da sıkıştırılmış ağaçtan yeni public repo) — the project owner onayıyla, en son adım olarak. Bkz. docs/decisions.md (2026-11-11).
 - **Bekleyen manuel işler (the project owner):** yok. Damage gate sonrası tüm planlama çıktıları ve 38 senaryo eval'i 2026-11-11'de yeniden üretildi (eski sürümler `reports/archive/pre_gate/`). Elle protokol incelemesi yeni koşu için TEKRARLANMADI (yalnız sıkı 7/8 var; P04 hâlâ gold sayfayı atıflamıyor)
 
 ## Önemli metrikler
