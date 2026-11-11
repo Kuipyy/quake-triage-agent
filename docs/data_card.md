@@ -1,8 +1,7 @@
 # Data card
 
-One entry per dataset. Fill the `TBD` cells as each data step lands (Week 1 downloads, later weeks derive
-products). Facts below come from `reports/metrics_eda.json` and `docs/decisions.md`; everything else is
-marked `TBD` until verified.
+One entry per dataset. Facts below come from `reports/metrics_eda.json`, `data/manifest.json` and
+`docs/decisions.md`; an item that could not be verified says so.
 
 > Licenses matter: Vantor/Maxar imagery is **CC BY-NC 4.0** (non-commercial). Keep attribution in `README.md`.
 
@@ -14,7 +13,7 @@ marked `TBD` until verified.
 | Vantor (Maxar) Open Data | Georeferenced demo imagery | CC BY-NC 4.0 | Fallback — no overlapping pre/post tiles for Antakya |
 | HOTOSM destroyed buildings | Building-level validation labels | ODbL | Downloaded; 3239 buildings Turkey-wide, 732 in Antakya demo area |
 | HOTOSM / OSM buildings + roads | Footprints, floors, road network | ODbL | Downloaded for Antakya bbox |
-| WorldPop Turkey 100 m | Population estimate | CC BY 4.0 | Downloaded (20.5 MB); clipping to demo area in Week 4 |
+| WorldPop Turkey 100 m | Population estimate | CC BY 4.0 | Downloaded (20.5 MB); zonal statistics per building (Week 4) |
 | AFAD TAMP | RAG corpus (TR) | Public document | Downloaded; text layer OK (Turkish chars correct) |
 | INSARAG Guidelines 2020 | RAG corpus (EN) | Public document | Downloaded; text layer OK (re-checked 2026-11-02, see `docs/decisions.md`) — extracted with `pypdf`, no OCR |
 
@@ -38,9 +37,9 @@ marked `TBD` until verified.
   - Every sample in every split contains some damage (`pct_with_any_damage = 1.0`), so the model never sees a fully
     undamaged tile. Expect false positives on undamaged windows of the demo area; evaluate that explicitly.
   - Test set is small (38 images): report bootstrap confidence intervals, not point estimates only.
-  - Possible spatial leakage between neighbouring tiles across splits: TBD (cannot be checked without coordinates).
-  - Sensor / ground sampling distance differs from the Vantor demo imagery: TBD.
-- **Checksums:** TBD (`data/manifest.json` once the manifest exists).
+  - Possible spatial leakage between neighbouring tiles across splits: not checkable (no coordinates); treat the test numbers as optimistic.
+  - Sensor / ground sampling distance differs from the Vantor demo imagery (0.31 m/px crop): not measured; no labels on the crop.
+- **Checksums:** `data/manifest.json` (local, git-ignored).
 
 ## Vantor (Maxar) Open Data — Kahramanmaraş event
 
@@ -48,7 +47,7 @@ marked `TBD` until verified.
 - **Use:** pre/post GeoTIFF window (about 1–2 km²) for the demo area; read only the window from the COG.
 - **License:** CC BY-NC 4.0. Attribution required; no commercial use.
 - **Demo area:** fallback plan activated — no overlapping pre/post tile pair covers Antakya (see `docs/decisions.md`). Kilis pre/post pair exists (2023-01-26 / 2023-02-07, bbox ≈ [37.082, 36.714, 37.098, 36.733]) but only 1 HOTOSM destroyed building in that area.
-- **Acquisition dates, GSD, CRS, checksums:** TBD (tiles not downloaded locally; accessed as COG from S3).
+- **Kilis crop (local, not in the repository):** `data/raw/demo/kilis_pre.tif` / `kilis_post.tif`, 2048×2048 px, 3 bands, EPSG:32637, 0.305 m/px, acquisitions 2023-01-26 (pre) and 2023-02-07 (post). Checksums: see `data/manifest.json`. Attribution: imagery © Vantor/Maxar Open Data, CC BY-NC 4.0. The imagery is never committed (`*.tif` is git-ignored; a test guards tracked images).
 
 ## HOTOSM destroyed buildings
 
@@ -74,7 +73,7 @@ marked `TBD` until verified.
 
 - **Source:** `hub.worldpop.org/geodata/summary?id=75773`.
 - **Known issue:** pre-earthquake population at 100 m resolution; a coarse approximation per building.
-- **Vintage:** 2020 (UN-adjusted, constrained). **Resolution:** 100 m. **File:** `data/raw/demo/worldpop_turkey_100m.tif` (20.5 MB, full Turkey; clipped to demo bbox in Week 4).
+- **Vintage:** 2020 (UN-adjusted, constrained). **Resolution:** 100 m. **File:** `data/raw/demo/worldpop_turkey_100m.tif` (20.5 MB, full Turkey).
 - **SHA-256 (first 16 hex):** `97b3703d5727bbbd...`. **Download date:** 2026-10-31.
 
 ## AFAD TAMP and INSARAG Guidelines 2020
@@ -86,3 +85,10 @@ marked `TBD` until verified.
 - **AFAD TAMP:** 65 pages. Text layer present; Turkish characters extracted correctly with `pypdf`. SHA-256 `f0237b70b552a61e...`. Download date 2026-10-31.
 - **INSARAG Vol II Manual B (Operations):** 58 pages. Text layer present (2 low-text pages; ~120k characters via `pypdf`). The Week-1 note that the PDF was scanned was wrong. Extracted to `data/interim/rag_text/`. SHA-256 `21956d2b9557f678...`. Download date 2026-10-31.
 - **INSARAG Vol III (Field Guide):** 46 pages. Text layer present (1 low-text page; ~72k characters). SHA-256 `e37e157cf7473dff...`. Download date 2026-10-31.
+
+## Derived: Antakya demo set (`data/processed/buildings.gpkg`, not committed)
+
+- **Content:** 5,895 buildings: the 732 HOTOSM destroyed footprints plus nearby OSM buildings (100 m buffer), with floors, estimated persons (night factor 0.9, non-residential 0.1: scenario assumptions in `configs/default.yaml`), and `damage_prob` / `uncertainty` from a **simulated detector** (miss 20 %, false alarm 3 %, seed 0).
+- **Why simulated:** today's OSM contains almost none of the destroyed buildings (8 overlap) and no overlapping pre/post imagery exists for Antakya, so no real detector output can be produced there (`docs/decisions.md`).
+- **Licenses of the sources:** HOTOSM / OSM ODbL, WorldPop CC BY 4.0; attribution in `README.md`.
+- **Known issue:** HOTOSM is incomplete; "false positive" overstates real errors.
