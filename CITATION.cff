@@ -3,9 +3,8 @@ message: "If you use this software, please cite it as below."
 title: "QuakeTriage: agentic post-earthquake building damage assessment and rescue prioritization"
 type: software
 authors:
-  # TODO(the project owner): add family-names (and ORCID if you have one).
   - given-names: "the project owner"
-    alias: "Kuipyy"
+    family-names: ""
 repository-code: "https://github.com/Kuipyy/quake-triage-agent"
 abstract: >-
   Research prototype that detects building damage from pre/post-earthquake satellite imagery,
@@ -18,4 +17,4 @@ keywords:
   - search and rescue
   - decision support
   - LLM agent
-# license: MIT   # enable once LICENSE is added (planned for Week 8)
+license: MIT
