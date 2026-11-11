@@ -3,7 +3,8 @@
 kaggle/kernel-metadata.json and kaggle/siamese/kernel-metadata.json carry ``YOUR_KAGGLE_USERNAME``.
 This script copies the kernel folder to a temp directory, substitutes ``KAGGLE_USERNAME`` (from the
 environment or .env) and runs ``kaggle kernels push`` there, so no personal value is ever written to
-the repository. Needs the Kaggle CLI (``pip install kaggle``) and ``KAGGLE_USERNAME`` / ``KAGGLE_KEY``.
+the repository. Needs the Kaggle CLI (``pip install kaggle``) and ``KAGGLE_USERNAME`` /
+``KAGGLE_KEY``.
 
 Usage: uv run python scripts/kaggle_push.py [baseline|siamese]
 """
