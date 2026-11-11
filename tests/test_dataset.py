@@ -1,14 +1,23 @@
 """Unit tests for KateCDDataset and DiceFocalLoss."""
+from pathlib import Path
+
 import pytest
 import torch
 
+KATE_ROOT = Path(__file__).parents[1] / "data" / "raw" / "kate_cd"
+needs_kate_cd = pytest.mark.skipif(
+    not (KATE_ROOT / "data").exists(),
+    reason="KATE-CD is not downloaded (the images are not in the repository for licence reasons): "
+           "run `uv run python scripts/download_kate_cd.py`")
 
+
+@needs_kate_cd
 @pytest.mark.slow
 def test_dataset_shapes():
     """Each item must be (6,512,512) image + (1,512,512) mask."""
     from quaketriage.data.kate_cd import KateCDDataset
 
-    ds = KateCDDataset("data/raw/kate_cd", split="validation")
+    ds = KateCDDataset(KATE_ROOT, split="validation")
     assert len(ds) == 44
     img, mask = ds[0]
     assert img.shape == (6, 512, 512)
@@ -18,12 +27,13 @@ def test_dataset_shapes():
     assert mask.min() >= 0.0 and mask.max() <= 1.0
 
 
+@needs_kate_cd
 @pytest.mark.slow
 def test_train_augmentation_determinism():
     """Training split should produce different results on repeated calls (augmentation active)."""
     from quaketriage.data.kate_cd import KateCDDataset
 
-    ds = KateCDDataset("data/raw/kate_cd", split="train")
+    ds = KateCDDataset(KATE_ROOT, split="train")
     img1, _ = ds[0]
     img2, _ = ds[0]
     # With random augmentation, at least sometimes they differ
