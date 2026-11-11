@@ -3,43 +3,115 @@
 **Agentic post-earthquake building damage assessment and rescue prioritization.**
 
 > ⚠️ Research prototype only. Not validated for operational use in real search-and-rescue operations.
+> Every Antakya result is produced with a **simulated detector** (HOTOSM labels + noise) and is labelled SIMULATED.
 
-## Overview
+![Tour of the QuakeTriage UI: map, priority table, situation report, tool trace, model card](docs/images/demo_tour.gif)
 
-QuakeTriage answers the question:
-> "The damage map is ready. Where should I send my limited rescue teams first, and by which route? Which buildings is the model uncertain about?"
+## Problem
 
-Given pre/post-earthquake satellite imagery, QuakeTriage:
-1. Detects damaged buildings (change detection model with uncertainty)
-2. Scores buildings by estimated occupancy and damage severity
-3. Prioritizes sites using TOPSIS multi-criteria decision analysis
-4. Plans optimal team routes with OR-Tools (prize-collecting VRP)
-5. Grounds decisions in AFAD TAMP and INSARAG guidelines via RAG
-6. Presents results through an interactive Gradio interface
+After a large earthquake, coordinators have satellite imagery, a damage map and a handful of search-and-rescue teams:
+
+> "The damage map is ready. Where should I send my limited teams first, by which route, and which buildings is the model unsure about?"
+
+QuakeTriage turns pre/post-event imagery into a ranked, uncertainty-aware dispatch plan and a cited situation report,
+and keeps a human in the loop: buildings the system is unsure about go to a field-verification queue instead of being ranked or dispatched.
+
+## What it does
+
+1. **Detect** damage from pre/post imagery (Siamese U-Net, 8-view TTA uncertainty) behind an image-quality guard.
+2. **Score** buildings: occupancy estimate (WorldPop, night / full-occupancy scenarios), floors, uncertainty flags.
+3. **Prioritise** with a damage gate and TOPSIS (AHP weights): only buildings above the damage threshold are candidates.
+4. **Plan routes** with OR-Tools (prize-collecting VRP) over the OSM road graph, with debris-risk, closed roads and a walking leg.
+5. **Ground advice** in AFAD TAMP and INSARAG guidelines (hybrid RAG, numbered citations, validated against the retrieved passages).
+6. **Converse** (Turkish / English) through a LangGraph agent with nine tools; what-if questions re-run only the stale steps.
+7. **Show** everything in a Gradio UI: map, priority table, downloadable situation report, tool trace, model card.
 
 ## Architecture
 
 ```mermaid
-flowchart TD
-    U["User question (TR/EN)"] --> A["LangGraph agent"]
-    A --> Q["check_image_quality"]
-    Q -- "poor quality" --> V["field-verification queue"]
-    Q --> D["detect_damage (probability + uncertainty)"]
-    D --> S["score_buildings"]
-    S --> O["estimate_occupancy"]
-    O --> P["prioritize_sites (TOPSIS)"]
-    P --> R["plan_routes (OR-Tools)"]
-    R --> L["lookup_protocol (RAG, cited)"]
-    L --> W["write_sitrep"]
-    A -. "what-if" .-> C["update_constraints"]
-    C -. "re-run changed steps" .-> R
+flowchart LR
+    subgraph Data["Data (free / open)"]
+        IMG["Pre/post imagery"]
+        OSM["OSM buildings + roads (ODbL)"]
+        WP["WorldPop 100 m (CC BY 4.0)"]
+        DOC["AFAD TAMP + INSARAG"]
+    end
+    subgraph Agent["LangGraph agent (Gemini, Groq fallback)"]
+        RT["router (TR/EN)"] --> QG["image-quality gate"]
+        QG --> DD["detect_damage + uncertainty"]
+        DD --> SB["score_buildings"] --> EO["estimate_occupancy"]
+        EO --> PS["prioritize_sites: damage gate + TOPSIS"]
+        PS --> PR["plan_routes: OR-Tools VRP, plan cache"]
+        PR --> LP["lookup_protocol: RAG, cited"] --> WS["write_sitrep"]
+        RT -. "what-if" .-> UC["update_constraints"] -. "stale steps only" .-> PS
+        QG -- "poor quality" --> VQ["verification queue (never dispatched)"]
+    end
+    IMG --> DD
+    OSM --> EO
+    OSM --> PR
+    WP --> EO
+    DOC --> LP
+    WS --> UI["Gradio UI: map, table, sitrep, trace, model card"]
+    PR --> UI
 ```
 
-Planned design; components are added week by week (see `PLAN.md`).
+Details and decisions: [`docs/decisions.md`](docs/decisions.md), [`PLAN.md`](PLAN.md).
 
-## Status
+## Headline results
 
-Work in progress — 8-week development plan (Nov–Dec 2026).
+Real measurements and simulated ones are kept apart. The full machine-generated table is further down.
+
+| Area | Result | Kind |
+|---|---|---|
+| Damage detection, KATE-CD test (38 tiles) | Siamese F1 **0.60** [0.50, 0.68] vs early-fusion baseline 0.50 [0.38, 0.59]; paired ΔF1 +0.10 [+0.04, +0.17]; single run per model | real |
+| Uncertainty, KATE-CD test | 8-view TTA: ECE 0.008, uncertainty about 21x higher on wrong pixels | real |
+| Protocol retrieval, 10 questions | recall@1 0.80, MRR 0.80 | real |
+| Building-level damage in Antakya | not measured: the detector there is simulated | SIMULATED |
+| Route plan, 400 candidates, 4 teams, 6 h | VRP collects 26.0 priority / 3,106 persons vs 22.9 / 2,749 (highest priority first), 12.1 / 430 (nearest first), 11.7 / 899 (random) | SIMULATED |
+| Agent, 38 scripted scenarios, one cold run | task success **34 / 38**, tool selection 45 / 48 turns, 0 forbidden-behaviour violations, protocol answers citing the gold page 7 / 8 | real LLM, simulated detector |
+
+**How to read the agent number.** The first run scored 30 / 38 (protocol 3 / 8). Between the runs three things changed together: the
+TOPSIS damage gate, the citation-marker normalisation (`【1】` → `[1]`) and the protocol-retrieval fix (search with the user's original
+message instead of the router's keyword rewrite). The re-run scored 34 / 38 (protocol 7 / 8). We did not run ablations that separate them, so no
+single change is credited, and the planning numbers before and after the gate are not comparable (the gate removes intact crowded buildings
+from the candidate set, 16,372 → 10,309 persons among candidates). The scenarios were written by the agent's developer, one run, non-deterministic LLM.
+
+![Map tab: damage layer, top-20 priority markers, team routes](docs/images/ui_map.png)
+
+## Quickstart
+
+Everything below uses free tiers only.
+
+```bash
+uv sync --all-extras               # plain `uv sync` drops the torch/agent extras and breaks the tests
+cp .env.example .env               # add a free Gemini key (and optionally a Groq key); never commit .env
+uv run pytest -q && uv run ruff check .
+```
+
+Data (not in the repository; sources and licenses in [`docs/data_card.md`](docs/data_card.md)):
+
+```bash
+uv run python scripts/download_demo_area.py   # OSM buildings/roads, WorldPop
+uv run python scripts/download_docs.py        # AFAD TAMP + INSARAG PDFs
+# HOTOSM destroyed-building polygons: download the GeoJSON from HDX (hotosm_tur_destroyed_buildings)
+# into data/raw/hotosm/ (see docs/data_card.md); check_data.py lists what is missing.
+uv run python scripts/extract_rag_text.py && uv run python scripts/build_rag_index.py
+uv run python scripts/build_buildings.py      # Antakya demo set with the simulated detector
+uv run python scripts/check_data.py           # sanity check of what you downloaded
+```
+
+Run the app (it serves over http; OSM map tiles do not load from `file://`):
+
+```bash
+uv run python -m quaketriage.ui.app           # http://127.0.0.1:7860
+uv run python -m quaketriage.agent -i         # or talk to the agent in the terminal
+```
+
+- Route plans are cached on disk (`outputs/cache/plans`) and the UI limits the solver to 10 s (scripts use 30 s), so a repeated question answers in about a second.
+- The **Before / after** tab only shows imagery you downloaded yourself (`scripts/download_kate_cd.py`); the images are not in this repository for licence reasons.
+- Model weights (`*.pt`) are not distributed. Without `models/siamese_best.pt` the Antakya demo still runs (simulated detector); the Kilis crop inference needs the weights, which you can train with `scripts/train.py` or `kaggle/`.
+- Map previews: `uv run python scripts/make_map.py` and `scripts/make_route_map.py`, then `python3 -m http.server 8000 --directory reports` (do not open them via `file://`: OSM tile servers reject requests without a Referer).
+- Regenerate the results table in this README: `uv run python scripts/make_report.py` (`--check` in CI).
 
 ## Planning comparison (SIMULATED detector)
 
@@ -58,9 +130,9 @@ Only buildings above the damage gate (`damage_prob` > 0.2) are candidates (see `
 the pre-gate numbers (VRP 27.80 / 3,969 persons) are archived in `reports/archive/pre_gate/`. The VRP collects
 **13 % more priority than the highest-priority-first rule**, 2.1x the nearest-first rule and 2.2x the random rule. These numbers describe planning behaviour on simulated detections, not rescue outcomes.
 
-## Results
+## Full results (generated)
 
-Generated from `reports/*.json` by `make report`; do not edit by hand.
+<details><summary>All numbers from <code>reports/*.json</code> (generated by <code>make report</code>; do not edit by hand)</summary>
 
 <!-- results:begin -->
 | Report | Metric | Value |
@@ -739,17 +811,21 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 | `vantor_stac_summary` | `title` | Turkey and Syria Earthquake 2023 |
 <!-- results:end -->
 
-## Data Sources & Licenses
+</details>
 
-| Source | Use | License |
-|--------|-----|---------|
-| KATE-CD | Model training & evaluation | Citation required (Earthquake Damage Assessment with SAMCD) |
-| Vantor (Maxar) Open Data | Georeferenced demo imagery | **CC BY-NC 4.0** — non-commercial only |
-| HOTOSM Destroyed Buildings | Building-level validation labels | ODbL |
-| OSM / HOTOSM Buildings & Roads | Building footprints, road network | ODbL |
-| WorldPop Turkey 100m | Population estimation | CC BY 4.0 |
-| AFAD TAMP | RAG (TR) | Public document |
-| INSARAG Guidelines 2020 | RAG (EN) | Public document |
+## Data licenses
+
+| Source | Use | License | In this repository? |
+|--------|-----|---------|---|
+| KATE-CD | Model training & evaluation | No license found; imagery from Maxar Open Data (CC BY-NC 4.0) and Airbus Pleiades; cite the paper | **No** (images not redistributed; metrics only) |
+| Vantor (Maxar) Open Data | Kilis demo crop | **CC BY-NC 4.0**, non-commercial only | **No** (git-ignored; a test guards tracked images) |
+| HOTOSM Destroyed Buildings | Building-level labels (simulated detector) | ODbL | derived numbers only |
+| OSM / HOTOSM Buildings & Roads | Footprints, road network | ODbL | derived numbers and map screenshots |
+| WorldPop Turkey 100m | Population estimation | CC BY 4.0 | derived numbers only |
+| AFAD TAMP, INSARAG Guidelines 2020 | RAG corpus | Public documents | short cited passages only |
+| Code (this repository) | | **MIT** ([`LICENSE`](LICENSE)) | yes |
+
+The screenshots in `docs/images/` show the UI over OpenStreetMap tiles (© OpenStreetMap contributors) and contain no satellite imagery.
 
 ## Attribution
 
@@ -760,32 +836,10 @@ Generated from `reports/*.json` by `make report`; do not edit by hand.
 - **Population:** WorldPop, CC BY 4.0.
 - **Training data:** KATE-CD; please cite *Earthquake Damage Assessment with SAMCD* (see `cscrs/kate-cd`).
 
-## Documentation
+## Documentation and citation
 
-See [`docs/README.md`](docs/README.md) for the documentation map: decisions, data card, model card, glossary.
-Cite this repository via [`CITATION.cff`](CITATION.cff).
-
-## Setup
-
-```bash
-# Install uv (https://docs.astral.sh/uv/)
-uv sync --all-extras  # plain `uv sync` drops the torch/agent extras
-cp .env.example .env  # fill in your API keys
-uv run pytest -q
-```
-
-## Map preview
-
-Generate with `uv run python scripts/make_map.py`, then serve it over HTTP (do **not** open it via `file://`):
-
-```bash
-python3 -m http.server 8000 --directory reports
-# open http://localhost:8000/map_preview.html
-```
-
-The same applies to `reports/route_map.html` (`uv run python scripts/make_route_map.py`, after `scripts/plan_routes.py`).
-
-OpenStreetMap tile servers return 403 for requests without a `Referer` header, which is what browsers send for `file://` pages, so the basemap stays blank.
+See [`docs/README.md`](docs/README.md) for the documentation map: decisions, [data card](docs/data_card.md), [model card](docs/model_card.md), glossary.
+A 60–90 s demo walkthrough is in [`docs/demo_script.md`](docs/demo_script.md). Cite this repository via [`CITATION.cff`](CITATION.cff).
 
 ## Agent evaluation (SIMULATED detector for Antakya)
 
@@ -854,9 +908,9 @@ The simulated uncertainty does not depend on whether the detector is right, so t
 - Vantor imagery is CC BY-NC 4.0 — commercial use requires a different imagery source.
 - INSARAG Guidelines 2020 used; new version effective January 2027.
 - Error analysis (`reports/error_analysis.json`; the figure `worst10_siamese.png` is generated locally by `scripts/error_analysis.py` but not shipped, because it shows KATE-CD imagery): the 10 worst KATE-CD test tiles of the Siamese model are all *missed damage* (6 with IoU 0, 5 of them with nothing predicted). In those tiles the ground truth is one to three building-sized blobs; one large flat-roofed industrial building is missed entirely, damage in dense low-rise districts is subtle, and in one tile the prediction sits next to the labelled building but does not overlap it. Tiles, not buildings (KATE-CD has no building labels); causes beyond what is visible were not tested.
-- Planning (SIMULATED Antakya): the ranking mixes damage with occupancy, so large residential buildings the detector considers undamaged (damage probability 0.02-0.09, ~100 estimated persons) appear among the top-priority buildings and in the route plan (17-18 of 44 stops are not destroyed in the HOTOSM truth, which is itself incomplete). Not changed in Week 7.
-- Agent evaluation: scenarios written by the agent's developer, single run, non-deterministic LLM, 44 of 52 answers from the Groq fallback (see the evaluation section). The citation-support check is a keyword heuristic; one wrong protocol answer (P06) passed it.
-- Routing: depot, debris, walking and night-occupancy rules are scenario assumptions, not operational data; the route solve takes ~30 s per plan.
+- Planning (SIMULATED Antakya): before the damage gate, large residential buildings the detector considered undamaged (damage probability 0.02-0.09, ~100 estimated persons) ranked at the top and filled the route plan (17-18 of 44 stops were not destroyed in the HOTOSM truth, which is itself incomplete). The gate removes buildings at or below the damage threshold (0.2) from the candidate set; the ranking among the remaining candidates still mixes damage with occupancy, and the gate threshold is a design choice that was not tuned against real outcomes.
+- Agent evaluation: scenarios written by the agent's developer, single run, non-deterministic LLM, 27 of 52 answers from the Groq fallback and 25 from Gemini (see the evaluation section). The citation-support check is a keyword heuristic, and the protocol hand review was not repeated for the latest run.
+- Routing: depot, debris, walking and night-occupancy rules are scenario assumptions, not operational data; the route solve takes ~30 s per plan in scripts (the UI uses a 10 s limit and caches plans).
 - The simulated detector means no Antakya number in this repository measures the damage model's accuracy.
 
 ## Ethics and intended use
