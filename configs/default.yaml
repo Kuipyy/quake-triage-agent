@@ -128,3 +128,11 @@ regions:
     detector: siamese            # real Siamese model on the Vantor crop; no building table
     pre: data/raw/demo/kilis_pre.tif
     post: data/raw/demo/kilis_post.tif
+
+ui:
+  solver_time_limit_s: 10          # OR-Tools limit inside the UI (config default for scripts is 30)
+  plan_cache_dir: outputs/cache/plans
+  host: 127.0.0.1
+  port: 7860
+  kate_cd_split: test
+  max_image_px: 900                # longest side of the before/after images shown

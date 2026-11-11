@@ -18,7 +18,8 @@ def _colour(p: float) -> str:
     return next((colour for limit, colour in _BREAKS if p > limit), "#d9d9d9")
 
 
-def build_preview_map(buildings: gpd.GeoDataFrame, simplify_m: float = 0.5) -> folium.Map:
+def build_preview_map(buildings: gpd.GeoDataFrame, simplify_m: float = 0.5,
+                      layer_control: bool = True) -> folium.Map:
     """Colour buildings by damage probability; outline the verification queue and the truth."""
     proj = buildings.to_crs(get_project_crs()).copy()
     proj["geometry"] = proj.geometry.simplify(simplify_m)
@@ -46,7 +47,8 @@ def build_preview_map(buildings: gpd.GeoDataFrame, simplify_m: float = 0.5) -> f
         outline = {"fillOpacity": 0, "color": "#000000", "weight": 1.2}
         folium.GeoJson(ll[ll.destroyed_truth][["geometry"]], name="HOTOSM destroyed (truth)",
                        style_function=lambda _: outline, show=False).add_to(m)
-    folium.LayerControl().add_to(m)
+    if layer_control:
+        folium.LayerControl().add_to(m)
     legend = ("<div style='position:fixed;bottom:30px;right:10px;max-width:340px;"
               "z-index:9999;background:white;padding:8px 10px;"
               "border:1px solid #999;font:12px sans-serif'>"

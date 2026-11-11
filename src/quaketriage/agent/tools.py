@@ -591,6 +591,17 @@ class PlanRoutesOutput(ToolOutput):
     teams: list[TeamRoute] = []
 
 
+def build_plan_graph(ctx: ToolContext, buildings: gpd.GeoDataFrame):
+    """Road graph for planning: debris rule applied, user-closed areas cut."""
+    g = apply_debris_risk(ctx.graph(), buildings, DebrisInput())
+    by_radius: dict[float, list[tuple[float, float]]] = {}
+    for lon, lat, r in ctx.constraints.closed_areas:
+        by_radius.setdefault(r, []).append((lon, lat))
+    for r, pts in by_radius.items():
+        g = close_edges_near(g, pts, r)
+    return g
+
+
 def plan_routes_tool(inp: PlanRoutesInput, ctx: ToolContext) -> PlanRoutesOutput:
     reason = ctx.quality_block()
     if reason:
@@ -615,13 +626,7 @@ def plan_routes_tool(inp: PlanRoutesInput, ctx: ToolContext) -> PlanRoutesOutput
     if from_cache:
         plan, closed = stored["plan"], stored["n_closed_edges"]
     else:
-        g = apply_debris_risk(ctx.graph(), b, DebrisInput())
-        if c.closed_areas:
-            by_radius: dict[float, list[tuple[float, float]]] = {}
-            for lon, lat, r in c.closed_areas:
-                by_radius.setdefault(r, []).append((lon, lat))
-            for r, pts in by_radius.items():
-                g = close_edges_near(g, pts, r)
+        g = build_plan_graph(ctx, b)
         plan = plan_routes(g, b[~held], c.depot_lonlat, params)
         closed = sum(bool(d.get("blocked")) for *_, d in g.edges(data=True))
         save_plan(ctx.plan_cache_dir, key, {"plan": plan, "n_closed_edges": closed})

@@ -30,7 +30,7 @@ def _leg(g: nx.MultiDiGraph, u, v, to_ll) -> list[tuple[float, float]]:
 
 def add_plan_layers(m: folium.Map, g: nx.MultiDiGraph, plan: dict, buildings: gpd.GeoDataFrame,
                     depot_node, depot_lonlat: tuple[float, float]) -> None:
-    """Add closed roads, one layer per team and the depot to an existing map."""
+    """Add closed roads, one layer per team and the depot (the caller adds the LayerControl)."""
     to_ll = _to_lonlat()
     closed = folium.FeatureGroup("closed roads (debris rule)", show=True)
     for u, v, d in g.edges(data=True):
@@ -69,7 +69,6 @@ def add_plan_layers(m: folium.Map, g: nx.MultiDiGraph, plan: dict, buildings: gp
     folium.Marker((depot_lonlat[1], depot_lonlat[0]), tooltip="depot (scenario assumption: OSM "
                   "'AFAD' building, not a real operations centre)",
                   icon=folium.Icon(color="black", icon="home")).add_to(m)
-    folium.LayerControl().add_to(m)
 
 
 def build_route_map(g: nx.MultiDiGraph, plan: dict, buildings: gpd.GeoDataFrame,
@@ -78,6 +77,7 @@ def build_route_map(g: nx.MultiDiGraph, plan: dict, buildings: gpd.GeoDataFrame,
     m = folium.Map(location=[depot_lonlat[1], depot_lonlat[0]], zoom_start=14,
                    tiles="OpenStreetMap", control_scale=True)
     add_plan_layers(m, g, plan, buildings, depot_node, depot_lonlat)
+    folium.LayerControl().add_to(m)
     rows = "".join(
         f"<br><span style='color:{TEAM_COLOURS[r['team'] % len(TEAM_COLOURS)]}'>"
         "&#9644;&#9644;</span>"

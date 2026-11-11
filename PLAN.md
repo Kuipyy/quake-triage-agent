@@ -242,7 +242,7 @@ Her haftanın sonunda **tamamlanma kriterleri (DoD)** sağlanmalı. Sağlanamazs
 
 ### Hafta 8 (21–27 Aralık) — Arayüz ve yayın
 - [x] **Not (Hafta 6'dan):** rota çözücü her seferinde ~30 sn sürüyor; arayüzde plan sonuçları önbelleğe alınacak (anahtar: kısıtlar + öncelik tablosu özeti), aynı kısıtlarla tekrar çözülmeyecek, çözülürken ilerleme göstergesi olacak
-- [ ] Gradio arayüzü:
+- [x] Gradio arayüzü:
   - sol: demo bölgesi seçimi + sohbet
   - sağ sekmeler: Harita (hasar katmanı, öncelik işaretleri, rotalar) / Öncesi-Sonrası (ImageSlider) / Öncelik tablosu / Durum raporu (indirilebilir) / Araç izi / Model kartı
 - [ ] Ekran görüntüleri, 60–90 saniyelik demo GIF/video
